@@ -14,7 +14,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
                     <button name="synchronize_scan"
-                            string="Synchronize" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"
+                            string="Synchronize" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['done','assigned', 'cancel'])]}"
                             />
 <!--                    <button name="validate_all_pickings"-->
 <!--                            string="Validate All" type="object" class="oe_highlight"-->

@@ -39,7 +39,7 @@
                     string="Synchronize" type="object" class="oe_highlight"
                     attrs="{'invisible': [('state', '!=', 'assigned')]}"/>-->
                     <field name="id" invisible="1" />
-                    <button class="startscanclass" name="%(action_start_scanning)d" type="action" string="Start Scan" attrs="{'invisible': ['|',('id', '=', False),('state', 'in', ['done', 'cancel'])]}"/>
+                    <button class="startscanclass" name="%(action_start_scanning)d" type="action" string="Start Scan" attrs="{'invisible': ['|',('id', '=', False),('state', 'in', ['done','assigned', 'cancel'])]}"/>
 
                 </xpath>
 
