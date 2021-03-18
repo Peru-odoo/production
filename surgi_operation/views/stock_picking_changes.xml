@@ -26,9 +26,9 @@
                         <attribute name="required">False</attribute>
                     </field>
                 <!-- Adding Reviewed button -->
-                <xpath expr="//header" position="inside">
-                    <button  string="Set Reviewed" attrs="{'invisible':[('reviewed', '=', True)]}" name="setReviewed"  type="object" />
-                </xpath>
+<!--                <xpath expr="//header" position="inside">-->
+<!--                    <button  string="Set Reviewed" attrs="{'invisible':[('reviewed', '=', True)]}" name="setReviewed"  type="object" />-->
+<!--                </xpath>-->
 
 <!--                <xpath expr="//header/button[@name='action_cancel']" position="replace">-->
 <!--                    &lt;!&ndash;open_stock_wizard_cancel_operation&ndash;&gt;-->

@@ -30,14 +30,14 @@ class stock_picking_inherit(models.Model):
 
     # ========== Z.morsy ==============
     # Adding is delivered check box
-    reviewed = fields.Boolean(string='Reviewed')
+    # reviewed = fields.Boolean(string='Reviewed')
 
     # Adding operation id field
     # operation_id=fields.Many2one('operation.operation', string='Operation')
 
     # Adding function set Reviewed
-    def setReviewed(self):
-        self.write({'reviewed': True})
+    # def setReviewed(self):
+    #     self.write({'reviewed': True})
 
     @api.model
     def create(self, vals):
