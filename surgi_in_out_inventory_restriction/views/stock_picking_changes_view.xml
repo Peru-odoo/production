@@ -17,17 +17,19 @@
                 </xpath>
                 <!--======= add validate button to show and hide if condition of code ======-->
                 <xpath expr="//button[@name='button_validate']" position="replace">
-                    <button name="button_validate"
-                            string="Validate"
-                            attrs="{'invisible':
-                            ['|','|','|','|',
-                            ('is_valid', '=', False),
-                            ('state', '=', 'done'),
-                            ('state', '=', 'cancel'),
-                            ('state', '=', 'waiting'),
-                            ('state', '=', 'confirmed'),
-                            ]}"
-                            type="object" class="oe_highlight"/>
+<!--                    <button name="button_validate"-->
+<!--                            string="Validate"-->
+<!--                            attrs="{'invisible':-->
+<!--                            ['|','|','|','|',-->
+<!--                            ('is_valid', '=', False),-->
+<!--                            ('state', '=', 'done'),-->
+<!--                            ('state', '=', 'cancel'),-->
+<!--                            ('state', '=', 'waiting'),-->
+<!--                            ('state', '=', 'confirmed'),-->
+<!--                            ]}"-->
+<!--                            type="object" class="oe_highlight"/>-->
+                    <button name="button_validate" string="Validate" attrs="{'invisible':['|',('is_valid', '=', False),
+                    ('state', 'not in', ('assigned'))]}" type="object" class="oe_highlight"/>
 
                 </xpath>
             </field>

@@ -20,8 +20,8 @@
 
                 <xpath expr="//button[@name='button_validate']" position="after">
                     <field name="is_check" invisible="1"/>
-                    <button name="compute_analytic_account" type="object" class="oe_highlight"
-                            icon="fa-check-square" string="Check.A.C">
+                    <button name="compute_analytic_account" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}"
+                            type="object" class="oe_highlight" icon="fa-check-square" string="Check.A.C">
                         <field name="is_check" widget="boolean_button" options='{"terminology": {
         "string_true": "Blacklist",
         "hover_true": "Blacklist",
