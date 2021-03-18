@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//header" position="inside">
-                    <button name="open_wizard_cancel_operation" states="" type="object" string="Cancel" icon="fa-pencil" class="oe_highlight" attrs="{'invisible': ['|',('state','=','cancel'),('state','=','done')]}"/>
+                    <button name="open_wizard_cancel_operation" states="" type="object" string="Cancel" icon="fa-pencil" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['done','assigned','cancel'])]}"/>
                 </xpath>
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="invisible">True</attribute>
