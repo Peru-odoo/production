@@ -27,7 +27,14 @@ class stock_picking_inherit(models.Model):
     operation_components_ids = fields.Many2many('product.product', string="Components", readonly=True)
     operation_product_lines = fields.One2many('product.operation.line', 'picking_id', string="products", readonly=True)
     operation_id = fields.Many2one("operation.operation", string="Operation ID")
-
+    source_location_is_freeze = fields.Boolean(related="location_id.operation_location_freeze",
+                                               string="Source Location Freeze", store=True)
+    destination_location_is_freeze = fields.Boolean(related="location_dest_id.operation_location_freeze",
+                                               string="Destination Location Freeze", store=True)
+    source_location_is_operation = fields.Boolean(related="location_id.is_operation_location",
+                                                  string="Source Is Operation Location", store=True)
+    destination_location_is_operation = fields.Boolean(related="location_dest_id.is_operation_location",
+                                                    string="Destination Is Operation Location", store=True)
     # ========== Z.morsy ==============
     # Adding is delivered check box
     # reviewed = fields.Boolean(string='Reviewed')
@@ -38,6 +45,21 @@ class stock_picking_inherit(models.Model):
     # Adding function set Reviewed
     # def setReviewed(self):
     #     self.write({'reviewed': True})
+
+    # Adding function set Operation Location freeze
+    def setoperationlocationfreeze(self):
+        self.location_id.operation_location_freeze = True
+
+        # return {
+        #     'name': 'These Items Will be freezed',
+        #     'view_mode': 'form',
+        #     'view_id': self.env.ref('surgi_operation.view_stock_quant_freeze', False).id,
+        #     'res_model': 'stock.quant',
+        #     'type': 'ir.actions.act_window',
+        #     'target': 'new',
+        #     'location_id': self.location_dest_id,
+        #     'context': {},
+        #         }
 
     @api.model
     def create(self, vals):

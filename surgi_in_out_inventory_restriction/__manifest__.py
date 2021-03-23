@@ -7,7 +7,7 @@ Warehouse Security
 ==========================
     """,
     'website': 'https://www.surgitech.net',
-    'depends': ['stock'],
+    'depends': ['stock','surgi_operation'],
     'data': [
 
         'views/stock_picking_changes_view.xml',

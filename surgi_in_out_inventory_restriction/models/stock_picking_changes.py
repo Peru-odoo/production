@@ -23,6 +23,13 @@ class stock_picking_inherit(models.Model):
 
         elif pick_type == 'outgoing' and self.env.user.has_group('surgi_in_out_inventory_restriction.validate_out_group'):
             self.is_valid = True
+
+        elif pick_type == 'internal' and source_location_is_freeze == False:
+            self.is_valid = True
+
+        elif pick_type == 'internal' and destination_location_is_freeze == False:
+            self.is_valid = True
+
         else:
             self.is_valid = False
 

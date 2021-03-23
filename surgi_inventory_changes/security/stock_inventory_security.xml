@@ -26,6 +26,12 @@
             <field name="groups" eval="[(4,ref('stock.group_stock_manager'))]"/>
         </record>
 
+        <record id="controll_freeze_location_group" model="res.groups">
+            <field name="name">Controll Freeze Location</field>
+<!--            <field name="category_id" ref="warehouse_validate_in_out"/>-->
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
         <record id="inventory_value_group" model="res.groups">
             <field name="name">Inventory Value</field>
 <!--            <field name="category_id" ref="surgi_operations_group_category"/>-->
