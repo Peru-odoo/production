@@ -49,10 +49,10 @@
                     <field name="destination_location_is_freeze" invisible="1"/>
                 </field>
 
-<!--                <xpath expr="//header" position="inside">-->
-<!--                    <button string="Freeze Location" name="setoperationlocationfreeze" type="object"-->
-<!--                            attrs="{'invisible':['|',('source_location_is_operation', '=', False),('source_location_is_freeze', '!=', False)]}"/>-->
-<!--                </xpath>-->
+                <xpath expr="//header" position="inside">
+                    <button string="Freeze Location" name="setoperationlocationfreeze" type="object"
+                            attrs="{'invisible':['|',('source_location_is_operation', '=', False),('source_location_is_freeze', '!=', False)]}"/>
+                </xpath>
                     <field name="location_dest_id" position="attributes">
                         <attribute name="required">False</attribute>
                     </field>
