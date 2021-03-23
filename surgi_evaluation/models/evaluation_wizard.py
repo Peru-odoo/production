@@ -17,7 +17,6 @@ class NewModule(models.TransientModel):
 
 
     def evaluation_create(self):
-        print ('+++++++++++++++++++++++++++++++++')
         duration=0.0
         orders_list = []
         lines = [(5, 0, 0), ]
@@ -56,5 +55,4 @@ class NewModule(models.TransientModel):
                 # stock_record = self.env['evaluation.evaluation'].create()
 
             for i in orders_list:
-                print ('iiiiiiiiiiiiiiiii',i)
                 self.env['evaluation.evaluation'].sudo().create(i)

@@ -9,3 +9,7 @@ from . import redundancy_wizard
 from . import department
 from . import custody
 from . import request
+from . import job_analysis
+from . import job_analysis_wizard
+from . import request_wizard
+from . import job_analysis_approved

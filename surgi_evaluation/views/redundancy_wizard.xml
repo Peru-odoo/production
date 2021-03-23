@@ -34,6 +34,9 @@
 
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="redundancy_menu_wizard_categ" name="Redundancy Wizard"
-                  parent="surgi_evaluation_menuitem" action="action_view_redundancy_wizard" sequence="10"/>
+                  parent="surgi_evaluation_menuitem" action="action_view_redundancy_wizard"
+                  sequence="10"
+                  groups="surgi_evaluation.all_permission_group_redundancy"
+        />
     </data>
 </odoo>

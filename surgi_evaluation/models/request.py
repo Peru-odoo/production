@@ -32,8 +32,8 @@ class RequestRelegation(models.Model):
     marketing_ids = fields.Many2many(comodel_name="custody.custody",relation="marketing", column1="marketing1", column2="marketing2", string="Marketing", )
     medical_devices_ids = fields.Many2many(comodel_name="custody.custody",relation="medical", column1="medical1", column2="medical2", string="Medical Devices", )
     direct_manager_ids = fields.Many2many(comodel_name="custody.custody",relation="direct_manager", column1="direct_manager1", column2="direct_manager2", string="Direct Manager", )
-
-
+    date_start = fields.Date(string="Start Date", required=False, )
+    date_end = fields.Date(string="End Date", required=False, )
 
     @api.onchange('employee_id')
     def get_employee_grad(self):

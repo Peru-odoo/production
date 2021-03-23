@@ -106,6 +106,8 @@
                             <field name="grade_id"/>
                             <field name="rank_id"/>
                             <field name="rang_id"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
                         </group>
 
                         <notebook>
@@ -219,5 +221,39 @@
         <menuitem id="menu_request_relegation" name="Request"
                   parent="surgi_evaluation.surgi_evaluation_menuitem" action="action_view_request_relegation"
                   sequence="8"/>
+
+        <record id="manager_group_request_relegation" model="res.groups">
+            <field name="name">Request Relegation Manager</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="all_permission_group_request_relegation" model="res.groups">
+            <field name="name">Request Relegation Permission</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="manager_group_request_user_rule" model="ir.rule">
+            <field name="name">Request Manager Permission</field>
+            <field name="model_id" ref="model_request_relegation"/>
+            <field name="perm_write" eval="1"/>
+            <field name="domain_force">[('employee_id.parent_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('surgi_evaluation.manager_group_request_relegation'))]"/>
+        </record>
+
+        <record id="all_permission_group_request_user_rule" model="ir.rule">
+            <field name="name">Request All Permission</field>
+            <field name="model_id" ref="model_request_relegation"/>
+            <field name="perm_write" eval="1"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('surgi_evaluation.all_permission_group_request_relegation'))]"/>
+        </record>
+
+
+
+
+
+
+
+
     </data>
 </odoo>
