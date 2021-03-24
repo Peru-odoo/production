@@ -10,3 +10,12 @@ class stock_location_inherit(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse")
     required_approval = fields.Boolean(string="Required Approval?" )
     partner_id = fields.Many2one('res.partner',string='Owner')
+
+    def freezconfirm(self):
+        self.operation_location_freeze = True
+        mess = {
+            'title': 'Freezed',
+            'message': "This Location ins Freezed"
+        }
+        return {'warning': mess}
+        pass

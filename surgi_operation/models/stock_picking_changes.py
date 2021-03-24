@@ -48,18 +48,18 @@ class stock_picking_inherit(models.Model):
 
     # Adding function set Operation Location freeze
     def setoperationlocationfreeze(self):
-        self.location_id.operation_location_freeze = True
+        #self.location_id.operation_location_freeze = True
+        return {
+            'name': 'You Will freeze Location with  these Products',
+            'view_mode': 'form',
+            'view_id': self.env.ref('surgi_inventory_changes.view_stock_quant_freeze', False).id,
+            'res_model': 'stock.location',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'res_id':self.location_id.id,
+            }
+        print("ss")
 
-        # return {
-        #     'name': 'These Items Will be freezed',
-        #     'view_mode': 'form',
-        #     'view_id': self.env.ref('surgi_operation.view_stock_quant_freeze', False).id,
-        #     'res_model': 'stock.quant',
-        #     'type': 'ir.actions.act_window',
-        #     'target': 'new',
-        #     'location_id': self.location_dest_id,
-        #     'context': {},
-        #         }
 
     @api.model
     def create(self, vals):
