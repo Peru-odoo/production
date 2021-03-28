@@ -2,24 +2,24 @@ from odoo import fields, models, api, exceptions
 from odoo import SUPERUSER_ID
 
 
-class NewModule(models.TransientModel):
-    _name = 'wizard.po.open'
-    company_id = fields.Many2one(comodel_name="res.company", string="Company", required=False, )
-    partner_id = fields.Many2one(comodel_name="res.partner", string="", required=False, )
-    def create_po(self):
-        print('ffffffff')
-        lines_list=[]
-        # self.env['purchase.order'].create({'name':'Salah'})
-        stock = self.env['stock.quant'].browse(self._context.get('active_ids', []))
-        print(stock,'DDDDDDDDDDDDDDDDDD')
-        for rec in stock:
-            lines_list.append((0,0,{
-                'product_id':rec.product_id.id,
-                'name':rec.product_id.name,
-                'product_qty':rec.quantity,
-
-            }))
-        self.env['purchase.order'].create({'company_id':self.company_id.id,'name':'Stock Quant','partner_id':self.partner_id.id,'order_line':lines_list})
+# class NewModule(models.TransientModel):
+#     _name = 'wizard.po.open'
+#     company_id = fields.Many2one(comodel_name="res.company", string="Company", required=False, )
+#     partner_id = fields.Many2one(comodel_name="res.partner", string="", required=False, )
+#     def create_po(self):
+#         print('ffffffff')
+#         lines_list=[]
+#         # self.env['purchase.order'].create({'name':'Salah'})
+#         stock = self.env['stock.quant'].browse(self._context.get('active_ids', []))
+#         print(stock,'DDDDDDDDDDDDDDDDDD')
+#         for rec in stock:
+#             lines_list.append((0,0,{
+#                 'product_id':rec.product_id.id,
+#                 'name':rec.product_id.name,
+#                 'product_qty':rec.quantity,
+#
+#             }))
+#         self.env['purchase.order'].create({'company_id':self.company_id.id,'name':'Stock Quant','partner_id':self.partner_id.id,'order_line':lines_list})
 
 
 class stock_quant_inherit_wizard(models.Model):
