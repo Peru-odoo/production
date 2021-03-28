@@ -116,24 +116,24 @@
             <field name="domain">[('is_operation_related','=',1),('is_wh_user','=',1)]</field>
         </record>
 
-        <act_window
-                id="act_new_move_to_delivery_order_sub_menu_stock_quant_list"
-                name="Delivery Order"
-                binding_model="stock.quant"
+<!--        <act_window-->
+<!--                id="act_new_move_to_delivery_order_sub_menu_stock_quant_list"-->
+<!--                name="Delivery Order"-->
+<!--                binding_model="stock.quant"-->
 
-                res_model="wizard_stock_quant"
-                view_mode="form"
-                target="new"
-                binding_views="list"
-        />
-        <record id="act_new_move_to_delivery_order_sub_menu_stock_quant_list_record" model="ir.actions.act_window">
-            <field name="name">Delivery Order</field>
-            <field name="res_model">wizard_stock_quant</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="stock.view_stock_quant_tree"/>
-            <field name="context">{}</field>
+<!--                res_model="wizard_stock_quant"-->
+<!--                view_mode="form"-->
+<!--                target="new"-->
+<!--                binding_views="list"-->
+<!--        />-->
+<!--        <record id="act_new_move_to_delivery_order_sub_menu_stock_quant_list_record" model="ir.actions.act_window">-->
+<!--            <field name="name">Delivery Order</field>-->
+<!--            <field name="res_model">wizard_stock_quant</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="stock.view_stock_quant_tree"/>-->
+<!--            <field name="context">{}</field>-->
 
-        </record>-->
+<!--        </record>-->
         <!--<act_window-->
         <act_window
                 id="act_new_back_to_warehouse_sub_menu_stock_quant_list"
@@ -222,16 +222,16 @@
                 binding_views="list"
         />
 
-        <act_window
-                id="act_new_move_to_hanged_warehouse_sub_menu_stock_quant_list"
-                name="Move To Hanged Warehouse"
-                binding_model="stock.quant"
+<!--        <act_window-->
+<!--                id="act_new_move_to_hanged_warehouse_sub_menu_stock_quant_list"-->
+<!--                name="Move To Hanged Warehouse"-->
+<!--                binding_model="stock.quant"-->
 
-                res_model="wizard_move_to_hanged_warehouse"
-                view_mode="form"
-                target="new"
-                binding_views="list"
-        />
+<!--                res_model="wizard_move_to_hanged_warehouse"-->
+<!--                view_mode="form"-->
+<!--                target="new"-->
+<!--                binding_views="list"-->
+<!--        />-->
 
 
         <menuitem id="custom_menu_quants" name="Operation Quantities" parent="stock.menu_stock_warehouse_mgmt"
