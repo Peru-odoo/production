@@ -164,48 +164,48 @@
         <!--/>-->
         <!--========================-->
 
-<!--        <record id="form_views_wizard_po_open_wizard" model="ir.ui.view">-->
-<!--            <field name="name">form_views_wizard_po_open_wizard_name</field>-->
-<!--            <field name="model">wizard.po.open</field>-->
-<!--            <field name="arch" type="xml">-->
-<!--                <form string="PO">-->
-<!--                    <sheet>-->
-<!--                        <group>-->
-<!--                            <field name="company_id"/>-->
-<!--                            <field name="partner_id"/>-->
-<!--                        </group>-->
-<!--&lt;!&ndash;                        <button name="create_po123" type="object" string="Create OP"/>&ndash;&gt;-->
-<!--                    </sheet>-->
-<!--                    <footer>-->
-<!--                        <button name="create_po" type="object" class="btn-primary"-->
-<!--                                string="Create PO"/>-->
-<!--                        <button special="cancel" class="btn-primary" string="Cancel"/>-->
-<!--                    </footer>-->
-<!--                </form>-->
-<!--            </field>-->
-<!--        </record>-->
+        <record id="form_views_wizard_po_open_wizard" model="ir.ui.view">
+            <field name="name">form_views_wizard_po_open_wizard_name</field>
+            <field name="model">wizard.po.open</field>
+            <field name="arch" type="xml">
+                <form string="PO">
+                    <sheet>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="partner_id"/>
+                        </group>
+<!--                        <button name="create_po123" type="object" string="Create OP"/>-->
+                    </sheet>
+                    <footer>
+                        <button name="create_po" type="object" class="btn-primary"
+                                string="Create PO"/>
+                        <button special="cancel" class="btn-primary" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
 
 
-<!--        <record id="action_po_wizard_to_create" model="ir.actions.act_window">-->
-<!--            <field name="name">Crate PO</field>-->
-<!--            <field name="type">ir.actions.act_window</field>-->
-<!--            <field name="res_model">wizard.po.open</field>-->
-<!--            <field name="view_mode">form</field>-->
-<!--&lt;!&ndash;            <field name="view_id" ref="form_views_wizard_po_open_wizard"/>&ndash;&gt;-->
+        <record id="action_po_wizard_to_create" model="ir.actions.act_window">
+            <field name="name">Crate PO</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.po.open</field>
+            <field name="view_mode">form</field>
+<!--            <field name="view_id" ref="form_views_wizard_po_open_wizard"/>-->
 
-<!--            <field name="target">new</field>-->
-<!--        </record>-->
+            <field name="target">new</field>
+        </record>
 
-<!--        <record id="create_purchase_order_from_shipments" model="ir.actions.act_window">-->
-<!--            <field name="name">Create Purchase Order</field>-->
-<!--            <field name="type">ir.actions.act_window</field>-->
-<!--            <field name="res_model">wizard.po.open</field>-->
-<!--            <field name="view_mode">form</field>-->
-<!--            <field name="target">new</field>-->
-<!--            &lt;!&ndash;<field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>&ndash;&gt;-->
-<!--            <field name="binding_model_id" ref="stock.model_stock_quant"/>-->
-<!--            <field name="binding_view_types">list</field>-->
-<!--        </record>-->
+        <record id="create_purchase_order_from_shipments" model="ir.actions.act_window">
+            <field name="name">Create Purchase Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.po.open</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <!--<field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>-->
+            <field name="binding_model_id" ref="stock.model_stock_quant"/>
+            <field name="binding_view_types">list</field>
+        </record>
 
 
         <!--        =====================================-->
