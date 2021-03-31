@@ -113,8 +113,7 @@
                             <group>
                                 <field name="start_datetime" string="Date Start" required="True" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
                                 <field name="operation_type" invisible="False" required="1" domain="[('operation_product_line','=ilike','Recon')]" attrs="{'readonly':[('state', 'not in', ['draft'])]}" options="{'no_create': True, 'no_open': True}"/>
-
-
+                                <field name="consumed_items_file"/>
                             </group>
                             <group>
                                 <field name="op_type" required="1"/>
