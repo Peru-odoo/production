@@ -131,6 +131,8 @@
                         <button name="open_wizard_cancel_operation" type="object" string="Cancel"
                                 icon="fa-pencil" class="oe_highlight" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
                         <field name="state" widget="statusbar" attrs="{'invisible': [('state', 'not in', ['draft','done', 'cancel'])]}"/>
+                        <button string="Freeze Location" name="set_operation_location_freeze_from_operation" type="object"
+                            attrs="{'invisible':['|',('is_operation_freeze', '!=', False),('location_id','=',False)]}"/>
                         <field name="invoice_id" invisible="1"/>
                     </header>
                     <sheet>

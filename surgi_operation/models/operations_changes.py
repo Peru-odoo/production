@@ -491,7 +491,7 @@ class operation_operation(models.Model):
     STATE_SELECTION = [
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
-        # ('freeze', 'Freezed'),
+        ('freeze', 'Freezed'),
         ('done', 'Done'),
         ('cancel', 'Cancelled')
     ]
@@ -569,19 +569,19 @@ class operation_operation(models.Model):
                                             , ('gov', 'Government Form')],
                                         help="Used ot show picking type delivery type")
 
-    # def set_operation_location_freeze_from_operation(self):
-    #     #self.location_id.operation_location_freeze = True
-    #     return {
-    #         'name': 'You Will freeze Location with  these Products',
-    #         'view_mode': 'form',
-    #         'view_id': self.env.ref('surgi_inventory_changes.view_stock_quant_freeze', False).id,
-    #         'res_model': 'stock.location',
-    #         'type': 'ir.actions.act_window',
-    #         'target': 'new',
-    #         'res_id':self.location_id.id,
-    #         }
-    #     print("ss")
-    #
+    def set_operation_location_freeze_from_operation(self):
+        #self.location_id.operation_location_freeze = True
+        return {
+            'name': 'You Will freeze Location with  these Products',
+            'view_mode': 'form',
+            'view_id': self.env.ref('surgi_inventory_changes.view_stock_quant_freeze', False).id,
+            'res_model': 'stock.location',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'res_id':self.location_id.id,
+            }
+        print("ss")
+
     # @api.onchange('is_operation_freeze')
     # def _onchange_is_operation_freeze(self):
     #     self.write({
