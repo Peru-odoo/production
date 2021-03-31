@@ -161,6 +161,7 @@
                             </group>
                             <group>
                                 <field name="location_id" invisible="1" readonly="1" attrs="{'invisible':[('location_id','=',False)]}"/>
+                                <field name="is_operation_freeze" attrs="{'invisible':[('location_id','=',False)]}"/>
                             </group>
                             <group>
                                 <field name="customers_operations_location" invisible="1"/>
