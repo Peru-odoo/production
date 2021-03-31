@@ -555,7 +555,7 @@ class operation_operation(models.Model):
     surgeon_id_second_confirmation = fields.Many2one('res.partner', string="Surgeon", track_visibility='onchange')
     #returner_responsible = fields.Many2one(comodel_name='res.users', string="Returner", default=_get_currunt_loged_user,track_visibility='onchange')
     qunat = fields.One2many('hanged.stock.quant', 'operation_id', 'Quants')
-
+    consumed_items_file = fields.Binary(string='Consumed Items')
     # delivery_type = fields.Selection(string="Delivery Type", selection=[('delivery_exchange', 'Delivery Exchange'), ('sale_delivery', 'Sales Delivery'),('load_delivery','Loaded Delivery') ], required=False, )
     operation_delivery_type = fields.Selection(string="Delivery Type ", tracking=True,
                                         selection=[('normal', 'Normal')
