@@ -44,7 +44,7 @@
         'views/request.xml',
         # 'views/job_analysis.xml',
         # 'views/job_analysis_wizard.xml',
-#         'views/request_wizard.xml',
+        'views/request_wizard.xml',
         # 'views/job_analysis_approved.xml',
         'security/ir.model.access.csv',
 
