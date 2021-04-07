@@ -97,7 +97,7 @@ console.log("6");
                 var stock_picking = rpc.query({
                     model:'stock.biking.faked.item',
                     method: 'savescanned_items',
-                    args: [self.stock_data.active_id, self.stock_data.newitems, self.stock_data.updateditems],
+                    args: [self.stock_data.active_id, self.stock_data.newitems, self.stock_data.updateditems,self.stock_data.allitems,self.stock_data.tquantity],
                 }).then(function (server_ids) {
 
                     self.do_action({
@@ -167,7 +167,7 @@ console.log("6");
 
             },
             checkserial:function(){
-            scan_box=$("#scan_box").val();
+            var scan_box=$("#scan_box").val();
                     if(scan_box==""){
                     $("#scan_box").val();
                     $("#scan_box").focus();
