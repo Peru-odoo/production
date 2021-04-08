@@ -28,8 +28,8 @@
                     <header>
                         <button name="button_done" type="object" string="Confirm" class="oe_highlight"
                                 attrs="{'invisible':[('state','!=','draft')]}"/>
-                        <button name="button_cancel" type="object" string="Set To Draft" class="oe_highlight"
-                                attrs="{'invisible':[('state','!=','confirm')]}"/>
+<!--                        <button name="button_cancel" type="object" string="Set To Draft" class="oe_highlight"-->
+<!--                                attrs="{'invisible':[('state','!=','confirm')]}"/>-->
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
@@ -66,7 +66,7 @@
                         </group>
                         <notebook>
                             <page string="Questions">
-                                <field name="questions_ids">
+                                <field name="questions_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                     <tree editable="bottom" create="false">
                                         <field name="question" readonly="1"/>
                                         <field name="answer"/>

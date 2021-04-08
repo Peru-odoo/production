@@ -8,12 +8,12 @@
             <field name="arch" type="xml">
                 <form string="Job Analysis Approved">
                     <header>
-                        <button name="button_hr_approval" type="object" string="HR Approval" class="oe_highlight"
-                                attrs="{'invisible':[('state','!=','hr_approval')]}" confirm="Are you sure you want to do this?"/>
-                        <button name="button_return_manger_approval" type="object" string="Return To Manager" class="oe_highlight"
-                                attrs="{'invisible':[('state','!=','hr_approval')]}"/>
-                        <button name="button_return_manger_approval" type="object" string="reset To Manager" class="oe_highlight"
-                                attrs="{'invisible':[('state','!=','done')]}"/>
+<!--                        <button name="button_hr_approval" type="object" string="HR Approval" class="oe_highlight"-->
+<!--                                attrs="{'invisible':[('state','!=','hr_approval')]}" confirm="Are you sure you want to do this?"/>-->
+<!--                        <button name="button_return_manger_approval" type="object" string="Return To Manager" class="oe_highlight"-->
+<!--                                attrs="{'invisible':[('state','!=','hr_approval')]}"/>-->
+<!--                        <button name="button_return_manger_approval" type="object" string="reset To Manager" class="oe_highlight"-->
+<!--                                attrs="{'invisible':[('state','!=','done')]}"/>-->
                         <button name="button_manger_approval" type="object" string="Manager Approval" class="oe_highlight"
                                 attrs="{'invisible':[('state','!=','manager-approval')]}" confirm="Are you sure you want to do this?"/>
                         <field name="state" widget="statusbar"/>
@@ -51,7 +51,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">job.analysis.approved</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('job_id.department_id.manager_id.user_id','=',uid)]</field>
+            <field name="domain">['|',('job_id.department_id.manager_id.user_id','=',uid),('job_id.section_id.manager_id.user_id','=',uid)]</field>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
                 <!-- Add Text Here -->
@@ -63,7 +63,7 @@
 
 
         <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="menu_action_job_analysis_categ" name="Job Analysis Approved Manager"
+        <menuitem id="menu_action_job_analysis_categ_manager" name="Job Analysis Approved Manager"
                   parent="surgi_job_analysis_menuitem"
                   action="action_view_job_approved_manager" sequence="12"
                   groups="surgi_job_analysis.manager_group_job_analysis"
