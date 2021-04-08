@@ -7,6 +7,8 @@ class HRManagerEvaluation(models.Model):
 
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done','Done') ],default='draft')
     employee_relation_id = fields.Many2one(comodel_name="evaluation.evaluation", string="Employee", required=False, )
+    employee_parent_id = fields.Many2one(comodel_name="hr.employee", related='employee_id.parent_id', readonly=True,
+                                         store=True)
 
     employee_id = fields.Many2one(comodel_name="hr.employee", string="Employee", required=False, )
     performance= fields.Selection(string="Performance",
@@ -29,7 +31,7 @@ class HRManagerEvaluation(models.Model):
     termination_date = fields.Date(string="Termination Date", required=False, )
 
     job_title = fields.Char(string="Job Title",related='employee_id.job_title' )
-    department_id = fields.Many2one(comodel_name="hr.department", string="Department",related='employee_id.department_id' )
+    department_id = fields.Many2one(comodel_name="hr.department", string="Department",related='employee_id.department_id',store=True)
     section_id = fields.Many2one(comodel_name="hr.department", string="Section",related='employee_id.section_id'  )
     registration_number = fields.Char(string="Registration Number of the Employee",
                                       related='employee_id.registration_number')
