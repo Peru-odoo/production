@@ -31,7 +31,7 @@ class HRManagerEvaluation(models.Model):
     termination_date = fields.Date(string="Termination Date", required=False, )
 
     job_title = fields.Char(string="Job Title",related='employee_id.job_title' )
-    department_id = fields.Many2one(comodel_name="hr.department", string="Department",related='employee_id.department_id',store=True)
+    department_id = fields.Many2one(comodel_name="hr.department", related='employee_id.department_id', readonly=True, store=True)
     section_id = fields.Many2one(comodel_name="hr.department", string="Section",related='employee_id.section_id'  )
     registration_number = fields.Char(string="Registration Number of the Employee",
                                       related='employee_id.registration_number')
