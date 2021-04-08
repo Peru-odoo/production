@@ -7,10 +7,10 @@ class HRManagerEvaluation(models.Model):
 
     state = fields.Selection(selection=[('draft', 'Draft'), ('confirm', 'Confirm'),('done','Done') ],default='draft')
     employee_relation_id = fields.Many2one(comodel_name="evaluation.evaluation", string="Employee", required=False, )
-    employee_parent_id = fields.Many2one(comodel_name="hr.employee", related='employee_id.parent_id', readonly=True,
-                                         store=True)
 
     employee_id = fields.Many2one(comodel_name="hr.employee", string="Employee", required=False, )
+    employee_parent_id = fields.Many2one(comodel_name="hr.employee", related='employee_id.parent_id', readonly=True,store=True)
+
     performance= fields.Selection(string="Performance",
                                   selection=[('Exceed', 'Exceed'),
                                              ('Meet', 'Meet'),
