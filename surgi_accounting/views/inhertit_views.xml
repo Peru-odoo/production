@@ -45,6 +45,18 @@
             <field name="model">account.move</field>
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='button_draft']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('close_edit','=',True)]}</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='button_draft']" position="after">
+                    <button name="button_reviewed" type="object" string="IS Reviewed"
+                            groups="surgi_analytic_account.group_is_reviewed"/>
+                    <button name="button_double_reviewed" type="object" string="Double Reviewed"
+                            groups="surgi_analytic_account.group_is_reviewed"/>
+                    <field name="close_edit" invisible="1"/>
+                    <field name="close_edit22" invisible="1"/>
+                </xpath>
 
                 <xpath expr="//page[@name='other_info']" position="after">
                     <page string="Payment Data">

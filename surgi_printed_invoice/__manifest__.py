@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "surgi_analytic_account",
+    'name': "surgi_printed_invoice",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,15 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','crm','account_accountant','sale',
-                'account_budget','bi_picking_analytic','surgi_inventory_changes'],
+    'depends': ['base','account','surgi_invoice_print'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
-        'views/stock_picking.xml',
+        # 'security/ir.model.access.csv',
+
+        'views/invoice.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

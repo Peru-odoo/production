@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="form_view_hr_expense_hr_expense" model="ir.ui.view">
+            <field name="name">name.hr.expense.inherit.form</field>
+            <field name="model">hr.expense</field>
+            <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="is_sales" invisible="1"/>
+                    <field name="sales_id" attrs="{'required':[('is_sales','=',True)]}"/>
+                    <field name="sales_state"/>
+                    <field name="is_expenses_ids" invisible="1"/>
+                    <field name="partner_surgeon_id"/>
+                    <field name="event_id"/>
+
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Expenses">
+                            <field name="expenses_lines_ids">
+                                <tree editable="bottom">
+                                    <field name="expensescc_id" readonly="1" force_save="1"/>
+                                    <field name="date" readonly="1" force_save="1"/>
+                                    <field name="total_amount" readonly="1" sum="total_amount" force_save="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

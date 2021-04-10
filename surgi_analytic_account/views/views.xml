@@ -1,6 +1,109 @@
 <odoo>
     <data>
 
+        <record id="view_account_move_line_inherit_search" model="ir.ui.view">
+            <field name="name">view.account.move.line.inherit.search</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="check_number_payment"/>
+                    <field name="date_payment"/>
+                    <field name="collection_receipt_number"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="tree_view_account_move_line" model="ir.ui.view">
+            <field name="name">name.account.move.line.inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="check_number_payment" optional="hide"/>
+                    <field name="date_payment" optional="hide"/>
+                    <field name="collection_receipt_number" optional="hide"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="form_view_account_move_line_id__inherit" model="ir.ui.view">
+            <field name="name">name.account.move.line.form.inherit</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payment Info">
+                        <group col="4">
+                            <field name="check_number_payment" force_save="1"/>
+                            <field name="date_payment" force_save="1"/>
+                            <field name="collection_receipt_number" force_save="1"/>
+                            <field name="date_check_number" invisible="1"/>
+                        </group>
+
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--        &lt;!&ndash; Inherit Form View to Modify it &ndash;&gt;-->
+        <!--        <record id="form_view_account_move_inherit" model="ir.ui.view">-->
+        <!--            <field name="name">name.account.move.inherit</field>-->
+        <!--            <field name="model">account.move</field>-->
+        <!--            <field name="inherit_id" ref="surgi_invoice_print.invoice_move_print"/>-->
+        <!--            <field name="arch" type="xml">-->
+
+        <!--                <xpath expr="//page[@id='other_tab']" position="inside">-->
+        <!--                    <field name="close_edit"/>-->
+        <!--                </xpath>-->
+
+        <!--                 <xpath expr="//field[@name='printinvoicetoline']//tree" position="attributes">-->
+        <!--                    <attribute name="attrs">{'readonly': [('close_edit','=',True)]}</attribute>-->
+        <!--                </xpath>-->
+
+        <!--            </field>-->
+        <!--        </record>-->
+
+        <record id="group_is_reviewed" model="res.groups">
+            <field name="name">IS Reviewed</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="view_account_move_inherit_search" model="ir.ui.view">
+            <field name="name">view.account.move.inherit.search</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="check_number_payment"/>
+                    <field name="date_payment"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="form_view_account_payment_inherit" model="ir.ui.view">
+            <field name="name">name.account.payment.inherit.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="date_check_number" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
         <!-- Inherit Form View to Modify it -->
         <record id="account_view_move_form_edit" model="ir.ui.view">
             <field name="name">account_view_move_form_edit_name</field>
@@ -8,14 +111,26 @@
             <field name="inherit_id" ref="account.view_move_form"/>
             <field name="arch" type="xml">
 
-<!--                <xpath expr="//field[@name='invoice_date']" position="after">-->
-<!--                    <field name="printed_num" readonly="1"/>-->
-<!--                </xpath>-->
 
-<!--                <xpath expr="//field[@name='state']" position="replace">-->
-<!--                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,printed"/>-->
 
-<!--                </xpath>-->
+
+
+
+
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payment Info">
+                        <group col="4">
+                            <field name="check_number_payment" readonly="1"/>
+                            <field name="date_payment" readonly="1"/>
+                            <field name="collection_receipt_number" readonly="1"/>
+                            <field name="date_check_number" invisible="1"/>
+                        </group>
+
+                    </page>
+                </xpath>
+
+
+
 
                 <xpath expr="//button[@name='button_draft']" position="after">
                     <field name="is_check" invisible="1"/>
@@ -55,6 +170,20 @@
                 </xpath>
 
             </field>
+        </record>
+
+
+        <record id="ir_cron_account_move_line_date" model="ir.cron">
+            <field name="name">Account Move Line</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="state">code</field>
+            <field name="code">model.cron_all_account_move()</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id"
+                   ref="account.model_account_move_line"/>
         </record>
 
     </data>

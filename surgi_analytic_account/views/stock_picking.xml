@@ -8,20 +8,20 @@
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
 
-<!--                <xpath expr="//field[@name='origin']" position="after">-->
-<!--                    <field name="user_sales_id"/>-->
-<!--                </xpath>-->
+                <!--                <xpath expr="//field[@name='origin']" position="after">-->
+                <!--                    <field name="user_sales_id"/>-->
+                <!--                </xpath>-->
 
-<!--                <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_id']" position="before">-->
-<!--                    <field name="analytic_account"/>-->
-<!--&lt;!&ndash;                    <field name="analytic_account_id"/>&ndash;&gt;-->
-<!--                </xpath>-->
+                <!--                <xpath expr="//field[@name='move_ids_without_package']//tree//field[@name='product_id']" position="before">-->
+                <!--                    <field name="analytic_account"/>-->
+                <!--&lt;!&ndash;                    <field name="analytic_account_id"/>&ndash;&gt;-->
+                <!--                </xpath>-->
 
 
                 <xpath expr="//button[@name='button_validate']" position="after">
                     <field name="is_check" invisible="1"/>
-                    <button name="compute_analytic_account" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}"
-                            type="object" class="oe_highlight" icon="fa-check-square" string="Check.A.C">
+                    <button name="compute_analytic_account" type="object" class="oe_highlight"
+                            icon="fa-check-square" string="Check.A.C">
                         <field name="is_check" widget="boolean_button" options='{"terminology": {
         "string_true": "Blacklist",
         "hover_true": "Blacklist",

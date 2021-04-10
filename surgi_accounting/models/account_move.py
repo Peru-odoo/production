@@ -28,6 +28,31 @@ class AccountInvoiceInherit(models.Model):
     date_reconcile = fields.Date(string="Date", )#compute='_compute_payments_widget_reconciled_info'
     payment_name = fields.Char(string="Payment Name",)#compute='_compute_payments_widget_reconciled_info'
 
+    is_reviewed = fields.Boolean(string="IS Reviewed", )
+    close_edit = fields.Boolean(string="", compute='compute_close_edit')
+    close_edit22 = fields.Char(string="", )
+
+    @api.depends('is_reviewed')
+    def compute_close_edit(self):
+        for rec in self:
+            rec.close_edit = False
+            if rec.is_reviewed == True and not self.env.user.has_group('surgi_analytic_account.group_is_reviewed'):
+                rec.close_edit = True
+                rec.close_edit22 = '1'
+
+    def button_reviewed(self):
+        self.is_reviewed = True
+
+    def button_double_reviewed(self):
+        self.is_reviewed = False
+
+
+
+
+
+
+
+
     # @api.depends('type', 'line_ids.amount_residual')
     # def _compute_payments_widget_reconciled_info(self):
     #     self.date_reconcile=False
