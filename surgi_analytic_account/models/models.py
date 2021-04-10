@@ -214,29 +214,67 @@ class StockPicking(models.Model):
         for line in self.move_ids_without_package:
             part = False
 
-            if self.partner_id.analytic_account_id:
-                line.analytic_account_id = self.partner_id.analytic_account_id.id
+            if self.partner_id.cost_center_ids:
+                for cost in self.partner_id.cost_center_ids:
+                    if line.product_id.product_id.id ==cost.product_line_id.id:
+                        line.analytic_account_id =cost.analytic_account_id.id
+                    else:
+                        for rec in analytic_account_obj:
+                            if line.product_id.product_id.id == rec.product_id.id:
+                                # part = True
+                                if rec.user_id.id == self.invoice_user_id.id:
+                                    line.analytic_account_id = rec.id
+                                    break
+                                elif rec.salesteam_id == self.team_id:
+                                    line.analytic_account_id = rec.id
+                                    break
+                                elif self.invoice_user_id in rec.user_add_ids:
+                                    line.analytic_account_id = rec.id
+                                    break
+                                elif rec.undefined_sales_person == True:
+                                    line.analytic_account_id = rec.id
+                                    break
+                                # else:
+                                #     line.analytic_account_id = False
+                                #     break
+                            # if part == False:
+                            #     line.analytic_account_id = False
+                            else:
+                                line.analytic_account_id = False
             else:
                 for rec in analytic_account_obj:
-                    if line.product_id.product_id == rec.product_id:
+                    if line.product_id.product_id.id == rec.product_id.id:
                         # part = True
-                        if rec.user_id == self.user_sales_id:
+                        if rec.user_id.id == self.invoice_user_id.id:
                             line.analytic_account_id = rec.id
                             break
-
-                        elif self.user_sales_id in rec.user_add_ids:
+                        elif rec.salesteam_id == self.team_id:
                             line.analytic_account_id = rec.id
                             break
-
+                        elif self.invoice_user_id in rec.user_add_ids:
+                            line.analytic_account_id = rec.id
+                            break
                         elif rec.undefined_sales_person == True:
                             line.analytic_account_id = rec.id
                             break
-                        else:
-                            line.analytic_account_id = False
-                            break
+                        # else:
+                        #     line.analytic_account_id = False
+                        #     break
+                        # if part == False:
+                        #     line.analytic_account_id = False
                     else:
                         line.analytic_account_id = False
-                        # break
+                    #     if rec.user_id.id == self.invoice_user_id.id:
+                    #         line.analytic_account_id = rec.id
+                    #     elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                    #         line.analytic_account_id = rec.id
+                    #     elif rec.undefined_sales_person == True:
+                    #         line.analytic_account_id = rec.id
+                    #     else:
+                    #         line.analytic_account_id = False
+                    # if part == False:
+                    #     line.analytic_account_id = False
+
 
 
 # class StockMove(models.Model):
