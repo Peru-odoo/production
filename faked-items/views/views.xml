@@ -74,18 +74,25 @@
            <!-- <field name="params" eval="{'id':this.id}" />-->
         </record>
 
+
 <record id="surgi_product_template_form_inherit" model="ir.ui.view">
             <field name="name">surgitech product</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
-    <field name="options" position="inside">
-        <div>
-        <field name="isfakedproduct"/>
-        </div>
-    </field>
 
-    </field></record>
+                <div name="options" position="inside">
+                    <div>
+                        <field name="isfakedproduct"/>
+                        <label for="is_medical" string="Is Faked Item"/>
+                    </div>
+
+
+                </div>
+
+            </field>
+        </record>
+
 
 
 

@@ -36,6 +36,19 @@ class stock_biking_inherts(models.Model):
     _inherit="stock.picking"
     fakeditem=fields.One2many(comodel_name="stock.biking.faked.item",inverse_name="stock_bikeid")
     nofakeditems=fields.Integer(string="No. Faked Items")
+    # remove this function if error happen
+    def setoperationlocationfreeze(self):
+        itesmq=0
+        for i in self.fakeditem:
+            itesmq+=i.quantity
+            if not i.solved:
+                raise ValidationError("u Need to Solve All Faked Product")
+            if itesmq != self.nofakeditems:
+                raise ValidationError("Please Add All Faked Items And Solve it Frist")
+
+            return super("stock_biking_inherts").setoperationlocationfreeze()
+
+        pass
     pass
 
 
@@ -92,4 +105,32 @@ class stock_biking_faked_item(models.Model):
                 self.env['stock.biking.faked.item'].create(i)
             pass
         pass
+        productfake=self.env['product.product'].search([('isfakedproduct', '=',True)])
+        if(productfake):
+            fakeproduct=productfake[0]
+        else:
+            fakeproduct=self.env['product.template'].create({"name":"Faked Product","type":"product","isfakedproduct":True})
+        x=True
+        for i in stockpick.move_line_ids:
+            if i.product_id.id == fakeproduct.id:
+                i.product_uom_qty=totalquantity
+                x=False
+        if x:
+            move_id={
+                "name":fakeproduct.name,
+                "company_id":stockpick.company_id.id,
+                "product_id":fakeproduct.id,
+                #"product_qty":totalquantity,
+                "product_uom_qty":totalquantity,
+                "location_id":stockpick.location_id.id,
+                "location_dest_id":stockpick.location_dest_id.id,
+                "picking_id":stockpick.id,
+                "partner_id":stockpick.partner_id.id
+            }
+            moveids=self.env["stock.move"].create(move_id)
+            if moveids:
+                stockpick.move_line_ids.create({'product_id':fakeproduct.id,'move_id':moveids.id,'product_uom_qty':totalquantity,'picking_id':stockpick.id,'company_id':stockpick.company_id,"product_uom_id":1,'location_id':stockpick.location_id.id,'location_dest_id':stockpick.location_dest_id.id})
+            else:
+                raise ValidationError("move not created")
+        print("x")
     pass
