@@ -9,7 +9,7 @@ Change Invoice Template
     """,
     'depends': ['account','sale'],
     'data': [
-        'views/template.xml'
+        'views/template.xml',
         'views/invoice.xml',
 
     ],
