@@ -12,12 +12,10 @@
                 <xpath expr="//field[@name='invoice_date']" position="before">
                     <field name="is_printed" readonly="1"/>
                     <field name="printed_num" readonly="1"/>
-
                     <field name="is_surgi_printed" readonly="1"/>
 
                 </xpath>
                 <xpath expr="//field[@name='invoice_date']" position="after">
-                    <field name="is_reviewed" groups="surgi_analytic_account.group_is_reviewed"/>
                     <field name="is_equal_total"/>
                     <field name="is_equal_total2" invisible="1"/>
                 </xpath>
