@@ -6,6 +6,7 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
+
 class payment_register(models.TransientModel):
     _inherit = 'account.payment.register'
 
@@ -67,13 +68,12 @@ class payment_register(models.TransientModel):
             })
         return res
 
+
     def _create_payment_vals_from_wizard(self):
         res =super(payment_register, self)._create_payment_vals_from_wizard()
         write_off_vals_lines = []
 
-        print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
         if not self.currency_id.is_zero(self.payment_difference) and (self.post_diff_acc == 'multi' or self.post_diff_acc == 'single'):
-            # print("11111111111111111")
             write_off_vals = []
             for woff_payment in self.writeoff_multi_acc_ids:
                 write_off_vals.append({
@@ -95,25 +95,57 @@ class payment_register(models.TransientModel):
 
 
         if self.post_diff_acc == 'single' or self.post_diff_acc == 'multi':
-            print("11111111111111111KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+            diff_amount=0.0
+            account_move_record = self.env['account.move'].browse(self._context.get('active_ids', []))
+            for rec in account_move_record:
+                for line in self.writeoff_multi_acc_ids:
+                    if line.distribute_by_weight == True:
 
-            for woff in self.writeoff_multi_acc_ids:
-                write_off_vals_lines.append((0, 0, {
-                        'name': woff.name,
-                        'amount': woff.amount_payment or 0.0,
-                        'writeoff_account_id': woff.writeoff_account_id.id,
-                        'currency_id': woff.currency_id.id
-                    }))
+                        write_off_vals_lines.append((0, 0, {'writeoff_account_id': line.writeoff_account_id.id,
+                                                      'name': line.name or '',
+                                                      'amt_percent': line.amt_percent or '',
+                                                      'invoice_name': rec.name or '',
+                                                      'invoice_total_amount': rec.amount_total or '',
+                                                      'remain_total_amount': rec.amount_total-((rec.amount_total / float(
+                                                          self.amount_pay_total)) * line.amount_payment) or '',
+                                                      'amount': (rec.amount_total / float(
+                                                          self.amount_pay_total)) * line.amount_payment or '',
+                                                      'currency_id': line.currency_id and line.currency_id.id or ''}))
 
+                        diff_amount += (rec.amount_total / float(self.amount_pay_total) * line.amount_payment)
+
+            amount = self.amount
+            if amount > diff_amount:
+                amount = self.amount - diff_amount
+                        # write_off_vals_lines.append((0, 0, {
+                        #         'name': woff.name,
+                        #         'amount': woff.amount_payment or 0.0,
+                        #         'writeoff_account_id': woff.writeoff_account_id.id,
+                        #         'currency_id': woff.currency_id.id
+                        #     }))
+            for line in self.writeoff_multi_acc_ids:
+                if not line.distribute_by_weight:
+                    write_off_vals_lines.append((0, 0, {
+                            'name': line.name,
+                            'amount': line.amount_payment or 0.0,
+                            'writeoff_account_id': line.writeoff_account_id.id,
+                            'currency_id': line.currency_id.id
+                        }))
 
             # res['writeoff_multi_acc_ids'] = write_off_vals_lines
-            res.update({'writeoff_multi_acc_ids':write_off_vals_lines})
-            print(res['writeoff_multi_acc_ids'],'HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+            res.update({'writeoff_multi_acc_ids':write_off_vals_lines,
+                        # 'amount':amount,
+                        'check_number':self.check_number,
+                        'date_due':self.date_due,
+                        'collection_receipt_number':self.collection_receipt_number,
+                        'collection_rep':self.collection_rep.id,
+                        'collection_rep_name':self.collection_rep_name,
+                        })
         return res
+
     def _create_payments(self):
         self.ensure_one()
         batches = self._get_batches()
-        # print("111111111111111111111111111111111111111111111111")
         self._create_payment_vals_from_wizard()
         to_reconcile = []
         if self.can_edit_wizard and (len(batches[0]['lines']) == 1 or self.group_payment):
@@ -121,7 +153,6 @@ class payment_register(models.TransientModel):
             payment_vals_list = [payment_vals]
             to_reconcile.append(batches[0]['lines'])
         else:
-            # print("222222222222222222222222222222222222")
             # self._create_payment_vals_from_wizard()
 
             # Don't group payments: Create one batch per move.
@@ -139,6 +170,7 @@ class payment_register(models.TransientModel):
             for batch_result in batches:
                 payment_vals_list.append(self._create_payment_vals_from_batch(batch_result))
                 to_reconcile.append(batch_result['lines'])
+        print("------------------------------------------------")
 
         payments = self.env['account.payment'].create(payment_vals_list)
         for pay in payments:
@@ -148,7 +180,6 @@ class payment_register(models.TransientModel):
             pay.collection_rep = self.collection_rep
             pay.collection_rep_name = self.collection_rep_name
 
-            print(pay.check_number, self.check_number, '888888888888888888888888888888888888888')
         # payments.action_post()
         payments.state='posted'
 
@@ -175,6 +206,40 @@ class account_payment(models.Model):
     post_diff_acc = fields.Selection([('single', 'Single Account'), ('multi', 'Multiple Accounts')], default='single',
                                      string='Post Difference In To')
     writeoff_multi_acc_ids = fields.One2many('writeoff.accounts', 'payment_id', string='Write Off Accounts')
+
+    invoice_payment_ids = fields.One2many(comodel_name="invoice.payment.distribute",
+                                          inverse_name="payment_id",)
+    is_check_pay = fields.Boolean(string="",compute='compute_invoice_payment_ids'  )
+    @api.depends('writeoff_multi_acc_ids')
+    def compute_invoice_payment_ids(self):
+        for rec in self:
+            rec.is_check_pay=False
+            rec.invoice_payment_ids=False
+            total_invoice=0.0
+            # total_payment=0.0
+            lines_list=[(5,0,0)]
+            name=''
+            for invoice in self.env['account.move'].search([]):
+                rec.is_check_pay = False
+                total_payment=0.0
+                for line in rec.writeoff_multi_acc_ids:
+                    if invoice.name==line.invoice_name:
+                        rec.is_check_pay=True
+                        total_payment+=line.amount
+                        name=line.invoice_name
+                        total_invoice = invoice.amount_total
+                if rec.is_check_pay==True:
+                    lines_list.append((0,0,{
+                        'name':name,
+                        'amount_total':invoice.amount_total,
+                        'total_amount':total_invoice-total_payment,
+                        'payment_amount':total_payment,
+                    }))
+            print(lines_list,'0000000000000000000000000000000000000000000000000000000000000000000')
+            rec.invoice_payment_ids=lines_list
+            # rec.update({'invoice_payment_ids':lines_list})
+
+
 
     def _synchronize_from_moves(self, changed_fields):
         ''' Update the account.payment regarding its related account.move.
@@ -266,7 +331,10 @@ class account_payment(models.Model):
     def onchange_writeoff_multi_accounts(self):
         if self.writeoff_multi_acc_ids:
             diff_amount = sum([line.amount for line in self.writeoff_multi_acc_ids])
-            self.amount = self.invoice_ids and self.invoice_ids[0].amount_residual - diff_amount
+            if self.reversal_move_id:
+                self.amount = self.invoice_ids and self.invoice_ids[0].amount_residual - diff_amount
+            else:
+                pass
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -296,8 +364,8 @@ class account_payment(models.Model):
         return super(account_payment, self).post()
 
     def _prepare_move_line_default_vals(self, write_off_line_vals=None):
-        print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
         self.ensure_one()
+        print("TTTTTTTTTTTTTTT***********************************************")
         write_off_line_vals = write_off_line_vals or {}
 
         if not self.journal_id.payment_debit_account_id or not self.journal_id.payment_credit_account_id:
@@ -378,24 +446,50 @@ class account_payment(models.Model):
             },
         ]
         if write_off_balance:
+            print("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",woff_params)
             # Write-off line.
             if woff_params:
-                for rec in woff_params:
-                    write_off_balance = self.currency_id._convert(rec.get('amount'), self.company_id.currency_id,
+                for rec in self.writeoff_multi_acc_ids:
+                    write_off_balance = self.currency_id._convert(rec.amount, self.company_id.currency_id,
                                                                   self.company_id, self.date)
-                    write_off_amount_currency = rec.get('amount')
+                    write_off_amount_currency = rec.amount
                     if self.payment_type == 'inbound':
                         # Receive money.
                         write_off_balance *= -1
                     line_vals_list.append({
-                        'name': rec.get('name') or default_line_name,
+                        'name': rec.name or default_line_name,
                         'amount_currency': -write_off_amount_currency,
                         'currency_id': currency_id,
                         'debit': write_off_balance < 0.0 and -write_off_balance or 0.0,
                         'credit': write_off_balance > 0.0 and write_off_balance or 0.0,
                         'partner_id': self.partner_id.id,
-                        'account_id': rec.get('account_id'),
+                        'account_id': rec.writeoff_account_id.id,
                     })
+        else:
+            total_write_amount=0
+            if self.writeoff_multi_acc_ids:
+                for rec in self.writeoff_multi_acc_ids:
+                    total_write_amount+=rec.amount
+                    write_off_balance = self.currency_id._convert(rec.amount, self.company_id.currency_id,
+                                                                  self.company_id, self.date)
+                    write_off_amount_currency = rec.amount
+                    # if self.payment_type == 'inbound':
+                    #     # Receive money.
+                    #     write_off_balance *= -1
+                    line_vals_list.append({
+                        'name': rec.name or default_line_name,
+                        'amount_currency': -write_off_amount_currency,
+                        'currency_id': currency_id,
+                        'credit': write_off_balance < 0.0 and -write_off_balance or 0.0,
+                        'debit': write_off_balance > 0.0 and write_off_balance or 0.0,
+                        'partner_id': self.partner_id.id,
+                        'account_id': rec.writeoff_account_id.id,
+                    })
+                for val in line_vals_list:
+                    if val['credit']>0:
+
+                        val['credit']+=total_write_amount
+
         return line_vals_list
 
 
@@ -408,6 +502,9 @@ class writeoff_accounts(models.Model):
                                           domain=[('deprecated', '=', False)], copy=False, required="1")
     name = fields.Char('Description')
     amt_percent = fields.Float(string='Amount(%)', digits=(16, 2))
+    invoice_name = fields.Char(string="Invoice", )
+    invoice_total_amount = fields.Float(string="Total Amount",  required=False, )
+    remain_total_amount = fields.Float(string="Total",  required=False, )
     amount = fields.Monetary(string='Payment Amount', required=True)
     currency_id = fields.Many2one('res.currency', string='Currency', required=True,
                                   default=lambda self: self.env.user.company_id.currency_id)
@@ -432,9 +529,20 @@ class RegisterWriteoffMulti(models.TransientModel):
     currency_id = fields.Many2one('res.currency', string='Currency', required=True,
                                   default=lambda self: self.env.user.company_id.currency_id)
     register_id = fields.Many2one('account.payment.register', string='Register Record')
+    distribute_by_weight = fields.Boolean(string="Distribute",  )
 
     @api.onchange('amt_percent')
     def _onchange_amt_percent(self):
         if self.amt_percent and self.amt_percent > 0:
             if self.register_id.amount_pay_total:
                 self.amount_payment = self.register_id.amount_pay_total * self.amt_percent / 100
+
+class InvoicePaymentDistribute(models.Model):
+    _name = 'invoice.payment.distribute'
+    _rec_name = 'name'
+
+    name = fields.Char()
+    amount_total = fields.Float(string="Invoice Total",  required=False, )
+    payment_amount = fields.Float(string="Payment Amount",  required=False, )
+    total_amount = fields.Float(string="Total",  required=False, )
+    payment_id = fields.Many2one(comodel_name="account.payment", string="", required=False, )
