@@ -142,31 +142,59 @@ class AccountMove(models.Model):
                     else:
                         for rec in analytic_account_obj:
                             if line.product_id.product_id.id == rec.product_id.id:
-                                part = True
+                                # part = True
                                 if rec.user_id.id == self.invoice_user_id.id:
                                     line.analytic_account_id = rec.id
-                                elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                                    break
+                                elif rec.salesteam_id == self.team_id:
                                     line.analytic_account_id = rec.id
+                                    break
+                                elif self.invoice_user_id in rec.user_add_ids:
+                                    line.analytic_account_id = rec.id
+                                    break
                                 elif rec.undefined_sales_person == True:
                                     line.analytic_account_id = rec.id
-                                else:
-                                    line.analytic_account_id = False
-                            if part == False:
+                                    break
+                                # else:
+                                #     line.analytic_account_id = False
+                                #     break
+                            # if part == False:
+                            #     line.analytic_account_id = False
+                            else:
                                 line.analytic_account_id = False
             else:
                 for rec in analytic_account_obj:
                     if line.product_id.product_id.id == rec.product_id.id:
-                        part = True
+                        # part = True
                         if rec.user_id.id == self.invoice_user_id.id:
                             line.analytic_account_id = rec.id
-                        elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                            break
+                        elif rec.salesteam_id == self.team_id:
                             line.analytic_account_id = rec.id
+                            break
+                        elif self.invoice_user_id in rec.user_add_ids:
+                            line.analytic_account_id = rec.id
+                            break
                         elif rec.undefined_sales_person == True:
                             line.analytic_account_id = rec.id
-                        else:
-                            line.analytic_account_id = False
-                    if part == False:
+                            break
+                        # else:
+                        #     line.analytic_account_id = False
+                        #     break
+                        # if part == False:
+                        #     line.analytic_account_id = False
+                    else:
                         line.analytic_account_id = False
+                    #     if rec.user_id.id == self.invoice_user_id.id:
+                    #         line.analytic_account_id = rec.id
+                    #     elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                    #         line.analytic_account_id = rec.id
+                    #     elif rec.undefined_sales_person == True:
+                    #         line.analytic_account_id = rec.id
+                    #     else:
+                    #         line.analytic_account_id = False
+                    # if part == False:
+                    #     line.analytic_account_id = False
 
 
 
