@@ -122,81 +122,59 @@ class AccountMove(models.Model):
                     #     line.collection_receipt_number = pay.collection_receipt_number
                     #     line.date_payment = pay.date_due
 
-
-
-
-
-
-
-    # @api.onchange('is_check')
     def compute_analytic_account(self):
 
-        analytic_account_obj=self.env['account.analytic.account'].search([])
-        for line in self.invoice_line_ids:
-            part=False
+            analytic_account_obj = self.env['account.analytic.account'].search([])
+            lines_list = []
+            part2 = False
+            for line in self.invoice_line_ids:
 
-            if self.partner_id.cost_center_ids:
-                for cost in self.partner_id.cost_center_ids:
-                    if line.product_id.product_id.id ==cost.product_line_id.id:
-                        line.analytic_account_id =cost.analytic_account_id.id
-                    else:
+                if self.partner_id.cost_center_ids:
+
+                    for cost in self.partner_id.cost_center_ids:
+                        print(line.product_id.product_id.id, '---------------', cost.product_line_id.id)
+                        if line.product_id.product_id.id == cost.product_line_id.id:
+                            print('---------------------------------------')
+                            line.analytic_account_id = cost.analytic_account_id.id
+                            lines_list.append(line.product_id.product_id.id)
+
+                    if line.product_id.product_id.id not in lines_list:
+                        print(line.product_id.product_id.id, "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", lines_list)
                         for rec in analytic_account_obj:
                             if line.product_id.product_id.id == rec.product_id.id:
-                                # part = True
                                 if rec.user_id.id == self.invoice_user_id.id:
+                                    print('**************')
                                     line.analytic_account_id = rec.id
                                     break
                                 elif rec.salesteam_id == self.team_id:
                                     line.analytic_account_id = rec.id
-                                    break
-                                elif self.invoice_user_id in rec.user_add_ids:
+                                elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                                    print('**************2222')
                                     line.analytic_account_id = rec.id
                                     break
                                 elif rec.undefined_sales_person == True:
+                                    print('**************33333')
                                     line.analytic_account_id = rec.id
                                     break
-                                # else:
-                                #     line.analytic_account_id = False
-                                #     break
-                            # if part == False:
-                            #     line.analytic_account_id = False
-                            else:
-                                line.analytic_account_id = False
-            else:
-                for rec in analytic_account_obj:
-                    if line.product_id.product_id.id == rec.product_id.id:
-                        # part = True
-                        if rec.user_id.id == self.invoice_user_id.id:
-                            line.analytic_account_id = rec.id
-                            break
-                        elif rec.salesteam_id == self.team_id:
-                            line.analytic_account_id = rec.id
-                            break
-                        elif self.invoice_user_id in rec.user_add_ids:
-                            line.analytic_account_id = rec.id
-                            break
-                        elif rec.undefined_sales_person == True:
-                            line.analytic_account_id = rec.id
-                            break
-                        # else:
-                        #     line.analytic_account_id = False
-                        #     break
-                        # if part == False:
-                        #     line.analytic_account_id = False
-                    else:
-                        line.analytic_account_id = False
-                    #     if rec.user_id.id == self.invoice_user_id.id:
-                    #         line.analytic_account_id = rec.id
-                    #     elif self.invoice_user_id.id in rec.user_add_ids.ids:
-                    #         line.analytic_account_id = rec.id
-                    #     elif rec.undefined_sales_person == True:
-                    #         line.analytic_account_id = rec.id
-                    #     else:
-                    #         line.analytic_account_id = False
-                    # if part == False:
-                    #     line.analytic_account_id = False
-
-
+#                         else:
+#                             print('2222222222222222222222222222222222222')
+#                             line.analytic_account_id = False
+                else:
+                    for rec in analytic_account_obj:
+                        if line.product_id.product_id.id == rec.product_id.id:
+                            part2 = True
+                            if rec.user_id.id == self.invoice_user_id.id:
+                                line.analytic_account_id = rec.id
+                            elif rec.salesteam_id == self.team_id:
+                                line.analytic_account_id = rec.id
+                            elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                                line.analytic_account_id = rec.id
+                            elif rec.undefined_sales_person == True:
+                                line.analytic_account_id = rec.id
+#                         else:
+#                             line.analytic_account_id = False
+                        if part2 == False:
+                            line.analytic_account_id = False
 
 
 class StockPicking(models.Model):
