@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+
+        <record id="group_inventory_button" model="res.groups">
+            <field name="name">Inventory Button Approve</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="form_view_stock_picking_inherit" model="ir.ui.view">
+            <field name="name">name.stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_toggle_is_locked']" position="after">
+                    <button name="approve_button" type="object" string="Approved" groups="surgi_inventory_approved.group_inventory_button"/>
+                    <button name="reject_button" type="object" string="Rejected" groups="surgi_inventory_approved.group_inventory_button"/>
+                    <button name="hold_button" type="object" string="Hold" groups="surgi_inventory_approved.group_inventory_button"/>
+                </xpath>
+
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="accounting_approval"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Accounting Approval Tracking">
+                        <group>
+                            <field name="approval_date"/>
+                            <field name="reject_date"/>
+                            <field name="hold_date"/>
+                        </group>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
