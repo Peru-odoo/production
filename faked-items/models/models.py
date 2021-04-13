@@ -111,26 +111,38 @@ class stock_biking_faked_item(models.Model):
         else:
             fakeproduct=self.env['product.template'].create({"name":"Faked Product","type":"product","isfakedproduct":True})
         x=True
-        for i in stockpick.move_line_ids:
+        for i in stockpick.move_line_ids_without_package:
             if i.product_id.id == fakeproduct.id:
-                i.product_uom_qty=totalquantity
-                x=False
+                i.product_uom_qty = totalquantity
+                x = False
         if x:
-            move_id={
-                "name":fakeproduct.name,
-                "company_id":stockpick.company_id.id,
-                "product_id":fakeproduct.id,
-                #"product_qty":totalquantity,
-                "product_uom_qty":totalquantity,
-                "location_id":stockpick.location_id.id,
-                "location_dest_id":stockpick.location_dest_id.id,
-                "picking_id":stockpick.id,
-                "partner_id":stockpick.partner_id.id
-            }
-            moveids=self.env["stock.move"].create(move_id)
-            if moveids:
-                stockpick.move_line_ids.create({'product_id':fakeproduct.id,'move_id':moveids.id,'product_uom_qty':totalquantity,'picking_id':stockpick.id,'company_id':stockpick.company_id,"product_uom_id":1,'location_id':stockpick.location_id.id,'location_dest_id':stockpick.location_dest_id.id})
-            else:
-                raise ValidationError("move not created")
-        print("x")
+            stockpick.move_line_ids_without_package.create(
+                {'product_id':fakeproduct.id,'product_uom_qty':totalquantity,'picking_id':stockpick.id,'company_id':stockpick.company_id,"product_uom_id":fakeproduct.product_tmpl_id.uom_id.id,'location_id':stockpick.location_id.id,'location_dest_id':stockpick.location_dest_id.id}
+            )
+            pass
+
+        # for i in stockpick.move_line_ids:
+        #     if i.product_id.id == fakeproduct.id:
+        #         i.product_uom_qty=totalquantity
+        #         x=False
+        # if x:
+        #     move_id={
+        #         "name":fakeproduct.name,
+        #         "company_id":stockpick.company_id.id,
+        #         "product_id":fakeproduct.id,
+        #         #"product_qty":totalquantity,
+        #         "product_uom_qty":totalquantity,
+        #         'product_uom':fakeproduct.product_tmpl_id.uom_id.id,
+        #         "location_id":stockpick.location_id.id,
+        #         "location_dest_id":stockpick.location_dest_id.id,
+        #         "picking_id":stockpick.id,
+        #         "partner_id":stockpick.partner_id.id
+        #     }
+        #     moveids=self.env["stock.move"].create(move_id)
+        #     if moveids:
+        #         productuom=fakeproduct.product_tmpl_id.uom_id.id
+        #         stockpick.move_line_ids.create({'product_id':fakeproduct.id,'move_id':moveids.id,'product_uom_qty':totalquantity,'picking_id':stockpick.id,'company_id':stockpick.company_id,"product_uom_id":fakeproduct.product_tmpl_id.uom_id.id,'location_id':stockpick.location_id.id,'location_dest_id':stockpick.location_dest_id.id})
+        #     else:
+        #         raise ValidationError("move not created")
+        # print("x")
     pass
