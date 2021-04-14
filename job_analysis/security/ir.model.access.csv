@@ -5,6 +5,8 @@ access_job_analysis_type,access.job.analysis.type,model_job_analysis_type,base.g
 access_questionnaires_answer,access.questionnaires.answer,model_questionnaires_answer,base.group_user,1,1,0,0
 access_answer_line,access.answer.line,model_answer_line,base.group_user,1,1,0,0
 access_collection_job_analysis,access.collection.job.analysis,model_collection_job_analysis,base.group_user,1,1,0,0
+access_answer_row,access.answer.row,model_answer_row,base.group_user,1,1,1,1
+access_hr_job,access.hr.job,model_hr_job,job_analysis.group_job_analysis_user,1,0,0,0
 
 access_job_analysis_batch_manager,access.job.analysis.batch.manager,model_job_analysis_batch,job_analysis.group_job_analysis_manager,1,1,1,1
 access_job_analysis_questionnaire_manager,access.job.analysis.questionnaire.manager,model_job_analysis_questionnaire,job_analysis.group_job_analysis_manager,1,1,1,1

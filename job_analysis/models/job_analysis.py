@@ -10,9 +10,9 @@ class JobAnalysisBatch(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
     _description = 'Job Analysis Batch'
 
-    name = fields.Char()
-    from_date = fields.Date('Start')
-    to_date = fields.Date('End')
+    name = fields.Char(tracking=True)
+    from_date = fields.Date('Start',tracking=True)
+    to_date = fields.Date('End',tracking=True)
     active = fields.Boolean(string="Active", default=True)
     type = fields.Selection([
         ('employee', 'Employee'),
@@ -28,7 +28,7 @@ class JobAnalysisBatch(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirmed')
-    ], string='Status', copy=False, index=True, readonly=True, default='draft')
+    ], string='Status', copy=False, index=True, readonly=True, default='draft',tracking=True)
     questionnaire_ids = fields.Many2many('job.analysis.questionnaire')
     answer_count = fields.Integer("Registered", compute="_compute_answer_statistic")
     answer_done_count = fields.Integer("Attempts", compute="_compute_answer_statistic")
@@ -51,56 +51,56 @@ class JobAnalysisBatch(models.Model):
              'answer_line_ids': qust})
         return answer
 
-    def create_collection(self, position,question,company):
-        collection = self.env['collection.job.analysis'].create(
-            {'batch_id': self.id,
-             'question_id': question.id,
-             'position_id':position.id,
-             'company_id':company.id})
+    def create_collection(self, position,company):
+        collection = False
+        if position:
+            collection = self.env['collection.job.analysis'].create(
+                {'batch_id': self.id,
+                 'position_id':position.id,
+                 'company_id':company.id})
         return collection
 
     def confirm(self):
         self.ensure_one()
         self.write({'state': 'confirm'})
-        questions = self.questionnaire_ids
         if self.type == 'employee':
             positions = []
             for emp in self.employee_ids:
                 self.create_answer(emp)
-                positions.append(emp.job_id)
+                if emp.job_id:
+                    positions.append(emp.job_id)
             for po in set(positions):
-                for q in questions:
-                    self.create_collection(po,q,self.company_id)
+                self.create_collection(po,self.company_id)
         elif self.type == 'company':
             for com in self.company_ids:
                 positions = []
                 employees = self.env['hr.employee'].sudo().search([('company_id','=',com.id)])
                 for emp in employees:
                     self.create_answer(emp)
-                    positions.append(emp.job_id)
+                    if emp.job_id:
+                        positions.append(emp.job_id)
                 for po in set(positions):
-                    for q in questions:
-                        self.create_collection(po, q,com)
+                    self.create_collection(po,com)
         elif self.type == 'tag':
             positions = []
             for tag in self.category_ids:
                 employees = self.env['hr.employee'].sudo().search([('company_id','=',self.company_id.id),('category_ids','in',tag.id)])
                 for emp in employees:
                     self.create_answer(emp)
-                    positions.append(emp.job_id)
+                    if emp.job_id:
+                        positions.append(emp.job_id)
                 for po in set(positions):
-                    for q in questions:
-                        self.create_collection(po, q, self.company_id)
+                    self.create_collection(po,self.company_id)
         elif self.type == 'department':
             positions = []
             for deb in self.department_ids:
                 employees = self.env['hr.employee'].sudo().search([('company_id','=',self.company_id.id),('department_id','=',deb.id)])
                 for emp in employees:
                     self.create_answer(emp)
-                    positions.append(emp.job_id)
+                    if emp.job_id:
+                        positions.append(emp.job_id)
                 for po in set(positions):
-                    for q in questions:
-                        self.create_collection(po, q, self.company_id)
+                    self.create_collection(po,self.company_id)
         return True
 
     def show_questionnaires(self):
@@ -114,7 +114,7 @@ class JobAnalysisBatch(models.Model):
             'context': "{'create': False}"
         }
 
-    def show_answer(self):
+    def show_collections(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
@@ -122,5 +122,17 @@ class JobAnalysisBatch(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'collection.job.analysis',
             'domain': [('batch_id', '=', self.id)],
-            'context': "{'search_default_position': 1,'search_default_question': 1,'create': False}"
+            'context': "{'search_default_position': 1,'create': False}"
+        }
+
+
+    def show_answer_row(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Answer Report',
+            'view_mode': 'tree,form',
+            'res_model': 'answer.row',
+            'domain': [('batch_id', '=', self.id)],
+            'context': "{'create': False}"
         }

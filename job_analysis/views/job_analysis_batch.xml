@@ -34,16 +34,17 @@
                         <button name="show_questionnaires" type="object" class="oe_stat_button" icon="fa-envelope-o">
                             <field string="Registered" name="answer_count" widget="statinfo"/>
                         </button>
-                        <button name="show_answer" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
-                            <field string="Answer Collections" name="answer_done_count" widget="statinfo"/>
+                        <button name="show_collections" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field string="Collections" name="answer_done_count" widget="statinfo"/>
                         </button>
+                        <button name="show_answer_row" type="object" string="Answer Report" class="oe_stat_button" icon="fa-list"/>
                     </div>
                     <field name="active" invisible="1"/>
                     <div class="oe_left" style="width: 500px;">
                         <div class="oe_title" style="width: 390px;">
                             <label class="oe_edit_only" for="name"/>
                             <h1>
-                                <field name="name" class="oe_inline"/>
+                                <field name="name" class="oe_inline" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </h1>
                         </div>
                     </div>
@@ -51,29 +52,29 @@
                         <group>
                             <label for="from_date" string="Period"/>
                             <div>
-                                <field name="from_date" class="oe_inline" required="1"/>
+                                <field name="from_date" class="oe_inline" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                                 -
                                 <field name="to_date" class="oe_inline"
-                                       nolabel="1" required="1"/>
+                                       nolabel="1" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
                             </div>
                         </group>
-                        <group>
-                            <field name="type"/>
+                        <group >
+                            <field name="type" attrs="{'readonly':[('state','!=','draft')]}"/>
                             <field name="company_ids" widget="many2many_tags"
-                                   attrs="{'invisible':[('type','!=','company')],'required':[('type','=','company')]}"/>
+                                   attrs="{'readonly':[('state','!=','draft')],'invisible':[('type','!=','company')],'required':[('type','=','company')]}"/>
                             <field name="employee_ids" widget="many2many_tags"
-                                   attrs="{'invisible':[('type','!=','employee')],'required':[('type','=','employee')]}"/>
+                                   attrs="{'readonly':[('state','!=','draft')],'invisible':[('type','!=','employee')],'required':[('type','=','employee')]}"/>
                             <field name="category_ids" widget="many2many_tags"
-                                   attrs="{'invisible':[('type','!=','tag')],'required':[('type','=','tag')]}"/>
+                                   attrs="{'readonly':[('state','!=','draft')],'invisible':[('type','!=','tag')],'required':[('type','=','tag')]}"/>
                             <field name="department_ids" widget="many2many_tags"
-                                   attrs="{'invisible':[('type','!=','department')],'required':[('type','=','department')]}"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="user_id"/>
+                                   attrs="{'readonly':[('state','!=','draft')],'invisible':[('type','!=','department')],'required':[('type','=','department')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" attrs="{'readonly':[('state','!=','draft')]}"/>
+                            <field name="user_id" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Questionnaire" name="questionnaire_ids">
-                            <field name="questionnaire_ids">
+                            <field name="questionnaire_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                 <tree string="Questionnaire" editable="bottom">
                                     <field name="name" string="Question"/>
                                 </tree>

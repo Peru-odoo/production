@@ -9,7 +9,7 @@
     'license': 'AGPL-3',
     # any module necessary for this one to work correctly
 
-    'depends': ['base','mail','hr','portal'],
+    'depends': ['base','mail','hr','portal','surgi_hr_employee'],
 
     'data': [
         'security/security.xml',
@@ -18,6 +18,7 @@
         'views/base_view.xml',
         'views/answer_view.xml',
         'views/collection_view.xml',
+        'views/job_position.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
