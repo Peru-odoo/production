@@ -5,6 +5,7 @@ class stock_location_inherit(models.Model):
 
     is_operation_location = fields.Boolean(string="Is Operation Location" )
     operation_location_freeze = fields.Boolean(string="Operation Location Freeze" , tracking=True)
+    internal_transit_location = fields.Boolean(string="Internal Transit Location", tracking=True)
     delivery_order_location = fields.Boolean(string="Delivery Order Location")
     sales_order_location = fields.Boolean(string="Sales Order Location")
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse")
