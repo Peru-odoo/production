@@ -53,7 +53,7 @@
                     <field name="discount_type_id" options="{ 'no_create': True,'no_quick_create':True,'no_create_edit':True,'no_open': True}"
                            attrs ="{'invisible': [('apply_discount' ,'=', False),('apply_discount_trade' ,'=', False)]}" />
                     <field name="discount_value" attrs ="{'invisible': [('apply_discount' ,'=', False),('apply_discount_trade' ,'=', False)]}" />
-                    <field name="amount_after_discount" attrs ="{'invisible': [('apply_discount' ,'=', False)]}"/>
+                    <field name="amount_after_discount" attrs ="{'invisible': [('apply_discount' ,'=', False),('apply_discount_trade' ,'=', False)]}"/>
                 </field>
             </field>
         </record>

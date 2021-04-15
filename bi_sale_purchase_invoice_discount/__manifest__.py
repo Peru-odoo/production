@@ -3,7 +3,7 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 ################################################################################
 {
-    'name': 'Odoo Global Discount on Sale,Purchase & Invoice ',
+    'name': 'Odoo Global Discount on Sale,Purchase & Invoice 1',
     'version': '14.0.0.1',
     'category': 'Sales',
     'sequence': 14,
