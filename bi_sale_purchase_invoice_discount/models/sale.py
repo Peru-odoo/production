@@ -2,6 +2,7 @@
 ################################################################################
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 ################################################################################
+from os import truncate
 
 from odoo.osv import osv
 import odoo.addons.decimal_precision as dp
@@ -92,14 +93,14 @@ class sale_order(models.Model):
             if account_search:
                 self.discount_account = account_search[0].id
     
-    @api.depends('order_line.price_total', 'discount_value', 'discount_type_id', 'apply_discount')
+    @api.depends('order_line.price_total', 'discount_value', 'discount_type_id', 'apply_discount','apply_discount_trade')
     def _amount_all(self):
         for order in self:            
             amount_untaxed = amount_tax = 0.0
             for line in order.order_line:
                 amount_untaxed += line.price_subtotal
                 amount_tax += line.price_tax
-            if order.apply_discount == True:
+            if order.apply_discount == True or order.apply_discount_trade==True:
                 order.update({
                     'amount_untaxed': amount_untaxed,
                     'amount_tax': amount_tax,
@@ -112,26 +113,68 @@ class sale_order(models.Model):
                     'amount_total': amount_untaxed + amount_tax,
                 })
 
-    
+    def calculate_tax_fixed_total(self,quantity,unitprice,totalammount,fixedammount):
+        itemprice=(quantity*unitprice)/totalammount
+        itemprice_fixed=round(fixedammount/totalammount,2)*100
+        return (fixedammount/totalammount)*100
+        #return round(((quantity*unitprice)/totalammount),0)*fixedammount
+        pass
     @api.depends('discount_value', 'order_line.price_total','discount_type_id')
     def _compute_amount_after_discount(self):
+        totalammountx=0.0
+
+        for line in self.order_line:
+            totalammountx+=(line.price_unit*line.product_uom_qty)
+            amount_untaxed=totalammountx
+
         discount = 0.0
         amount_untaxed = 0.0
+        price_subtottal=0.0
         discount_type_percent = self.env['ir.model.data'].xmlid_to_res_id('bi_sale_purchase_invoice_discount.discount_type_percent_id')
         
         discount_type_fixed = self.env['ir.model.data'].xmlid_to_res_id('bi_sale_purchase_invoice_discount.discount_type_fixed_id')
-        for self_obj in self:
-            for line in self_obj.order_line:
-                amount_untaxed += line.price_subtotal
-            if self_obj.discount_type_id.id == discount_type_fixed:
-                discount = amount_untaxed - self_obj.discount_value
-                self_obj.amount_after_discount = discount
-            elif self_obj.discount_type_id.id == discount_type_percent:
-                discount_percent = amount_untaxed * ((self_obj.discount_value or 0.0) / 100.0)
-                discount = amount_untaxed - discount_percent
-                self_obj.amount_after_discount = discount
+        if self.apply_discount_trade:
+            if self.discount_type_id.id==discount_type_fixed and self.discount_value >= 0:
+                for self_obj in self:
+                    for line in self_obj.order_line:
+                        amount_untaxed += line.price_subtotal
+                        discount = self.calculate_tax_fixed_total(line.product_uom_qty,line.price_unit,totalammountx,self.discount_value)
+                            #amount_untaxed - self_obj.discount_value
+                        line.discount = discount
+                        price_subtottal+=line.price_subtotal
+                        pass
+                    self_obj.amount_after_discount = price_subtottal
+                    pass
+
+                pass
             else:
-                self_obj.amount_after_discount = discount
+                for line in self.order_line:
+                    if self.discount_type_id.id == discount_type_percent:
+                        discount_percent = totalammountx * ((self.discount_value or 0.0) / 100.0)
+                        discount = totalammountx - discount_percent
+                        self.amount_after_discount = discount
+                    else:
+                        self.amount_after_discount = discount
+
+
+
+
+            #if self_obj.discount_type_id.id == discount_type_fixed:
+
+
+        elif self.apply_discount:
+            for self_obj in self:
+                for line in self_obj.order_line:
+                    amount_untaxed += line.price_subtotal
+                if self_obj.discount_type_id.id == discount_type_fixed:
+                    discount = amount_untaxed - self_obj.discount_value
+                    self_obj.amount_after_discount = discount
+                elif self_obj.discount_type_id.id == discount_type_percent:
+                    discount_percent = amount_untaxed * ((self_obj.discount_value or 0.0) / 100.0)
+                    discount = amount_untaxed - discount_percent
+                    self_obj.amount_after_discount = discount
+                else:
+                    self_obj.amount_after_discount = discount
      
     
     def _prepare_invoice(self):
@@ -144,8 +187,35 @@ class sale_order(models.Model):
                 'apply_discount' : self.apply_discount,
             })
         return invoice_vals
-        
-    apply_discount = fields.Boolean('Apply Discount')
+    @api.onchange("discount_type_id")
+    def _change_descount_type(self):
+        self.discount_value=0.0
+        pass
+    @api.onchange("discount_options")
+    def _change_discount_options(self):
+        if self.discount_options== "Trade Discount":
+            self.apply_discount_trade=True
+            self.apply_discount=False
+            self.discount_type_id= None
+        elif self.discount_options=="Accounting Discount":
+            self.apply_discount_trade = False
+            self.apply_discount = True
+            self.discount_type_id= None
+        else:
+            self.apply_discount_trade = False
+            self.apply_discount = False
+            self.discount_options="No Discount"
+            self.discount_type_id= None
+
+
+        for line in self.order_line:
+            line.discount=0
+        pass
+
+    discount_options=fields.Selection(selection=[("No Discount","No Discount"),("Accounting Discount","Accounting Discount"),("Trade Discount","Trade Discount")]
+                                      ,string="Choose Discount Type",store=True,default="No Discount")
+    apply_discount = fields.Boolean('Accounting Discount')#default
+    apply_discount_trade = fields.Boolean('Trade Discount')
     discount_type_id = fields.Many2one('discount.type', 'Discount Type')
     discount_value = fields.Float('Sale Discount')
     discount_account = fields.Many2one('account.account', 'Discount Account')
