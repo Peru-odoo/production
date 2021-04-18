@@ -24,11 +24,9 @@ class CollectionJobAnalysis(models.Model):
     ], string='Status', copy=False, index=True, readonly=True, default='draft', tracking=True)
     is_manager = fields.Boolean(compute='_compute_groups')
     is_parent = fields.Boolean(compute='_compute_groups')
-    parent_manager_ids = fields.Many2many('res.users', string='Parent Managers', compute='_compute_parent_manager',
-                                          store=True)
+    parent_manager_ids = fields.Many2many('res.users', string='Parent Managers')
 
 
-    @api.depends('position_id')
     def _compute_parent_manager(self):
         for rec in self:
             record = rec.position_id.position_manager_id
@@ -36,7 +34,7 @@ class CollectionJobAnalysis(models.Model):
             while record.parent_id.user_id:
                 parents.append(record.parent_id.user_id.id)
                 record = record.parent_id
-            rec.parent_manager_ids = [pa for pa in parents if pa]
+            rec.write({'parent_manager_ids': parents})
 
     def _compute_groups(self):
         for rec in self:
@@ -52,9 +50,11 @@ class CollectionJobAnalysis(models.Model):
     def manager_approve(self):
         self.ensure_one()
         partners = []
+
         if self.position_id.department_id.manager_id.user_id:
             partners.append(self.position_id.department_id.manager_id.user_id.partner_id.id)
             self._send_notification('Manager Approved', partners)
+        self._compute_parent_manager()
         self.write({'state': 'manager'})
 
     def parent_approve(self):

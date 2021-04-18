@@ -27,6 +27,8 @@
                 <header>
                     <button name="confirm" type="object"
                             string="Confirm" class="oe_highlight" states="draft"/>
+                    <button name="reset" type="object" groups="job_analysis.group_job_analysis_manager"
+                            string="Reset" states="confirm"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
                 </header>
                 <sheet>

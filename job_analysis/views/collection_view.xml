@@ -37,7 +37,6 @@
                             <field name="is_manager" invisible="1"/>
                             <field name="batch_id" readonly="1"/>
                             <field name="position_id" readonly="1"/>
-                            <field name="parent_manager_ids"/>
                             <field name="active" invisible="1"/>
                         </group>
                     </group>

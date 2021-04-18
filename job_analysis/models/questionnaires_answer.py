@@ -13,8 +13,8 @@ class QuestionnairesAnswer(models.Model):
     _rec_name = 'batch_id'
 
     batch_id = fields.Many2one('job.analysis.batch', readonly=True)
-    from_date = fields.Date('Start', readonly=True)
-    to_date = fields.Date('End', readonly=True)
+    from_date = fields.Date(related='batch_id.from_date')
+    to_date = fields.Date(related='batch_id.to_date')
     active = fields.Boolean(string="Active", default=True)
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', readonly=True)
@@ -28,10 +28,8 @@ class QuestionnairesAnswer(models.Model):
         ('draft', 'Draft'),
         ('confirm', 'Confirmed')
     ], string='Status', copy=False, index=True, readonly=True, default='draft',tracking=True)
-    parent_manager_ids = fields.Many2many('res.users', string='Parent Managers', compute='_compute_parent_manager',
-                                          store=True)
+    parent_manager_ids = fields.Many2many('res.users', string='Parent Managers')
 
-    @api.depends('manager_id')
     def _compute_parent_manager(self):
         for rec in self:
             record = rec.manager_id
@@ -39,11 +37,12 @@ class QuestionnairesAnswer(models.Model):
             while record.parent_id.user_id:
                 parents.append(record.parent_id.user_id.id)
                 record = record.parent_id
-            rec.parent_manager_ids = [pa for pa in parents if pa]
+            rec.write({'parent_manager_ids': parents})
 
     def confirm(self):
         self.ensure_one()
         self.write({'state': 'confirm'})
+        self._compute_parent_manager()
         for line in self.answer_line_ids:
             if not line.row_answer_ids:
                 raise ValidationError('Please add some answer to all question')
