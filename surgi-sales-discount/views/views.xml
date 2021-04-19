@@ -2,9 +2,9 @@
   <data>
     <!-- explicit list view definition -->
 <!--
-    <record model="ir.ui.view" id="surgi-total-sale.list">
-      <field name="name">surgi-total-sale list</field>
-      <field name="model">surgi-total-sale.surgi-total-sale</field>
+    <record model="ir.ui.view" id="surgi-sales-discount.list">
+      <field name="name">surgi-sales-discount list</field>
+      <field name="model">surgi-sales-discount.surgi-sales-discount</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -17,18 +17,18 @@
 
     <!-- actions opening views on models -->
 <!--
-    <record model="ir.actions.act_window" id="surgi-total-sale.action_window">
-      <field name="name">surgi-total-sale window</field>
-      <field name="res_model">surgi-total-sale.surgi-total-sale</field>
+    <record model="ir.actions.act_window" id="surgi-sales-discount.action_window">
+      <field name="name">surgi-sales-discount window</field>
+      <field name="res_model">surgi-sales-discount.surgi-sales-discount</field>
       <field name="view_mode">tree,form</field>
     </record>
 -->
 
     <!-- server action to the one above -->
 <!--
-    <record model="ir.actions.server" id="surgi-total-sale.action_server">
-      <field name="name">surgi-total-sale server</field>
-      <field name="model_id" ref="model_surgi-total-sale_surgi-total-sale"/>
+    <record model="ir.actions.server" id="surgi-sales-discount.action_server">
+      <field name="name">surgi-sales-discount server</field>
+      <field name="model_id" ref="model_surgi-sales-discount_surgi-sales-discount"/>
       <field name="state">code</field>
       <field name="code">
         action = {
@@ -42,19 +42,19 @@
 
     <!-- Top menu item -->
 <!--
-    <menuitem name="surgi-total-sale" id="surgi-total-sale.menu_root"/>
+    <menuitem name="surgi-sales-discount" id="surgi-sales-discount.menu_root"/>
 -->
     <!-- menu categories -->
 <!--
-    <menuitem name="Menu 1" id="surgi-total-sale.menu_1" parent="surgi-total-sale.menu_root"/>
-    <menuitem name="Menu 2" id="surgi-total-sale.menu_2" parent="surgi-total-sale.menu_root"/>
+    <menuitem name="Menu 1" id="surgi-sales-discount.menu_1" parent="surgi-sales-discount.menu_root"/>
+    <menuitem name="Menu 2" id="surgi-sales-discount.menu_2" parent="surgi-sales-discount.menu_root"/>
 -->
     <!-- actions -->
 <!--
-    <menuitem name="List" id="surgi-total-sale.menu_1_list" parent="surgi-total-sale.menu_1"
-              action="surgi-total-sale.action_window"/>
-    <menuitem name="Server to list" id="surgi-total-sale" parent="surgi-total-sale.menu_2"
-              action="surgi-total-sale.action_server"/>
+    <menuitem name="List" id="surgi-sales-discount.menu_1_list" parent="surgi-sales-discount.menu_1"
+              action="surgi-sales-discount.action_window"/>
+    <menuitem name="Server to list" id="surgi-sales-discount" parent="surgi-sales-discount.menu_2"
+              action="surgi-sales-discount.action_server"/>
 -->
 
 

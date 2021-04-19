@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "surgi-total-sale",
+    'name': "surgi-sales-discount",
 
     'summary': """
         Make Total Sale in all pruchase""",
