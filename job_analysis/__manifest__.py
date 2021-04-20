@@ -19,6 +19,7 @@
         'views/answer_view.xml',
         'views/collection_view.xml',
         'views/job_position.xml',
+        'views/manager_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

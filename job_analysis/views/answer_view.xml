@@ -16,25 +16,6 @@
         </field>
     </record>
 
-    <record id="answer_line_tree_view" model="ir.ui.view">
-        <field name="name">answer.row.tree</field>
-        <field name="model">answer.row</field>
-        <field name="priority">2</field>
-        <field name="arch" type="xml">
-            <tree string="Answers Report">
-                <field name="employee_id"/>
-                <field name="question_id"/>
-                <field name="name"/>
-                <field name="collection_answer"/>
-                <field name="answer_date"/>
-                <field name="manager_check"/>
-                <field name="parent_check"/>
-                <field name="hr_check"/>
-                <field name="job_analysis_type_id"/>
-            </tree>
-        </field>
-    </record>
-
     <record id="questionnaires_answer_form_view" model="ir.ui.view">
         <field name="name">questionnaires.answer.form</field>
         <field name="model">questionnaires.answer</field>
@@ -93,30 +74,6 @@
         </field>
     </record>
 
-    <record id="answer_line_form_view" model="ir.ui.view">
-        <field name="name">answer.row.form</field>
-        <field name="model">answer.row</field>
-        <field name="arch" type="xml">
-            <form string="Answers">
-                <sheet>
-                    <group>
-                        <field name="question_id" readonly="1"/>
-                        <field name="name" readonly="1"/>
-                        <field name="collection_answer" readonly="1"/>
-                        <field name="answer_date" readonly="1"/>
-                        <field name="employee_id" readonly="1"/>
-                        <field name="batch_id" readonly="1"/>
-                    </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
-            </form>
-        </field>
-    </record>
-
     <!-- Search View -->
     <record id="questionnaires_answer_search" model="ir.ui.view">
         <field name="name">questionnaires.answer.search</field>
@@ -141,27 +98,6 @@
         </field>
     </record>
 
-    <record id="answer_line_search" model="ir.ui.view">
-        <field name="name">answer.row.search</field>
-        <field name="model">answer.row</field>
-        <field name="arch" type="xml">
-            <search string="Answer Search">
-                <field name="question_id" string="Question"/>
-                <field name="employee_id"/>
-                <filter string="Manager Approved" name="manager_check" domain="[('manager_check','=',True)]"/>
-                <filter string="Parent Manager Approved" name="parent_check" domain="[('parent_check','=',True)]"/>
-                <filter string="HR Approved" name="hr_check" domain="[('hr_check','=',True)]"/>
-                <group expand="0" string="Group By">
-                    <filter string="Batch" name="batch" domain="[]" context="{'group_by': 'batch_id'}"/>
-                    <filter string="Question" name="question" domain="[]"
-                            context="{'group_by': 'question_id'}"/>
-                    <filter string="Employee" name="employee_id" domain="[]"
-                            context="{'group_by': 'employee_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
     <record model="ir.actions.act_window" id="action_questionnaires_answer">
         <field name="name">Registered</field>
         <field name="type">ir.actions.act_window</field>
@@ -172,15 +108,7 @@
         <field name="domain">[]</field>
         <field name="context">{'search_default_batch': 1}</field>
     </record>
-    <record model="ir.actions.act_window" id="action_answer_row">
-        <field name="name">Answer Report</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">answer.row</field>
-        <field name="search_view_id" ref="answer_line_search"/>
-        <field name="binding_view_types">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'create': 0,'write':0}</field>
-    </record>
+
 
     <menuitem id="menu_questionnaires_answer_parent" parent="menu_job_analysis"
               name="Questionnaires Answer" sequence="2" groups="job_analysis.group_job_analysis_user"/>
@@ -188,7 +116,4 @@
     <menuitem id="menu_questionnaires_answer" action="action_questionnaires_answer"
               parent="menu_questionnaires_answer_parent"
               name="Questionnaires Answer" sequence="1"/>
-    <menuitem id="menu_answer_analysis" action="action_answer_row"
-              parent="menu_questionnaires_answer_parent"
-              name="Answer Report" sequence="3"/>
 </odoo>

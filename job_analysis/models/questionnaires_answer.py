@@ -91,7 +91,8 @@ class Answer(models.Model):
 
     name = fields.Text('Employee Answer')
     collection_answer = fields.Text('Final Answer')
-    answer_date = fields.Datetime()
+    hr_answer = fields.Text('HR Answer')
+    answer_date = fields.Datetime(readonly=True)
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', related='answer_id.employee_id', readonly=True)
     manager_id = fields.Many2one(comodel_name="hr.employee", string="Manager", readonly=True,
@@ -109,6 +110,10 @@ class Answer(models.Model):
     is_manager = fields.Boolean(compute='_compute_groups')
     is_parent = fields.Boolean(compute='_compute_groups')
     is_hr = fields.Boolean(compute='_compute_groups')
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('manager', 'Manager Approved'), ('parent', 'Parent Approved'), ('hr', 'HR Approved')
+    ], string='Status', copy=False, index=True, readonly=True, default='draft', tracking=True)
 
     @api.onchange('name')
     def onchange_name_ans(self):
@@ -131,5 +136,101 @@ class Answer(models.Model):
             else:
                 rec.is_hr = False
 
+
+    def manager_approve(self):
+        self.ensure_one()
+        partners = []
+        if self.answer_id.answer_id.parent_manager_ids:
+            for par in self.answer_id.answer_id.parent_manager_ids:
+                partners.append(par.partner_id.id)
+            self._send_notification('Manager Approved', partners)
+        self.write({'state': 'manager','manager_check':True})
+
+    def manager_approve_multi(self):
+        context = dict(self._context or {})
+        active_ids = context.get('active_ids', []) or []
+        records = self.env['answer.row'].browse(active_ids)
+        if not all(x.state == 'draft' for x in records):
+            raise ValidationError(_('"Please Select in Draft'))
+        if not all(x.is_manager for x in records):
+            raise ValidationError(_('You can not convert to Manager Approve'))
+        for rec in records:
+            rec.manager_approve()
+
+
+    def parent_approve(self):
+        self.ensure_one()
+        group = self.env.ref('job_analysis.group_job_analysis_manager').sudo().users
+        partners = []
+        if group:
+            for usr in group:
+                partners.append(usr.partner_id.id)
+            self._send_notification('Parent Manager Approved', partners)
+        self.write({'state': 'parent','parent_check':True})
+
+    def parent_approve_multi(self):
+        context = dict(self._context or {})
+        active_ids = context.get('active_ids', []) or []
+        records = self.env['answer.row'].browse(active_ids)
+        if not all(x.state == 'manager' for x in records):
+            raise ValidationError(_('"Please Select in Manager Approved'))
+        if not all(x.is_parent for x in records):
+            raise ValidationError(_('You can not convert to Parent Approve'))
+        for rec in records:
+            rec.parent_approve()
+
+    def hr_approve(self):
+        self.ensure_one()
+        self.write({'state': 'hr','hr_check':True})
+
+
+    def hr_approve_multi(self):
+        context = dict(self._context or {})
+        active_ids = context.get('active_ids', []) or []
+        records = self.env['answer.row'].browse(active_ids)
+        if not all(x.state == 'parent' for x in records):
+            raise ValidationError(_('"Please Select in Parent Approved'))
+        if not all(x.is_hr for x in records):
+            raise ValidationError(_('You can not convert to Parent Approve'))
+        for rec in records:
+            rec.hr_approve()
+
+    def reset(self):
+        self.ensure_one()
+        if self.state == 'manager':
+            partners = []
+            if self.answer_id.answer_id.parent_manager_ids:
+                for par in self.answer_id.answer_id.parent_manager_ids:
+                    partners.append(par.partner_id.id)
+                self._send_notification('Draft', partners)
+            self.write({'state': 'draft'})
+        elif self.state == 'parent':
+            partners = []
+            if self.answer_id.answer_id.parent_manager_ids:
+                for par in self.answer_id.answer_id.parent_manager_ids:
+                    partners.append(par.partner_id.id)
+                self._send_notification('Manager Approved', partners)
+            self.write({'state': 'manager'})
+        elif self.state == 'hr':
+            group = self.env.ref('job_analysis.group_job_analysis_manager').sudo().users
+            partners = []
+            if group:
+                for usr in group:
+                    partners.append(usr.partner_id.id)
+                self._send_notification('Parent Manager Approved', partners)
+            self.write({'state': 'parent'})
+
+
+    def reset_multi(self):
+        context = dict(self._context or {})
+        active_ids = context.get('active_ids', []) or []
+        records = self.env['answer.row'].browse(active_ids)
+        for rec in records:
+            rec.reset()
+
+    def _send_notification(self, state, partners):
+        message = _('Collection of Job Analysis: %s is convert to %s') % (
+            str(self.batch_id.name + "/" + self.position_id.name), state)
+        return self.message_post(body=message, partner_ids=partners)
 
 
