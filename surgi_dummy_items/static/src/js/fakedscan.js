@@ -75,6 +75,7 @@ var ScanningFaked = AbstractAction.extend({
                     var default_code = $('#default_code').val();
                     if (default_code.trim() != '') {
                         if (self.stock_data.codeProducts[default_code]) {
+                            $('input#scan_box').focus();
                         } else {
                             document.getElementById('audio').play();
                             $('#default_code').val('').blur().focus();
