@@ -24,10 +24,10 @@ send mass email in one click, mass payslip send by email, mass employee payslip 
     'currency': "EUR",
     'depends': ['base','hr_payroll'],
     'data': [
-            # 'security/ir.model.access.csv',
+            'security/ir.model.access.csv',
             'views/employee_payslip.xml',
             'views/employee_template.xml',
-            # 'views/employee_multiple_send_payslip.xml'
+            'views/employee_multiple_send_payslip.xml'
             ],
     'installable': True,
     'auto_install': False,
