@@ -207,10 +207,10 @@ class StockPicking(models.Model):
                                 print('****************************************')
                                 line.analytic_account_id = rec.id
                                 break
-                            # elif self.invoice_user_id.id in rec.user_add_ids.ids:
-                            #     print('****************************************2222')
-                            #     line.analytic_account_id = rec.id
-                            #     break
+                            elif self.user_id.id in rec.user_add_ids.ids:
+                                print('****************************************2222')
+                                line.analytic_account_id = rec.id
+                                break
                             elif rec.undefined_sales_person == True:
                                 print('****************************************33333')
                                 line.analytic_account_id = rec.id
@@ -227,10 +227,10 @@ class StockPicking(models.Model):
                             print('****************************************')
                             line.analytic_account_id = rec.id
                             break
-                        # elif self.invoice_user_id.id in rec.user_add_ids.ids:
-                        #     print('****************************************2222')
-                        #     line.analytic_account_id = rec.id
-                        #     break
+                        elif self.user_id.id in rec.user_add_ids.ids:
+                            print('****************************************2222')
+                            line.analytic_account_id = rec.id
+                            break
                         elif rec.undefined_sales_person == True:
                             print('****************************************33333')
                             line.analytic_account_id = rec.id
