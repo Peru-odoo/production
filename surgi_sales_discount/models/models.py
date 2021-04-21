@@ -3,9 +3,9 @@
 from odoo import models, fields, api
 
 
-# class surgi-sales-discount(models.Model):
-#     _name = 'surgi-sales-discount.surgi-sales-discount'
-#     _description = 'surgi-sales-discount.surgi-sales-discount'
+# class surgi_sales_discount(models.Model):
+#     _name = 'surgi_sales_discount.surgi_sales_discount'
+#     _description = 'surgi_sales_discount.surgi_sales_discount'
 
 #     name = fields.Char()
 #     value = fields.Integer()

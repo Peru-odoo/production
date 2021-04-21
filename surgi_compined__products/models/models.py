@@ -183,7 +183,7 @@ class compined_sales_order(models.Model):
                         compions[comp]['q'] = itemsno
 
                 compions
-                self._cr.execute("delete from product_compination_movement_surgi where sales_order_id =%d" % moveid)
+                self._cr.execute("delete from product_compination_movement_surgi t where t.sales_order_id =%d" % moveid)
                 for r in compions:
                     if compions[r]['q'] > 0:
                         self.env["product.compination.movement.surgi"].create(
@@ -195,7 +195,7 @@ class compined_sales_order(models.Model):
                             }
                         )
 
-                self._cr.execute("delete from product_item_movement_surgi where sale_order_id =%d" % moveid)
+                self._cr.execute("delete from product_item_movement_surgi t where t.sale_order_id =%d" % moveid)
                 for p in products:
                     if products[p]['totalq'] > 0:
                         print(p)
@@ -334,7 +334,7 @@ class account_move(models.Model):
                         compions[comp]['q'] = itemsno
 
                 compions
-                self._cr.execute("delete from product_compination_movement_surgi where compination_move =%d" % moveid)
+                self._cr.execute("delete from product_compination_movement_surgi t where t.compination_move =%d" % moveid)
                 for r in compions:
                     if compions[r]['q'] > 0:
                         self.env["product.compination.movement.surgi"].create(
@@ -346,7 +346,7 @@ class account_move(models.Model):
                             }
                         )
 
-                self._cr.execute("delete from product_item_movement_surgi where move_id =%d" % moveid)
+                self._cr.execute("delete from product_item_movement_surgi t where t.move_id =%d" % moveid)
                 for p in products:
                     if products[p]['totalq'] > 0:
                         print(p)
@@ -458,7 +458,7 @@ class account_move(models.Model):
                 print(products)
                 # compinations_items = [(5,)]
                 compinations_items = []
-                self._cr.execute("delete from product_compination_movement_surgi where compination_move =%d" % moveid)
+                self._cr.execute("delete from product_compination_movement_surgi t where t.compination_move =%d" % moveid)
                 for r in res:
                     if r[1]['q'] > 0:
                         self.env["product.compination.movement.surgi"].create(
@@ -470,7 +470,7 @@ class account_move(models.Model):
                             }
                         )
 
-                self._cr.execute("delete from product_item_movement_surgi where move_id =%d" % moveid)
+                self._cr.execute("delete from product_item_movement_surgi t where t.move_id =%d" % moveid)
                 for p in products:
                     if products[p]['totalq'] > 0:
                         print(p)
@@ -692,7 +692,7 @@ class stock_picking_inhert_3(models.Model):
                         compions[comp]['q'] = itemsno
 
                 compions
-                self._cr.execute("delete from product_compination_movement_surgi where compination_stock_pick =%d" % moveid)
+                self._cr.execute("delete from product_compination_movement_surgi t where t.compination_stock_pick =%d" % moveid)
                 for r in compions:
                     if compions[r]['q'] > 0:
                         self.env["product.compination.movement.surgi"].create(
@@ -704,7 +704,7 @@ class stock_picking_inhert_3(models.Model):
                             }
                         )
 
-                self._cr.execute("delete from product_item_movement_surgi where Stock_pick_id =%d" % moveid)
+                self._cr.execute('delete from product_item_movement_surgi t where t."Stock_pick_id" =%d' % moveid)
                 for p in products:
                     if products[p]['totalq'] > 0:
                         print(p)
@@ -826,7 +826,7 @@ class stock_picking_inhert_3(models.Model):
                 print(products)
                 # compinations_items = [(5,)]
                 compinations_items = []
-                self._cr.execute("delete from product_compination_movement_surgi where compination_move =%d" % moveid)
+                self._cr.execute("delete from product_compination_movement_surgi t where t.compination_move =%d" % moveid)
                 for r in res:
                     if r[1]['q'] > 0:
                         self.env["product.compination.movement.surgi"].create(
@@ -838,7 +838,7 @@ class stock_picking_inhert_3(models.Model):
                             }
                         )
 
-                self._cr.execute("delete from product_item_movement_surgi where move_id =%d" % moveid)
+                self._cr.execute("delete from product_item_movement_surgi t where t.move_id =%d" % moveid)
                 for p in products:
                     if products[p]['totalq'] > 0:
                         print(p)
