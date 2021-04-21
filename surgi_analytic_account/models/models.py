@@ -188,34 +188,55 @@ class StockPicking(models.Model):
     def compute_analytic_account(self):
 
         analytic_account_obj = self.env['account.analytic.account'].search([])
+        lines_list = []
         for line in self.move_ids_without_package:
-            part = False
+            if self.partner_id.cost_center_ids:
 
-            if self.partner_id.analytic_account_id:
-                line.analytic_account_id = self.partner_id.analytic_account_id.id
+                for cost in self.partner_id.cost_center_ids:
+                    print(line.product_id.product_id.id, '---------------', cost.product_line_id.id)
+                    if line.product_id.product_id.id == cost.product_line_id.id:
+                        print('---------------------------------------')
+                        line.analytic_account_id = cost.analytic_account_id.id
+                        lines_list.append(line.product_id.product_id.id)
+
+                if line.product_id.product_id.id not in lines_list:
+                    print(line.product_id.product_id.id, "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", lines_list)
+                    for rec in analytic_account_obj:
+                        if line.product_id.product_id.id == rec.product_id.id:
+                            if rec.user_id.id == self.user_id.id:
+                                print('****************************************')
+                                line.analytic_account_id = rec.id
+                                break
+                            # elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                            #     print('****************************************2222')
+                            #     line.analytic_account_id = rec.id
+                            #     break
+                            elif rec.undefined_sales_person == True:
+                                print('****************************************33333')
+                                line.analytic_account_id = rec.id
+                                break
+
+
+                        else:
+                            print('2222222222222222222222222222222222222')
+                            line.analytic_account_id = False
             else:
                 for rec in analytic_account_obj:
-                    if line.product_id.product_id == rec.product_id:
-                        # part = True
-                        if rec.user_id == self.user_sales_id:
+                    if line.product_id.product_id.id == rec.product_id.id:
+                        if rec.user_id.id == self.user_id.id:
+                            print('****************************************')
                             line.analytic_account_id = rec.id
                             break
-
-                        elif self.user_sales_id in rec.user_add_ids:
-                            line.analytic_account_id = rec.id
-                            break
-
+                        # elif self.invoice_user_id.id in rec.user_add_ids.ids:
+                        #     print('****************************************2222')
+                        #     line.analytic_account_id = rec.id
+                        #     break
                         elif rec.undefined_sales_person == True:
+                            print('****************************************33333')
                             line.analytic_account_id = rec.id
                             break
-                        else:
-                            line.analytic_account_id = False
-                            break
+
+
                     else:
+                        print('2222222222222222222222222222222222222')
                         line.analytic_account_id = False
-                        # break
-
-# class StockMove(models.Model):
-#     _inherit = 'stock.move'
-#     analytic_account = fields.Many2one(comodel_name="account.analytic.account", string="Analytic Account",)
-
