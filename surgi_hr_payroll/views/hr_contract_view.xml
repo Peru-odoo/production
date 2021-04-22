@@ -104,6 +104,7 @@
                         <group name="Advanced Commissions" string="Monthly Advanced Commissions in Cash">
                         <field name="advance_sales_comm"/>
                         <field name="advance_collection_comm"/>
+                        <field name="phone_limit"/>
                     </group>
                     </group>
                     <group>

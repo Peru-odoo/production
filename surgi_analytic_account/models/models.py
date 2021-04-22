@@ -141,6 +141,10 @@ class AccountMove(models.Model):
                                 print('****************************************')
                                 line.analytic_account_id = rec.id
                                 break
+                            elif rec.salesteam_id == self.team_id:
+                                print('****************************************salesteam')
+                                line.analytic_account_id = rec.id
+                                break
                             elif self.invoice_user_id.id in rec.user_add_ids.ids:
                                 print('****************************************2222')
                                 line.analytic_account_id = rec.id
@@ -159,6 +163,10 @@ class AccountMove(models.Model):
                     if line.product_id.product_id.id == rec.product_id.id:
                         if rec.user_id.id == self.invoice_user_id.id:
                             print('****************************************')
+                            line.analytic_account_id = rec.id
+                            break
+                        elif rec.salesteam_id == self.team_id:
+                            print('****************************************salesteam')
                             line.analytic_account_id = rec.id
                             break
                         elif self.invoice_user_id.id in rec.user_add_ids.ids:
@@ -203,11 +211,15 @@ class StockPicking(models.Model):
                     print(line.product_id.product_id.id, "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", lines_list)
                     for rec in analytic_account_obj:
                         if line.product_id.product_id.id == rec.product_id.id:
-                            # if rec.user_id.id == self.user_id.id:
-                            #     print('****************************************')
-                            #     line.analytic_account_id = rec.id
-                            #     break
-                            if self.user_id.id in rec.user_add_ids.ids:
+                            if rec.user_id.id == self.user_id.id:
+                                print('****************************************')
+                                line.analytic_account_id = rec.id
+                                break
+                            elif rec.salesteam_id == self.user_id.sale_team_id:
+                                print('****************************************salesteam')
+                                line.analytic_account_id = rec.id
+                                break
+                            elif self.user_id.id in rec.user_add_ids.ids:
                                 print('****************************************2222')
                                 line.analytic_account_id = rec.id
                                 break
@@ -223,11 +235,15 @@ class StockPicking(models.Model):
             else:
                 for rec in analytic_account_obj:
                     if line.product_id.product_id.id == rec.product_id.id:
-                        # if rec.user_id.id == self.user_id.id:
-                        #     print('****************************************')
-                        #     line.analytic_account_id = rec.id
-                        #     break
-                        if self.user_id.id in rec.user_add_ids.ids:
+                        if rec.user_id.id == self.user_id.id:
+                            print('****************************************')
+                            line.analytic_account_id = rec.id
+                            break
+                        elif rec.salesteam_id == self.user_id.sale_team_id:
+                            print('****************************************salesteam')
+                            line.analytic_account_id = rec.id
+                            break
+                        elif self.user_id.id in rec.user_add_ids.ids:
                             print('****************************************2222')
                             line.analytic_account_id = rec.id
                             break

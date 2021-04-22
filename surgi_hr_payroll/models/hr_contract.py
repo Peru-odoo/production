@@ -29,6 +29,7 @@ class HrContract(models.Model):
     sin_variable_salary = fields.Float(string="Variable Salary SIN", digits=dp.get_precision('Payroll'),track_visibility='onchange')
     allowances = fields.Float(string="Allowances", digits=dp.get_precision('Payroll'),track_visibility='onchange')
     prev_raise = fields.Float(string="previous Annual Raises", digits=dp.get_precision('Payroll'),track_visibility='onchange')
+    phone_limit = fields.Float(string="Phone Limit", digits=dp.get_precision('Payroll'),track_visibility='onchange')
 
     wage = fields.Monetary('Wage', required=True, tracking=True, help="Employee's monthly gross wage.",compute='calculate_wage')
 
