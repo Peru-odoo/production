@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <!-- Tree view -->
     <record id="manager_answer_line_tree_view" model="ir.ui.view">
         <field name="name">answer.row.tree</field>
@@ -11,19 +10,23 @@
                 <field name="employee_id" readonly="1"/>
                 <field name="question_id" readonly="1"/>
                 <field name="name" readonly="1"/>
-                <field name="collection_answer"
-                       attrs="{'readonly':[('is_manager','!=',True),('is_parent','!=',True)]}"/>
-                <field name="hr_answer" attrs="{'readonly':[('is_hr','!=',True)]}"/>
                 <field name="answer_date" readonly="1"/>
                 <field name="manager_check"
-                       attrs="{'readonly':[('is_manager','!=',True)]}"/>
-                <field name="parent_check" attrs="{'readonly':[('is_parent','!=',True)]}"/>
-                <field name="hr_check" attrs="{'readonly':[('is_hr','!=',True)]}"/>
-                <field name="job_analysis_type_id" attrs="{'readonly':[('is_hr','!=',True)]}"/>
+                       attrs="{'readonly':['|',('is_manager','!=',True),('state','!=','draft')]}"/>
+                <field name="collection_answer" force_save="1"
+                       attrs="{'readonly':['|',('is_manager','!=',True),('state','!=','draft')]}"/>
+                <field name="parent_check" attrs="{'readonly':['|',('is_parent','!=',True),('state','!=','manager')]}"/>
+                <field name="parent_answer" force_save="1"
+                       attrs="{'readonly':['|',('is_parent','!=',True),('state','!=','manager')]}"/>
+                <field name="hr_check" attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
+                <field name="hr_answer" force_save="1" attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
+                <field name="job_analysis_type_id"
+                       attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
                 <field name="answer_id" invisible="1"/>
                 <field name="is_manager" invisible="1"/>
                 <field name="is_parent" invisible="1"/>
                 <field name="is_hr" invisible="1"/>
+                <field name="is_access" invisible="1"/>
                 <field name="state" widget="badge" decoration-info="state in ('manager','parent')"
                        decoration-success="state == 'hr'"/>
                 <button name="manager_approve" type="object"
@@ -32,11 +35,10 @@
                 <button name="parent_approve" type="object"
                         attrs="{'invisible': ['|',('state', '!=', 'manager'),('is_parent', '!=', True)]}"
                         string="Parent Approve" class="oe_highlight"/>
-                <button name="hr_approve" type="object" groups="job_analysis.group_job_analysis_manager"
-                        string="HR Approve" class="oe_highlight" states="parent"/>
+                <button name="hr_approve" type="object" attrs="{'invisible': ['|',('state', '!=', 'parent'),('is_hr', '!=', True)]}"
+                        string="HR Approve" class="oe_highlight"/>
                 <button name="reset" type="object"
-                        groups="job_analysis.group_job_analysis_manager"
-                        attrs="{'invisible': [('state', 'not in', ('manager','parent','hr'))]}"
+                        attrs="{'invisible': ['|',('state', 'not in', ('manager','parent','hr')),('is_access','!=',True)]}"
                         string="Reset"/>
             </tree>
         </field>
@@ -180,7 +182,7 @@
     </record>
 
     <menuitem id="menu_manager_parent" parent="menu_job_analysis"
-              name="Manager" sequence="3" groups="job_analysis.group_job_analysis_user"/>
+              name="Managers" sequence="3" groups="job_analysis.group_job_analysis_user"/>
 
     <menuitem id="menu_manager_approve_analysis" action="action_manager_answer_row"
               parent="menu_manager_parent"

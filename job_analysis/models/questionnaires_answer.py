@@ -90,8 +90,9 @@ class Answer(models.Model):
     _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
 
     name = fields.Text('Employee Answer')
-    collection_answer = fields.Text('Final Answer')
-    hr_answer = fields.Text('HR Answer')
+    collection_answer = fields.Text('Manager Comment')
+    parent_answer = fields.Text('Parent Comment')
+    hr_answer = fields.Text('HR Comment')
     answer_date = fields.Datetime(readonly=True)
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', related='answer_id.employee_id', readonly=True)
@@ -102,14 +103,15 @@ class Answer(models.Model):
     position_id = fields.Many2one(comodel_name="hr.job", string="Position", readonly=True, related='employee_id.job_id',store=True)
     question_id = fields.Many2one(related='answer_id.question_id', store=True)
     batch_id = fields.Many2one(related='answer_id.batch_id', store=True)
-    manager_check = fields.Boolean('Manager Checker')
-    parent_check = fields.Boolean('Parent Checker')
-    hr_check = fields.Boolean('HR Checker')
+    manager_check = fields.Boolean('Manager')
+    parent_check = fields.Boolean('Parent')
+    hr_check = fields.Boolean('HR')
     job_analysis_type_id = fields.Many2one('job.analysis.type', string='Job Analysis Type')
     answer_id = fields.Many2one('answer.line')
     is_manager = fields.Boolean(compute='_compute_groups')
     is_parent = fields.Boolean(compute='_compute_groups')
     is_hr = fields.Boolean(compute='_compute_groups')
+    is_access = fields.Boolean(compute='_compute_groups')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('manager', 'Manager Approved'), ('parent', 'Parent Approved'), ('hr', 'HR Approved')
@@ -121,20 +123,37 @@ class Answer(models.Model):
             self.answer_date = fields.Datetime.today()
             self.collection_answer = self.name
 
+    @api.onchange('collection_answer')
+    def onchange_collection_answer(self):
+        if self.collection_answer:
+            self.parent_answer = self.collection_answer
+
+
+    @api.onchange('parent_answer')
+    def onchange_parent_answer(self):
+        if self.parent_answer:
+            self.hr_answer = self.parent_answer
+
     def _compute_groups(self):
         for rec in self:
             if self.env.user == rec.answer_id.manager_id.user_id and rec.answer_id.manager_id.user_id:
                 rec.is_manager = True
+                rec.is_access = True
             else:
                 rec.is_manager = False
+                rec.is_access = False
             if self.env.user in rec.answer_id.answer_id.parent_manager_ids and rec.answer_id.answer_id.parent_manager_ids:
                 rec.is_parent = True
+                rec.is_access = True
             else:
                 rec.is_parent = False
+                rec.is_access = False
             if self.env.user.has_group('job_analysis.group_job_analysis_manager'):
                 rec.is_hr = True
+                rec.is_access = True
             else:
                 rec.is_hr = False
+                rec.is_access = False
 
 
     def manager_approve(self):

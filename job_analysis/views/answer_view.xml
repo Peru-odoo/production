@@ -109,11 +109,25 @@
         <field name="context">{'search_default_batch': 1}</field>
     </record>
 
+    <record model="ir.actions.act_window" id="action_my_answer_registered">
+        <field name="name">MY Registered</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">questionnaires.answer</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="questionnaires_answer_search"/>
+        <field name="domain">[('employee_id.user_id', '=', uid)]</field>
+        <field name="context">{'search_default_batch': 1}</field>
+    </record>
+
 
     <menuitem id="menu_questionnaires_answer_parent" parent="menu_job_analysis"
               name="Questionnaires Answer" sequence="2" groups="job_analysis.group_job_analysis_user"/>
 
-    <menuitem id="menu_questionnaires_answer" action="action_questionnaires_answer"
+    <menuitem id="menu_questionnaires_my_answer_request" action="action_my_answer_registered"
               parent="menu_questionnaires_answer_parent"
-              name="Questionnaires Answer" sequence="1"/>
+              name="My Registered" sequence="1"/>
+    <menuitem id="menu_questionnaires_all_answer_request" action="action_questionnaires_answer"
+              parent="menu_questionnaires_answer_parent"
+              name="All Registered" sequence="2"/>
 </odoo>
