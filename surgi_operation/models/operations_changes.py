@@ -252,20 +252,21 @@ class operation_operation(models.Model):
             for quant in quants:
                 price = quant.product_id.lst_price
                 for item in self.hospital_id.property_product_pricelist.item_ids:
-                    if quant.product_id.id == item.product_id.id:
+                    if quant.product_id.id == item.product_id.id  :
                         price = item.fixed_price
-                line = [0, False, {
-                    'qty_delivered': 0,
-                    'product_id': quant.product_id.id,
-                    'product_uom': quant.product_id.uom_id.id,
-                    'sequence': quant.product_id.sequence,
-                    'price_unit': price,
-                    'product_uom_qty': quant.quantity,
-                    'state': 'draft',
-                    # 'qty_delivered_updateable': True,
-                    'invoice_status': 'no',
-                    'name': quant.product_id.name, }]
-                order_lines.append(line)
+                if quant.quantity > 0:
+                    line = [0, False, {
+                        'qty_delivered': 0,
+                        'product_id': quant.product_id.id,
+                        'product_uom': quant.product_id.uom_id.id,
+                        'sequence': quant.product_id.sequence,
+                        'price_unit': price,
+                        'product_uom_qty': quant.quantity,
+                        'state': 'draft',
+                        # 'qty_delivered_updateable': True,
+                        'invoice_status': 'no',
+                        'name': quant.product_id.name, }]
+                    order_lines.append(line)
 
             values['order_line'] = order_lines
             print ("vals: " + str(values))
@@ -275,16 +276,19 @@ class operation_operation(models.Model):
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
             for quant in quants:
-                if quant.product_id.tracking == 'lot' or quant.product_id.tracking == 'serial':
-                    line = [0, 0,
-                            {'product_id': quant.product_id.id,
-                             'product_uom_qty': quant.quantity,
-                             'lot_no': quant.lot_id.name,
-                             }]
-                    scan_product_ids_lst.append(line)
+                if quant.product_id.tracking == 'lot' or quant.product_id.tracking == 'serial' :
+                    if quant.quantity>0:
+                        line = [0, 0,
+                                {'product_id': quant.product_id.id,
+                                 'product_uom_qty': quant.quantity,
+                                 'lot_no': quant.lot_id.name,
+                                 }]
+                        scan_product_ids_lst.append(line)
             for picking in pickings:
                 picking.scan_products_ids = scan_product_ids_lst
-            print (sale_order)
+                picking.synchronize_scan()
+                picking.compute_analytic_account()
+                picking.button_validate()
             print ("Sale_order: " + str(sale_order))
         else:
             raise Warning('No Quants Available in Hanged Location!')
@@ -319,38 +323,44 @@ class operation_operation(models.Model):
             for quant in quants:
                 price = quant.product_id.lst_price
                 for item in self.hospital_id.property_product_pricelist.item_ids:
-                    if quant.product_id.id == item.product_id.id:
+                    if quant.product_id.id == item.product_id.id and quant.quantity>0:
                         price = item.fixed_price
-                line = [0, False, {
-                    'qty_delivered': 0,
-                    'product_id': quant.product_id.id,
-                    'product_uom': quant.product_id.uom_id.id,
-                    'sequence': quant.product_id.sequence,
-                    'price_unit': price,
-                    'product_uom_qty': quant.quantity,
-                    'state': 'draft',
-                    # 'qty_delivered_updateable': True,
-                    'invoice_status': 'no',
-                    'name': quant.product_id.name, }]
-                order_lines.append(line)
+                if quant.quantity > 0:
+                    line = [0, False, {
+                        'qty_delivered': 0,
+                        'product_id': quant.product_id.id,
+                        'product_uom': quant.product_id.uom_id.id,
+                        'sequence': quant.product_id.sequence,
+                        'price_unit': price,
+                        'product_uom_qty': quant.quantity,
+                        'state': 'draft',
+                        # 'qty_delivered_updateable': True,
+                        'invoice_status': 'no',
+                        'name': quant.product_id.name, }]
+                    order_lines.append(line)
 
             values['order_line'] = order_lines
             print ("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
+
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
             for quant in quants:
                 if quant.product_id.tracking == 'lot' or quant.product_id.tracking == 'serial':
-                    line = [0, 0,
-                            {'product_id': quant.product_id.id,
-                             'product_uom_qty': quant.quantity,
-                             'lot_no': quant.lot_id.name,
-                             }]
-                    scan_product_ids_lst.append(line)
+                    if quant.quantity>0:
+                        line = [0, 0,
+                                {'product_id': quant.product_id.id,
+                                 'product_uom_qty': quant.quantity,
+                                 'lot_no': quant.lot_id.name,
+                                 }]
+                        scan_product_ids_lst.append(line)
             for picking in pickings:
                 picking.scan_products_ids = scan_product_ids_lst
+                picking.synchronize_scan()
+                picking.compute_analytic_account()
+                picking.button_validate()
             print (sale_order)
             print ("Sale_order: " + str(sale_order))
         else:
@@ -418,6 +428,7 @@ class operation_operation(models.Model):
                     scan_product_ids_lst.append(line)
             for picking in pickings:
                 picking.scan_products_ids = scan_product_ids_lst
+                picking.button_validate()
             print (sale_order)
             print ("Sale_order: " + str(sale_order))
         else:
@@ -637,6 +648,7 @@ class operation_operation(models.Model):
                                         help="Used ot show picking type delivery type")
 
     def set_operation_location_freeze_from_operation(self):
+        x=self.location_id.id
         #self.location_id.operation_location_freeze = True
         return {
             'name': 'You Will freeze Location with  these Products',
