@@ -67,7 +67,7 @@ class stock_biking_inherts_dummy(models.Model):
         operations = self.env['stock.quant'].search([('location_id', '=', self.location_id.id), ('quantity', '>', 0)])
         for op in operations:
             if op.product_id.isfakedproduct:
-                raise UserError("this Location has Dummy Item In Operation "+str(op.name)+" Quantities")
+                raise UserError("this Location has Dummy Item In Operation ")
 
         pass
     def setoperationlocationfreeze(self):
@@ -233,62 +233,30 @@ class stock_biking_faked_item(models.Model):
             # )
             pass
 
-        # for i in stockpick.move_line_ids:
-        #     if i.product_id.id == fakeproduct.id:
-        #         i.product_uom_qty=totalquantity
-        #         x=False
-        # if x:
-        #     move_id={
-        #         "name":fakeproduct.name,
-        #         "company_id":stockpick.company_id.id,
-        #         "product_id":fakeproduct.id,
-        #         #"product_qty":totalquantity,
-        #         "product_uom_qty":totalquantity,
-        #         'product_uom':fakeproduct.product_tmpl_id.uom_id.id,
-        #         "location_id":stockpick.location_id.id,
-        #         "location_dest_id":stockpick.location_dest_id.id,
-        #         "picking_id":stockpick.id,
-        #         "partner_id":stockpick.partner_id.id
-        #     }
-        #     moveids=self.env["stock.move"].create(move_id)
-        #     if moveids:
-        #         productuom=fakeproduct.product_tmpl_id.uom_id.id
-        #         stockpick.move_line_ids.create({'product_id':fakeproduct.id,'move_id':moveids.id,'product_uom_qty':totalquantity,'picking_id':stockpick.id,'company_id':stockpick.company_id,"product_uom_id":fakeproduct.product_tmpl_id.uom_id.id,'location_id':stockpick.location_id.id,'location_dest_id':stockpick.location_dest_id.id})
-        #     else:
-        #         raise ValidationError("move not created")
-        # print("x")
+        
     pass
 class Operation_Dummy_inhert(models.Model):
     _inherit="operation.operation"
     def checkDummyItems(self):
-        # pickings = self.env['stock.picking'].search([('operation_id', '=', self.id)])
-        # pickingerrmsg=""
-        # for picking in pickings:
-        #     if picking.nofakeditems > 0:
-        #         pickingerrmsg += " === " + str(picking.name)
-        #         # raise ValidationError("u Can't Freez Location You have dummy product in "+str(picking.name))
-        # if pickingerrmsg:
-        #     raise ValidationError("u Can't Freez Location You have dummy product in " + pickingerrmsg)
-
         operations = self.env['stock.quant'].search([('location_id', '=', self.location_id.id), ('quantity', '>', 0)])
         for op in operations:
             if op.product_id.isfakedproduct:
-                raise UserError("this Location has Dummy Item In Operation " + str(op.name) + " Quantities")
+                raise UserError("this Location has Dummy Item In Operation ")
         #for line in
 
         pass
     def create_draft_sales_order(self):
         self.checkDummyItems()
-        super(Operation_Dummy_inhert,self).create_draft_sales_order()
+        return super(Operation_Dummy_inhert,self).create_draft_sales_order()
         pass
     def create_sales_order(self):
         self.checkDummyItems()
-        super(Operation_Dummy_inhert, self).create_sales_order()
+        return super(Operation_Dummy_inhert, self).create_sales_order()
         pass
     def create_delivery_sales_order(self):
         self.checkDummyItems()
-        super(Operation_Dummy_inhert, self).create_delivery_sales_order()
+        return super(Operation_Dummy_inhert, self).create_delivery_sales_order()
         pass
     def set_operation_location_freeze_from_operation(self):
         self.checkDummyItems()
-        super(Operation_Dummy_inhert, self).set_operation_location_freeze_from_operation()
+        return super(Operation_Dummy_inhert, self).set_operation_location_freeze_from_operation()

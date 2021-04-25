@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "surgi_dummy_Items",
+    'name': "surgi_dummy_items",
 
     'summary': """
        Sock Picking dummy items""",

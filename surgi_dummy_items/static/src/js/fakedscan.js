@@ -174,7 +174,7 @@ console.log("6");
                     }
                     else if(this.stock_data.allitems[scan_box]==null){
                       this.stock_data.newitems[scan_box]={
-                        "serial":scan_box,"quantity":1,'stock_bikeid':this.stock_data.active_id
+                        "serial":scan_box,"quantity":1,'stock_bikeid':this.stock_data.active_id,'name':$("#default_code").val(),'expirartion':$("#expiration_date").val()
                         };
                         this.stock_data.allitems[scan_box]={
                         "serial":scan_box,"quantity":1
