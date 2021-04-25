@@ -77,7 +77,7 @@ class product_items_move_surgi(models.Model):
 
 class compined_sales_order(models.Model):
     _inherit="sale.order"
-    items_compined_id = fields.One2many('product.compination.movement.surgi', string="Products", inverse_name="sales_order_id")
+    items_compined_id = fields.One2many('product.compination.movement.surgi', string="Compined Products", inverse_name="sales_order_id")
     items_move_id = fields.One2many('product.item.movement.surgi', string="Products", inverse_name="sale_order_id")
 
     def changed_line_ids(self):
@@ -166,8 +166,8 @@ class compined_sales_order(models.Model):
                     accepted = True
                     itemsno = -1
                     for k in compions[comp]['groups']:
-                        if k != False:
-                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity']:
+                        if k != False :
+                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity'] or compions[comp]['groups'][k]['quantity']<=0:
                                 accepted = False
                                 break
                             else:
@@ -318,7 +318,7 @@ class account_move(models.Model):
                     itemsno = -1
                     for k in compions[comp]['groups']:
                         if k != False:
-                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity']:
+                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity'] or compions[comp]['groups'][k]['quantity']<=0:
                                 accepted = False
                                 break
                             else:
@@ -603,7 +603,7 @@ class stock_picking_inhert_3(models.Model):
                 for line in rec.move_line_ids_without_package:
                     if line.pro_group != '' and line.pro_group != 'unknown':#check if the product have group
                         if line.pro_group in products.keys():
-                            products[line.pro_group]['totalq'] += line.quantity
+                            products[line.pro_group]['totalq'] += line.qty_done
                         else:
                             groups.append(line.pro_group)
                             products[line.pro_group] = {
@@ -613,11 +613,11 @@ class stock_picking_inhert_3(models.Model):
                             }
                     else: # in not have group
                         if line.product_id.name in products.keys():
-                            products[line.product_id.name]['totalq'] += line.quantity
+                            products[line.product_id.name]['totalq'] += line.qty_done
                         else:
                             groups.append(line.product_id.name)
                             products[line.product_id.name] = {
-                                'totalq': line.quantity,
+                                'totalq': line.qty_done,
                                 'products': line.product_id.id,
                                 'pro_name': line.product_id.name
                             }
@@ -676,7 +676,7 @@ class stock_picking_inhert_3(models.Model):
                     itemsno = -1
                     for k in compions[comp]['groups']:
                         if k != False:
-                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity']:
+                            if products[k]['totalq'] < compions[comp]['groups'][k]['quantity'] or compions[comp]['groups'][k]['quantity']<=0:
                                 accepted = False
                                 break
                             else:
