@@ -286,7 +286,7 @@ console.log("6");
                 $("#limitReachedModal").modal();
             }
             if (self.stock_data.createdScansObj[scan_box] && self.stock_data.createdScansObj[scan_box][product_id]) {
-                self.stock_data.createdScansObj[scan_box][product_id].product_uom_qty = qty;
+                //self.stock_data.createdScansObj[scan_box][product_id].product_uom_qty = qty;
             }
             self.stock_data.addedScansObj[scan_box][product_id].product_uom_qty = qty;
             $('.qty').each(function (el) {
@@ -375,7 +375,7 @@ console.log("6");
                                 var html = '<tr id="' + encoded + '"><td><input type="hidden" class="lineProductId" value="' + codeProduct['id'] + '" />' + codeProduct['name'] + '</td><td><input type="number" class="qty" value="' + qty + '"/></td><td><span class="scan_box_line">' + scan_box + '</span></td><td>' + scan_box + '</td><td>' + $.datepicker.formatDate("mm/dd/yy", date) + '</td><td style="cursor:pointer;" class="deleteScan"><span class="fa fa-trash-o" name="delete"></span></td></tr>';
                                 $('table tbody').append(html);
                                 self.stock_data.addedScansObj[scan_box][codeProduct['id']] = {'stock_picking_id': parseInt(self.stock_data.res_id),'company_id':self.companyid, 'product_id': codeProduct['id'], 'product_uom_qty': 1, 'lot_no': scan_box, 'lot_name': scan_box, 'expiration_date': expiration_date};
-                                self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'], 'product_qty': 1,'company_id':this.stock_data.companyid, 'lot_no': codeProduct['name'], 'lot_name': scan_box, 'name': scan_box, 'expiration_date': expiration_date, 'ref': default_code};
+                                self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'],'company_id':this.stock_data.companyid, 'name': scan_box,  'ref': default_code};
                                 self.stock_data.data[scan_box][Object.keys(self.stock_data.data[scan_box]).length] = {
                                     'product_id': codeProduct['id'],
                                     'lot_no': scan_box,
@@ -400,7 +400,7 @@ console.log("6");
                                     if(scan.product_qty === -1 || scan.product_qty > qty){
                                         qtyInput.val(qty + 1);
                                         if (self.stock_data.createdScansObj[scan_box][product_id]) {
-                                            self.stock_data.createdScansObj[scan_box][product_id].product_qty = qty + 1;
+                                           // self.stock_data.createdScansObj[scan_box][product_id].product_qty = qty + 1;
                                         }
                                         self.stock_data.addedScansObj[scan_box][product_id].product_uom_qty = qty + 1;
                                         self.stock_data.addedScansObj[scan_box][product_id].product_uom_qty = qty + 1;
@@ -453,7 +453,7 @@ console.log("6");
                             html = '<tr id="' + encoded + '"><td><input type="hidden" class="lineProductId" value="' + codeProduct['id'] + '" />' + codeProduct['name'] + '</td><td><input type="number" class="qty" value="' + qty + '"/></td><td><span class="scan_box_line">' + scan_box + '</span></td><td>' + scan_box + '</td><td>' + $.datepicker.formatDate("mm/dd/yy", date) + '</td><td style="cursor:pointer;" class="deleteScan"><span class="fa fa-trash-o" name="delete"></span></td></tr>';
                             $('table tbody').append(html);
                             self.stock_data.addedScansObj[scan_box][codeProduct['id']] = {'stock_picking_id': parseInt(self.stock_data.res_id),'company_id':self.companyid, 'product_id': codeProduct['id'], 'product_uom_qty': 1, 'lot_no': scan_box, 'lot_name': scan_box, 'expiration_date': expiration_date};
-                            self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'], 'product_qty': 1,'company_id':this.stock_data.companyid, 'lot_no': codeProduct['name'], 'lot_name': scan_box, 'name': scan_box, 'expiration_date': expiration_date, 'ref': default_code};
+                            self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'],'company_id':this.stock_data.companyid, 'name': scan_box, 'ref': default_code};
                             self.stock_data.data[scan_box] = [{
                                 'product_id': codeProduct['id'],
                                 'lot_no': scan_box,
@@ -533,7 +533,7 @@ console.log("6");
                                     if(scan.product_qty === -1 || scan.product_qty > qty){
                                         qtyInput.val(qty + 1);
                                         if (self.stock_data.createdScansObj[scan_box][product_id]) {
-                                            self.stock_data.createdScansObj[scan_box][product_id].product_qty = qty + 1;
+                                            //self.stock_data.createdScansObj[scan_box][product_id].product_qty = qty + 1;
                                         }
                                         self.stock_data.addedScansObj[scan_box][product_id].product_uom_qty = qty + 1;
                                         $('#productCode').html(self.stock_data.products[product_id]['default_code']);
@@ -653,7 +653,7 @@ console.log("6");
                                         html = '<tr id="' + encoded + '"><td><input type="hidden" class="lineProductId" value="' + codeProduct['id'] + '" />' + codeProduct['name'] + '</td><td><input type="number" class="qty" value="' + qty + '"/></td><td><span class="scan_box_line">' + scan_box + '</span></td><td>' + lot_name + '</td><td>' + $.datepicker.formatDate("mm/dd/yy", date) + '</td><td style="cursor:pointer;" class="deleteScan"><span class="fa fa-trash-o" name="delete"></span></td></tr>';
                                         $('table tbody').append(html);
                                         self.stock_data.addedScansObj[scan_box][codeProduct['id']] = {'stock_picking_id': parseInt(self.stock_data.res_id), 'product_id': codeProduct['id'], 'product_uom_qty': 1, 'lot_no': scan_box, 'lot_name': lot_name, 'expiration_date': ex_date};
-                                        self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'], 'product_qty': 1,'company_id': this.stock_data.companyid , 'lot_no': codeProduct['name'], 'lot_name': lot_name, 'name': scan_box, 'expiration_date': ex_date, 'ref': codeProduct['default_code']};
+                                        self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'],'company_id': this.stock_data.companyid , 'name': scan_box, 'ref': codeProduct['default_code']};
                                         self.stock_data.data[scan_box][0] = {
                                             'product_id': codeProduct['id'],
                                             'lot_no': scan_box,
@@ -666,7 +666,7 @@ console.log("6");
                                         html = '<tr id="' + encoded + '"><td><input type="hidden" class="lineProductId" value="' + codeProduct['id'] + '" />' + codeProduct['name'] + '</td><td><input type="number" class="qty" value="' + qty + '"/></td><td><span class="scan_box_line">' + scan_box + '</span></td><td>' + lot_name + '</td><td>' + $.datepicker.formatDate("mm/dd/yy", date) + '</td><td style="cursor:pointer;" class="deleteScan"><span class="fa fa-trash-o" name="delete"></span></td></tr>';
                                         $('table tbody').append(html);
                                         self.stock_data.addedScansObj[scan_box][codeProduct['id']] = {'stock_picking_id': parseInt(self.stock_data.res_id), 'product_id': codeProduct['id'], 'product_uom_qty': 1, 'lot_no': lot_no, 'lot_name': lot_name, 'expiration_date': ex_date};
-                                        self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'], 'product_qty': 1, 'company_id' : this.stock_data.companyid ,'lot_no': codeProduct['name'], 'lot_name': lot_name, 'name': codeProduct['default_code'], 'expiration_date': ex_date, 'ref': codeProduct['default_code']};
+                                        self.stock_data.createdScansObj[scan_box][codeProduct['id']] = {'product_id': codeProduct['id'],'company_id': this.stock_data.companyid , 'name': scan_box, 'ref': codeProduct['default_code']};
                                         self.stock_data.data[scan_box][0] = {
                                             'product_id': codeProduct['id'],
                                             'lot_no': scan_box,

@@ -416,7 +416,7 @@ class stock_picking_inherit(models.Model):
                 if rec.picking_type_id.code == 'incoming':
                     product_qty = -1
                 if serial in data:
-                    if lot.expiration_date:
+                    if 'expiration_date' in lot:
                         expdate = lot.expiration_date
                     else:
                         expdate = datetime.now() + timedelta(days=+300)
@@ -424,7 +424,7 @@ class stock_picking_inherit(models.Model):
                         'product_id': lot.product_id.id,
                         'product_qty': product_qty,
                         'lot_no': serial,
-                        'lot_name': lot.lot_name,
+                        'lot_name': lot.name,
                         'expiration_date': str(expdate),
 
                     })
@@ -432,7 +432,7 @@ class stock_picking_inherit(models.Model):
                         'product_id': lot.product_id.id,
                         'product_qty': product_qty,
                         'lot_no': serial,
-                        'lot_name': lot.lot_name,
+                        'lot_name': lot.name,
                         'expiration_date': str(expdate)
                     })
                 else:

@@ -9,6 +9,8 @@ class stock_picking_scan(models.Model):
     @api.model
     def scan_from_ui(self, res_id, created, added):
         logging.warning("\n Entered Form >>>>>>>>>>>>>>>>>>>>>>>>>>\ n")
+        print(created)
+        print(added)
         rec = self.env['stock.picking'].search([('id', '=', res_id)])
         rec.scan_products_ids.unlink()
         # print rec.scan_products_ids
