@@ -53,108 +53,108 @@
   </record>
 
 
-     <record model="ir.ui.view" id="view_add_group_sales_deliver_view_inherit">
-    <field name="name">view.add.group.sales.deliver.view.inherit</field>
-    <field name="model">stock.picking</field>
-    <field name="inherit_id" ref="stock.view_picking_form"/>
+<!--     <record model="ir.ui.view" id="view_add_group_sales_deliver_view_inherit">-->
+<!--    <field name="name">view.add.group.sales.deliver.view.inherit</field>-->
+<!--    <field name="model">stock.picking</field>-->
+<!--    <field name="inherit_id" ref="stock.view_picking_form"/>-->
 
-    <field name="arch" type="xml">
- <!--
-<xpath expr="//page[@name='Detailed Operations']/field[@name='product_id']" position="after">
-     <field name="product_id"/>
-</xpath>
-
-
-
-        <xpath expr="//button[@name='button_validate']" position="after">
- <button name="changed_line_ids" type="object" icon="fa-check-square-o" class="btn btn-primary" string="Check O.K." groups="account.group_account_invoice"      attrs="{'invisible' : ['|', ('id', '=', False), ('state', 'in', ('done'))]}"/>
-        </xpath>
--->
-
-
-        <xpath expr="//page[@name='operations']" position="after">
-
-            <page name="Compined_item" string="Compined Item">
-            <group>
-                    <field name="cominations_id"  >
-                        <tree  delete="false" create="false" editable="false">
-                 <field name="compunation_name"/>
-                            <field name="compination_main_product"/>
-                 <field name="compunation_count"/>
-
-                        </tree>
-                    </field>
-            </group>
-                <group>
-
-                    <field name="items_move_id"  >
-                        <tree  delete="false" create="false" editable="false">
-                 <field name="product_name"/>
-                 <field name="product_count"/>
-                        </tree>
-                    </field>
-
-                </group>
-
-            </page>
-
-
-        </xpath>
-
-    </field>
-        </record>
+<!--    <field name="arch" type="xml">-->
+<!-- &lt;!&ndash;-->
+<!--<xpath expr="//page[@name='Detailed Operations']/field[@name='product_id']" position="after">-->
+<!--     <field name="product_id"/>-->
+<!--</xpath>-->
 
 
 
-
-    <record model="ir.ui.view" id="view_add_group_invoice_view_inherit">
-    <field name="name">view.add.group.invoice.view.inherit</field>
-    <field name="model">account.move</field>
-    <field name="inherit_id" ref="account.view_move_form"/>
-    <field name="arch" type="xml">
-        <xpath expr="//button[@name='button_draft']" position="after">
-                <button name="changed_line_ids" type="object" icon="fa-check-square-o" class="btn btn-primary" string="Check O.K." groups="account.group_account_invoice"
-                                attrs="{'invisible' : ['|', ('id', '=', False), ('state', 'not in', ('draft'))]}"/>
-            </xpath>
-
-        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='invoice_line_ids']/tree[1]/field[@name='product_id']" position="after">
+<!--        <xpath expr="//button[@name='button_validate']" position="after">-->
+<!-- <button name="changed_line_ids" type="object" icon="fa-check-square-o" class="btn btn-primary" string="Check O.K." groups="account.group_account_invoice"      attrs="{'invisible' : ['|', ('id', '=', False), ('state', 'in', ('done'))]}"/>-->
+<!--        </xpath>-->
+<!--&ndash;&gt;-->
 
 
-            <field name="pro_group"  />
+<!--        <xpath expr="//page[@name='operations']" position="after">-->
+
+<!--            <page name="Compined_item" string="Compined Item">-->
+<!--            <group>-->
+<!--                    <field name="cominations_id"  >-->
+<!--                        <tree  delete="false" create="false" editable="false">-->
+<!--                 <field name="compunation_name"/>-->
+<!--                            <field name="compination_main_product"/>-->
+<!--                 <field name="compunation_count"/>-->
+
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--            </group>-->
+<!--                <group>-->
+
+<!--                    <field name="items_move_id"  >-->
+<!--                        <tree  delete="false" create="false" editable="false">-->
+<!--                 <field name="product_name"/>-->
+<!--                 <field name="product_count"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+
+<!--                </group>-->
+
+<!--            </page>-->
 
 
-        </xpath>
+<!--        </xpath>-->
 
-        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-
-            <page name="Compined_item" string="Compined Item">
-            <group>
-                    <field name="cominations_id"  >
-                        <tree  delete="false" create="false" editable="false">
-                 <field name="compunation_name"/>
-                            <field name="compination_main_product"/>
-                 <field name="compunation_count"/>
-
-                        </tree>
-                    </field>
-            </group>
-                <group>
-
-                    <field name="items_move_id"  >
-                        <tree  delete="false" create="false" editable="false">
-                 <field name="product_name"/>
-                 <field name="product_count"/>
-                        </tree>
-                    </field>
-
-                </group>
-
-            </page>
+<!--    </field>-->
+<!--        </record>-->
 
 
-        </xpath>
-    </field>
-        </record>
+
+
+<!--    <record model="ir.ui.view" id="view_add_group_invoice_view_inherit">-->
+<!--    <field name="name">view.add.group.invoice.view.inherit</field>-->
+<!--    <field name="model">account.move</field>-->
+<!--    <field name="inherit_id" ref="account.view_move_form"/>-->
+<!--    <field name="arch" type="xml">-->
+<!--        <xpath expr="//button[@name='button_draft']" position="after">-->
+<!--                <button name="changed_line_ids" type="object" icon="fa-check-square-o" class="btn btn-primary" string="Check O.K." groups="account.group_account_invoice"-->
+<!--                                attrs="{'invisible' : ['|', ('id', '=', False), ('state', 'not in', ('draft'))]}"/>-->
+<!--            </xpath>-->
+
+<!--        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='invoice_line_ids']/tree[1]/field[@name='product_id']" position="after">-->
+
+
+<!--            <field name="pro_group"  />-->
+
+
+<!--        </xpath>-->
+
+<!--        <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">-->
+
+<!--            <page name="Compined_item" string="Compined Item">-->
+<!--            <group>-->
+<!--                    <field name="cominations_id"  >-->
+<!--                        <tree  delete="false" create="false" editable="false">-->
+<!--                 <field name="compunation_name"/>-->
+<!--                            <field name="compination_main_product"/>-->
+<!--                 <field name="compunation_count"/>-->
+
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--            </group>-->
+<!--                <group>-->
+
+<!--                    <field name="items_move_id"  >-->
+<!--                        <tree  delete="false" create="false" editable="false">-->
+<!--                 <field name="product_name"/>-->
+<!--                 <field name="product_count"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+
+<!--                </group>-->
+
+<!--            </page>-->
+
+
+<!--        </xpath>-->
+<!--    </field>-->
+<!--        </record>-->
 
 
 <!-- Create tabe for compined products in the invoice window-->
