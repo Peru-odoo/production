@@ -9,7 +9,7 @@
     'license': 'AGPL-3',
     # any module necessary for this one to work correctly
 
-    'depends': ['base','mail','hr','portal','surgi_hr_employee'],
+    'depends': ['base','mail','hr','portal','surgi_hr_employee','surgi_hr_payroll'],
 
     'data': [
         'security/security.xml',

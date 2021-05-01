@@ -18,6 +18,8 @@ class QuestionnairesAnswer(models.Model):
     active = fields.Boolean(string="Active", default=True)
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', readonly=True)
+    grade_id = fields.Many2one(
+        'grade.grade', string='Grade', related='employee_id.grade_id', readonly=True)
     manager_id = fields.Many2one(comodel_name="hr.employee", string="Manager", readonly=True,
                                  related='employee_id.parent_id')
     department_id = fields.Many2one(comodel_name="hr.department", string="Department", readonly=True,
@@ -96,6 +98,8 @@ class Answer(models.Model):
     answer_date = fields.Datetime(readonly=True)
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', related='answer_id.employee_id', readonly=True)
+    grade_id = fields.Many2one(
+        'grade.grade', string='Grade', related='employee_id.grade_id', readonly=True)
     manager_id = fields.Many2one(comodel_name="hr.employee", string="Manager", readonly=True,
                                  related='employee_id.parent_id',store=True)
     department_id = fields.Many2one(comodel_name="hr.department", string="Department", readonly=True,

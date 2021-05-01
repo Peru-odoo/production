@@ -12,6 +12,7 @@
                 <field name="from_date"/>
                 <field name="to_date"/>
                 <field name="employee_id"/>
+                <field name="grade_id"/>
             </tree>
         </field>
     </record>
@@ -33,6 +34,7 @@
                         <group>
                             <field name="batch_id"/>
                             <field name="employee_id"/>
+                            <field name="grade_id"/>
                             <field name="manager_id"/>
                             <field name="department_id"/>
                             <field name="position_id"/>
