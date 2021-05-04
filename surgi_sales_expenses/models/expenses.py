@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from datetime import date,datetime,time,timedelta
+from dateutil.relativedelta import relativedelta
 
 class HrExpensesExpenses(models.Model):
     _name = 'hr.expenses.expenses'
@@ -24,6 +26,25 @@ class HRExpensesInherit(models.Model):
 
     partner_surgeon_id = fields.Many2one(comodel_name="res.partner", string="Surgeon")
     event_id = fields.Many2one(comodel_name="hr.expenses.event", string="Event", )
+    sale_order_mandatory = fields.Boolean(string="Sale Order Mandatory",related='product_id.property_account_expense_id.sale_order_mandatory')
+
+
+    @api.onchange('date','sales_id')
+    def filter_value_sales(self):
+        sales_list=[]
+        expense_date=datetime.strptime(str(self.date),'%Y-%m-%d').date()
+        print('---------------------------------------------------555555555555')
+        for rec in self.env['sale.order'].search([]):
+            if rec.date_order:
+                date_order = datetime.strptime(str(rec.date_order).split(".")[0],
+                                                      '%Y-%m-%d %H:%M:%S').date()
+
+                if date_order.month==expense_date.month:
+                    sales_list.append(rec.id)
+
+        return {
+            'domain': {'sales_id': [('id', 'in',sales_list )]}
+        }
 
     @api.depends('sales_id')
     def filter_sales_id(self):
@@ -54,3 +75,26 @@ class HRExpensesInherit(models.Model):
         return {
             'domain': {'product_id': [('id', 'in', product_list)]}
         }
+
+class HrExpenseSheetInherit(models.Model):
+    _inherit = 'hr.expense.sheet'
+
+    account_reviewed= fields.Boolean(string="Account Reviewed",  )
+    treasury_manager= fields.Boolean(string="Treasury Manager",  )
+
+
+    def button_account_reviewed(self):
+        self.account_reviewed=True
+    def button_treasury_manager(self):
+        self.treasury_manager=True
+
+    def action_sheet_move_create(self):
+        res=super(HrExpenseSheetInherit, self).action_sheet_move_create()
+        if self.account_move_id:
+            self.account_move_id.date=date.today()
+        return res
+
+class AccountAccountInherit(models.Model):
+    _inherit = 'account.account'
+
+    sale_order_mandatory = fields.Boolean(string="Sale Order Mandatory",  )

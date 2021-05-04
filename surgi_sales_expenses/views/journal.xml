@@ -2,6 +2,21 @@
     <data>
 
         <!-- Inherit Form View to Modify it -->
+        <record id="form_view_account_account_inherit" model="ir.ui.view">
+            <field name="name">name.account.account.form.inherit</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='deprecated']" position="after">
+                    <field name="sale_order_mandatory"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
         <record id="form_view_account_move_inherit" model="ir.ui.view">
             <field name="name">name.account.move.form.inherit</field>
             <field name="model">account.move</field>
