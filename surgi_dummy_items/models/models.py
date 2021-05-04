@@ -22,6 +22,9 @@ from odoo.exceptions import UserError
 #             record.value2 = float(record.value) / 100
 
 from odoo.exceptions import ValidationError
+from dateutil.parser import parse
+
+
 
 class product_template_inheret_2(models.Model):
     _inherit="product.template"
@@ -149,6 +152,8 @@ class stock_biking_faked_item(models.Model):
     quantity=fields.Integer("Quantity")
     solved=fields.Boolean(string="Solved")
     stock_bikeid=fields.Many2one(comodel_name="stock.picking")
+    company_id=fields.Many2one(string="Company",comodel_name="res.company")
+    lotexist=fields.Boolean("Lot Exist")
 
     @api.model
     def get_scanned_items(self,active_id):
@@ -172,13 +177,63 @@ class stock_biking_faked_item(models.Model):
         returnData={"olditems":olditems,'tquantity':tquantity}
         return json.dumps(returnData, ensure_ascii=False)
         pass
+    def getfakeditemdata(self,scaneditem,scantype):
+        data={'name':"",'serial':"",'product':"",'expiration':"","lotexist":False}
+        if scaneditem:
+            if (scantype != 'third_group'):
+                qty = 1
+                expdate = ""
+                lotname = ""
+                productrefrence = ""
+                if scaneditem[0] == '+':
+                    cutteditem = scaneditem.split('/')
+                    extractedlot1 = cutteditem[0]
+                    exteractedlot2 = extractedlot1[5:-1].lstrip("0")
+                    lotname = cutteditem[1][5:-4]
+                    year = "20" + cutteditem[1][0:2]
+                    month = '%02d' % int(round((int(cutteditem[1][2:5]) / 360) * 12, 0))
+                    expdate = str(year) + "-" + str(month) + "-" + "01"
+                    productrefrence = cutteditem[0][5:-1].lstrip("0")
+                else:
+                    if '$' in scaneditem:
+                        cutteditem = scaneditem.split('#')
+                        expdate = cutteditem[1][0:7]
+                        productrefrence = cutteditem[1].split(expdate)[1]
+                        newexpdate = expdate.split("/")
+                        expdate = newexpdate[1] + "-" + newexpdate[0] + "-01"
+                        if len(cutteditem[0].split("$")[0]) > 4:
+                            lotname = cutteditem[0].split("$")[0].lstrip("0")
+                        else:
+                            lotname = cutteditem[0].lstrip("0$")
+
+                    elif '/' in scaneditem:
+                        cutteditem = scaneditem.split('#')
+                        expdate = cutteditem[1][0:7]
+                        productrefrence = cutteditem[1].split(expdate)[1]
+                        lotname = cutteditem[0].lstrip("0")
+                        newexpdate = expdate.split("/")
+                        expdate = newexpdate[1] + "-" + newexpdate[0] + "-01"
+                lotproduct=None
+
+                if productrefrence:
+                    lotproduct = self.env['product.product'].search([('default_code', '=', productrefrence)])
+                data['name']=lotname
+                data['serial']=scaneditem
+                if lotproduct:
+                    data['product']=lotproduct.id
+                    data['lotexist'] = True
+                data['expiration']=expdate
+
+            pass
+        return data
+        pass
     @api.model
     def savescanned_items(self,active_id,newitems,updateitems,allitems,totalquantity):
         print("x")
         stockpick=self.env["stock.picking"].search([('id', '=', int(active_id))])
         if totalquantity != stockpick.nofakeditems :
             raise ValidationError("Number Of Scanned Items Not Equal Faked Items.")
-            raise exceptions.UserError('Number Of Scanned Items Not Equal Faked Items')
+            raise UserError('Number Of Scanned Items Not Equal Faked Items')
 
             #raise UserError("No Of Scanned Items Not Equal Faked Items!")
         for i in updateitems.values():
@@ -187,10 +242,30 @@ class stock_biking_faked_item(models.Model):
             pass
         if len(newitems):
             for i in newitems.values():
+                data={}
                 product=self.env['stock.production.lot'].search([('name', '=', str(i['serial']))])
+                data['lotexist'] =False
                 if product:
+                    data['lotexist'] =True
                     i['product']=product[0].product_id.id
-                self.env['stock.biking.faked.item'].create(i)
+                serial=i['serial']
+                if not i['expirartion']:
+                    data={}
+                    cdata=self.getfakeditemdata(serial,"oo")
+                    data['name']=cdata['name']
+                    data['serial'] = cdata['serial']
+                    data['product'] = cdata['product']
+                    data['expirartion'] = cdata['expiration']
+                    data['quantity'] = i['quantity']
+                    data['stock_bikeid']=i['stock_bikeid']
+                    data['company_id']=stockpick.company_id.id
+                    data['lotexist'] = cdata['lotexist']
+                else:
+                    data=i
+                    data['company_id'] = stockpick.company_id.id
+
+                    print("c")
+                self.env['stock.biking.faked.item'].create(data)
             pass
         pass
         productfake=self.env['product.product'].search([('isfakedproduct', '=',True)])
@@ -233,8 +308,44 @@ class stock_biking_faked_item(models.Model):
             # )
             pass
 
+
         
     pass
+
+    @api.model
+    def solve_items(self):
+        for record in self:
+            record.solved=True
+        pass
+
+    def is_date(self,s=""):
+        try:
+            s=str(s)
+            datetime.strptime(s, '%Y-%m-%d')
+            return True
+        except ValueError:
+            raise UserError("Incorrect data format, should be YYYY-MM-DD")
+
+
+
+
+    @api.model
+    def dummyToLot(self):
+        print("xx")
+        for record in self:
+            d=record.expirartion
+            self.is_date(d)
+
+            if record.company_id:
+                companyid=record.company_id.id
+            else:
+                companyid=record.stock_bikeid.company_id.id
+            data={'product_id':record.product.id,'lot_no':record.serial,'stock_picking_id':record.stock_bikeid.id,'product_uom_qty':record.quantity,'lot_name':record.name,'expiration_date':record.expirartion}
+            self.env['scan.product'].create(data)
+            data={'name':record.name,'ref':record.product.default_code,'product_id':record.product.id,'company_id':companyid}
+            self.env['stock.production.lot'].create(data)
+        pass
+
 class Operation_Dummy_inhert(models.Model):
     _inherit="operation.operation"
     def checkDummyItems(self):
