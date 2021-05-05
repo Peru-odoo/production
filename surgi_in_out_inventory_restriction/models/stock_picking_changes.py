@@ -24,9 +24,14 @@ class stock_picking_inherit(models.Model):
         elif pick_type == 'outgoing' and self.env.user.has_group('surgi_in_out_inventory_restriction.validate_out_group'):
             self.is_valid = True
 
-        elif pick_type == 'internal' and self.location_id.operation_location_freeze == False and self.location_dest_id.operation_location_freeze == False:
+        # elif pick_type == 'internal' and self.location_id.operation_location_freeze == False and self.location_dest_id.operation_location_freeze == False:
+        #     self.is_valid = True
+        elif pick_type == 'internal' and self.location_id.operation_location_freeze == False and self.location_dest_id.operation_location_freeze == False and self.location_id.usage == 'transit' and self.location_dest_id.usage == 'internal':
             self.is_valid = True
 
+
+        elif pick_type == 'internal' and self.location_id.operation_location_freeze == False and self.location_dest_id.operation_location_freeze == False and self.location_id.usage == 'internal' and self.location_dest_id.usage == 'transit':
+            self.is_valid = True
         else:
             self.is_valid = False
 
