@@ -2,9 +2,9 @@
   <data>
     <!-- explicit list view definition -->
 <!--
-    <record model="ir.ui.view" id="surgi-dummy-items.list">
+    <record model="ir.ui.view" id="surgi_dummy_items.list">
       <field name="name">Faked-Items list</field>
-      <field name="model">surgi-dummy-items.surgi-dummy-items</field>
+      <field name="model">surgi_dummy_items.surgi_dummy_items</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -17,16 +17,16 @@
 
     <!-- actions opening views on models -->
 <!--
-    <record model="ir.actions.act_window" id="surgi-dummy-items.action_window">
+    <record model="ir.actions.act_window" id="surgi_dummy_items.action_window">
       <field name="name">Faked-Items window</field>
-      <field name="res_model">surgi-dummy-items.surgi-dummy-items</field>
+      <field name="res_model">surgi_dummy_items.surgi_dummy_items</field>
       <field name="view_mode">tree,form</field>
     </record>
 -->
 
     <!-- server action to the one above -->
 <!--
-    <record model="ir.actions.server" id="surgi-dummy-items.action_server">
+    <record model="ir.actions.server" id="surgi_dummy_items.action_server">
       <field name="name">Faked-Items server</field>
       <field name="model_id" ref="model_faked-items_faked-items"/>
       <field name="state">code</field>
@@ -42,26 +42,26 @@
 
     <!-- Top menu item -->
 <!--
-    <menuitem name="Faked-Items" id="surgi-dummy-items.menu_root"/>
+    <menuitem name="Faked-Items" id="surgi_dummy_items.menu_root"/>
 -->
     <!-- menu categories -->
 <!--
-    <menuitem name="Menu 1" id="surgi-dummy-items.menu_1" parent="surgi-dummy-items.menu_root"/>
-    <menuitem name="Menu 2" id="surgi-dummy-items.menu_2" parent="surgi-dummy-items.menu_root"/>
+    <menuitem name="Menu 1" id="surgi_dummy_items.menu_1" parent="surgi_dummy_items.menu_root"/>
+    <menuitem name="Menu 2" id="surgi_dummy_items.menu_2" parent="surgi_dummy_items.menu_root"/>
 -->
     <!-- actions -->
 <!--
-    <menuitem name="List" id="surgi-dummy-items.menu_1_list" parent="surgi-dummy-items.menu_1"
-              action="surgi-dummy-items.action_window"/>
-    <menuitem name="Server to list" id="surgi-dummy-items" parent="surgi-dummy-items.menu_2"
-              action="surgi-dummy-items.action_server"/>
+    <menuitem name="List" id="surgi_dummy_items.menu_1_list" parent="surgi_dummy_items.menu_1"
+              action="surgi_dummy_items.action_window"/>
+    <menuitem name="Server to list" id="surgi_dummy_items" parent="surgi_dummy_items.menu_2"
+              action="surgi_dummy_items.action_server"/>
 -->
 
 
         <template id="assets_backend" name="petstore_assets_faked_scan" inherit_id="web.assets_backend">
 
             <xpath expr="." position="inside">
-                <script type="text/javascript" src="/surgi-dummy-items/static/src/js/fakedscan.js"></script>
+                <script type="text/javascript" src="/surgi_dummy_items/static/src/js/fakedscan.js"></script>
             </xpath>
 </template>
 
@@ -193,9 +193,9 @@
 <!--        </record>-->
 <!--<record id="action_dummy_solve_items" model="ir.actions.server">-->
 <!--    <field name="name">Solve Items</field>-->
-<!--    <field name="model_id" ref="surgi-dummy-items.model_stock_biking_faked_item"/>-->
+<!--    <field name="model_id" ref="surgi_dummy_items.model_stock_biking_faked_item"/>-->
 <!--    <field name="binding_view_types">tree</field>-->
-<!--    <field name="binding_model_id" ref="surgi-dummy-items.model_stock_biking_faked_item"/>-->
+<!--    <field name="binding_model_id" ref="surgi_dummy_items.model_stock_biking_faked_item"/>-->
 <!--    <field name="groups_id" eval="[(4, ref('stock.group_stock_manager'))]"/>-->
 <!--    <field name="state">code</field>-->
 <!--    <field name="code">-->
@@ -206,7 +206,7 @@
 
      <record id="action_server_solve_dummy" model="ir.actions.server">
     <field name="name">Solve Items</field>
-    <field name="binding_model_id" ref="surgi-dummy-items.model_stock_biking_faked_item"/>
+    <field name="binding_model_id" ref="surgi_dummy_items.model_stock_biking_faked_item"/>
                      <field name="model_id" ref="model_stock_biking_faked_item"/>
                      <field name="binding_view_types">list</field>
                      <field name="state">code</field>
@@ -218,7 +218,7 @@
 
            <record id="action_server_dummy_to_lot" model="ir.actions.server">
     <field name="name">Create LotS</field>
-    <field name="binding_model_id" ref="surgi-dummy-items.model_stock_biking_faked_item"/>
+    <field name="binding_model_id" ref="surgi_dummy_items.model_stock_biking_faked_item"/>
                      <field name="model_id" ref="model_stock_biking_faked_item"/>
                      <field name="binding_view_types">list</field>
                      <field name="state">code</field>
