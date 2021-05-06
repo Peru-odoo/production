@@ -7,9 +7,9 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 
-# class surgi_dummy_items(models.Model):
-#     _name = 'surgi_dummy_items.surgi_dummy_items'
-#     _description = 'surgi_dummy_items.surgi_dummy_items'
+# class surgi-dummy-items(models.Model):
+#     _name = 'surgi-dummy-items.surgi-dummy-items'
+#     _description = 'surgi-dummy-items.surgi-dummy-items'
 
 #     name = fields.Char()
 #     value = fields.Integer()
