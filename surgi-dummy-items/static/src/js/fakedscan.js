@@ -51,7 +51,7 @@ var AbstractAction = require('web.AbstractAction');
 
 var ScanningFaked = AbstractAction.extend({
    template: "ScanningFake",
- xmlDependencies: ['/surgi_dummy_items/static/src/xml/fakedtemplate.xml'],
+ xmlDependencies: ['/surgi-dummy-items/static/src/xml/fakedtemplate.xml'],
 
         events: {
             "click .cancel_button": "cancel_button",
