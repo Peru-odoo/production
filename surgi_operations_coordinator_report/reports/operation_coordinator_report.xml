@@ -11,7 +11,6 @@
         />
 
 
-
         <report
                 id="operation_coordinator_report_id"
                 string="PDF Operation Coordinator"
@@ -142,7 +141,13 @@
                                     </th>
                                     <th style="width:70%;text-align:left">
                                         <strong>
-                                            <span t-esc="o.side"/>
+
+                                            <t t-if="o.side=='r'">
+                                                Right
+                                            </t>
+                                            <t t-if="o.side=='l'">
+                                                Left
+                                            </t>
                                         </strong>
                                     </th>
                                 </tr>
@@ -152,20 +157,16 @@
                                     </th>
                                     <th style="width:70%;text-align:left">
                                         <strong>
-                                            <span t-esc="o.patient_gender"/>
+                                            <t t-if="o.patient_gender=='m'">
+                                                Male
+                                            </t>
+                                            <t t-if="o.patient_gender=='f'">
+                                                Female
+                                            </t>
                                         </strong>
                                     </th>
                                 </tr>
-<!--                                <tr>-->
-<!--                                    <th style="width:30%;text-align:left">-->
-<!--                                        <strong>Surgeon</strong>-->
-<!--                                    </th>-->
-<!--                                    <th style="width:70%;text-align:left">-->
-<!--                                        <strong>-->
-<!--                                            <span t-esc="o.patient_gender"/>-->
-<!--                                        </strong>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
+
                                 <tr>
                                     <th colspan="2" style="text-align:left;font-size:20px;background-color:#BDBDBD;">
                                         <strong>Surgeon</strong>
@@ -240,6 +241,8 @@
 
 
                             </table>
+                            <div style="page-break-before:always;"></div>
+
 
                             <h3>
                                 <strong style="border-bottom: 2px solid black;">Components</strong>
@@ -259,11 +262,15 @@
                                 <t t-foreach="o.component_ids" t-as="com">
                                     <tr>
                                         <th style="width:30%;text-align:left">
-                                            <strong><span t-esc="com.barcode"/> </strong>
+                                            <strong>
+                                                <span t-esc="com.barcode"/>
+                                            </strong>
                                         </th>
                                         <th style="width:70%;text-align:left">
                                             <strong>
-                                            <strong><span t-esc="com.name"/> </strong>
+                                                <strong>
+                                                    <span t-esc="com.name"/>
+                                                </strong>
                                             </strong>
                                         </th>
                                     </tr>
@@ -288,23 +295,26 @@
                                 <t t-foreach="o.product_lines" t-as="com">
                                     <tr>
                                         <th style="width:60%;text-align:left">
-                                            <strong><span t-esc="com.product_id.name"/> </strong>
+                                            <strong>
+                                                <span t-esc="com.product_id.name"/>
+                                            </strong>
                                         </th>
                                         <th style="width:40%;text-align:left">
                                             <strong>
-                                            <strong><span t-esc="com.quantity"/> </strong>
+                                                <strong>
+                                                    <span t-esc="com.quantity"/>
+                                                </strong>
                                             </strong>
                                         </th>
                                     </tr>
                                 </t>
                             </table>
-                             <h3>
+                            <h3>
                                 <strong style="border-bottom: 2px solid black;">Notes</strong>
                             </h3>
-                            <span t-esc="o.notes"/>
+                            <span t-field="o.notes"/>
 
                         </div>
-
 
 
                     </t>

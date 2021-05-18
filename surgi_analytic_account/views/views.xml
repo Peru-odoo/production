@@ -8,9 +8,9 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='name']" position="after">
-                    <field name="check_number_payment"/>
-                    <field name="date_payment"/>
-                    <field name="collection_receipt_number"/>
+                    <field name="check_number_payment" force_save="1"/>
+                    <field name="date_payment" force_save="1"/>
+                    <field name="collection_receipt_number" force_save="1"/>
                 </xpath>
             </field>
         </record>
@@ -83,8 +83,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='journal_id']" position="after">
-                    <field name="check_number_payment"/>
-                    <field name="date_payment"/>
+                    <field name="check_number_payment" force_save="1"/>
+                    <field name="date_payment" force_save="1"/>
                 </xpath>
             </field>
         </record>
@@ -112,6 +112,11 @@
             <field name="arch" type="xml">
 
 
+                <xpath expr="//field[@name='invoice_line_ids']//tree//field[@name='product_id']" position="after">
+                    <field name="check_number_payment" force_save="1" invisible="1"/>
+                    <field name="date_payment" force_save="1" invisible="1"/>
+                    <field name="collection_receipt_number" force_save="1" invisible="1"/>
+                </xpath>
 
 
 
@@ -120,10 +125,10 @@
                 <xpath expr="//notebook" position="inside">
                     <page string="Payment Info">
                         <group col="4">
-                            <field name="check_number_payment" readonly="1"/>
-                            <field name="date_payment" readonly="1"/>
-                            <field name="collection_receipt_number" readonly="1"/>
-                            <field name="date_check_number" invisible="1"/>
+                            <field name="check_number_payment" readonly="1" force_save="1"/>
+                            <field name="date_payment" readonly="1" force_save="1"/>
+                            <field name="collection_receipt_number" readonly="1" force_save="1"/>
+                            <field name="date_check_number" invisible="1" force_save="1"/>
                         </group>
 
                     </page>

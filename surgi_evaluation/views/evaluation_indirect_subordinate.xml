@@ -19,36 +19,42 @@
                                 attrs="{'invisible':[('state','=','indirect_manager')]}"/>
                     </header>
                     <sheet>
-                        <label for="name"/>
-                        <field name="name" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
+                      <label for="name"/>
+                        <field name="name" attrs="{'readonly':[('check_read','=',True)]}"/>
+                        <field name="emp_image" widget="image"
+                               class="oe_avatar" force_save="1"/>
                         <br/>
-                        <label for="employee_id" options="{'no_open': True}"/>
-                        <field name="employee_id" attrs="{'readonly':[('check_read','=',True)]}" readonly="1"/>
+                        <label for="employee_id"/>
+                        <field name="employee_id" attrs="{'readonly':[('check_read','=',True)]}"/>
                         <br/>
                         <label for="active_evaluation"/>
                         <field name="active_evaluation" attrs="{'readonly':[('check_read','=',True)]}"
-                               groups="hr.group_hr_user" readonly="1"/>
+                               groups="hr.group_hr_user"/>
                         <br/>
-                        <group>
+                          <group>
                             <group>
+
+                                <field name="employee_full_name"/>
+                                <field name="registration_number"/>
+                                <field name="employee_parent_manager" invisible="1"/>
+
+                                <field name="state_quarter" force_save="1" readonly="1"/>
+                                <field name="month" force_save="1" readonly="1"/>
                                 <field name="date_start" attrs="{'readonly':[('check_read','=',True)]}"
-                                       groups="hr.group_hr_user" readonly="1"/>
-                                <field name="check_read" invisible="1"/>
-                                <field name="check_esa" invisible="1"/>
-                                <field name="check_direct_manager" invisible="1"/>
-                                <field name="check_indirect_manager" invisible="1"/>
-                                <field name="department_id" options="{'no_open': True}" readonly="1"/>
+                                       groups="hr.group_hr_user"/>
+                                <field name="check_read"/>
+                                <field name="department_id"/>
+                                <field name="is_evalualtion"/>
                             </group>
                             <group>
                                 <field name="date_end" attrs="{'readonly':[('check_read','=',True)]}"
-                                       groups="hr.group_hr_user" readonly="1"/>
+                                       groups="hr.group_hr_user"/>
                                 <field name="duration" attrs="{'readonly':[('check_read','=',True)]}"
-                                       groups="hr.group_hr_user" readonly="1"/>
-                                <field name="employee_parent_id" options="{'no_open': True}" readonly="1"/>
-                                <field name="jop_ids" options="{'no_open': True}" readonly="1"/>
-                                <field name="evaluation_method" readonly="1"/>
-
-                                <field name="check_eval" readonly="1"/>
+                                       groups="hr.group_hr_user"/>
+                                <field name="employee_parent_id"/>
+                                <field name="jop_ids"/>
+                                <field name="evaluation_method"/>
+                                <field name="check_eval"/>
 
 
                             </group>

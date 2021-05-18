@@ -9,10 +9,12 @@ class AccountPaymentRegisterInherit(models.TransientModel):
         active_id = self.env.context.get('active_id')
         if active_id:
             for move in self.env['account.move'].browse(active_id):
+
                 move.check_number_payment = self.check_number
                 move.date_payment = self.date_due
                 move.collection_receipt_number = self.collection_receipt_number
                 for line in move.invoice_line_ids:
+
                     line.check_number_payment = self.check_number
                     line.collection_receipt_number = self.collection_receipt_number
                     line.date_payment = self.date_due
@@ -60,18 +62,13 @@ class AccountPaymentInherit(models.Model):
     @api.depends('move_id', 'check_number', 'date_due', 'collection_receipt_number')
     def compute_date_check_number_move(self):
         self.date_check_number = False
-        for rec in self:
-            if rec.move_id:
-                rec.move_id.check_number_payment = rec.check_number
-                rec.move_id.date_payment = rec.date_due
-                rec.move_id.collection_receipt_number = rec.collection_receipt_number
-                rec.date_check_number = True
-                # for line in rec.invoice_line_ids:
-                #     line.check_number_payment = rec.check_number
-                #     line.collection_receipt_number = rec.collection_receipt_number
-                #     line.date_payment = rec.date_due
-
-                rec.move_id.compute_date_check_number()
+        # for rec in self:
+        #     if rec.move_id:
+        #         rec.move_id.check_number_payment = rec.check_number
+        #         rec.move_id.date_payment = rec.date_due
+        #         rec.move_id.collection_receipt_number = rec.collection_receipt_number
+        #         rec.date_check_number = True
+        #         rec.move_id.compute_date_check_number()
 
 
 class AccountMoveLineInherit(models.Model):
@@ -81,6 +78,7 @@ class AccountMoveLineInherit(models.Model):
     date_payment = fields.Date(string="Due Date(Payment)", )
     collection_receipt_number = fields.Integer(string="Receipt Number(Payment)", required=False, )
     date_check_number = fields.Boolean(string="", )
+
 
     def cron_all_account_move(self):
         for rec in self.search([]):
@@ -107,14 +105,16 @@ class AccountMove(models.Model):
         for rec in self:
             for pay in self.env['account.payment'].search([]):
                 if pay.move_id.id == rec.id or pay.ref == rec.name or str(rec.name) in str(pay.ref):
+
                     rec.date_check_number = True
                     rec.check_number_payment = pay.check_number
                     rec.collection_receipt_number = pay.collection_receipt_number
                     rec.date_payment = pay.date_due
-                    # for line in rec.invoice_line_ids:
-                    #     line.check_number_payment = pay.check_number
-                    #     line.collection_receipt_number = pay.collection_receipt_number
-                    #     line.date_payment = pay.date_due
+                    for line in rec.invoice_line_ids:
+
+                        line.check_number_payment = pay.check_number
+                        line.collection_receipt_number = pay.collection_receipt_number
+                        line.date_payment = pay.date_due
 
     # @api.onchange('is_check')
     def compute_analytic_account(self):
@@ -127,60 +127,52 @@ class AccountMove(models.Model):
             if self.partner_id.cost_center_ids:
 
                 for cost in self.partner_id.cost_center_ids:
-                    print(line.product_id.product_id.id, '---------------', cost.product_line_id.id)
+
                     if line.product_id.product_id.id == cost.product_line_id.id:
-                        print('---------------------------------------')
+
                         line.analytic_account_id = cost.analytic_account_id.id
                         lines_list.append(line.product_id.product_id.id)
 
                 if line.product_id.product_id.id not in lines_list:
-                    print(line.product_id.product_id.id,"TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT",lines_list)
+
                     for rec in analytic_account_obj:
                         if line.product_id.product_id.id == rec.product_id.id:
-                            if rec.salesteam_id == self.team_id:
-                                print('****************************************salesteam')
+                            if rec.user_id.id == self.invoice_user_id.id:
+
                                 line.analytic_account_id = rec.id
                                 break
                             elif self.invoice_user_id.id in rec.user_add_ids.ids:
-                                print('****************************************2222')
-                                line.analytic_account_id = rec.id
-                                break
-                            elif rec.user_id.id == self.invoice_user_id.id:
-                                print('****************************************')
+
                                 line.analytic_account_id = rec.id
                                 break
                             elif rec.undefined_sales_person == True:
-                                print('****************************************33333')
+
                                 line.analytic_account_id = rec.id
                                 break
 
 
                         else:
-                            print('2222222222222222222222222222222222222')
+
                             line.analytic_account_id = False
             else:
                 for rec in analytic_account_obj:
                     if line.product_id.product_id.id == rec.product_id.id:
-                        if rec.salesteam_id == self.team_id:
-                            print('****************************************salesteam')
+                        if rec.user_id.id == self.invoice_user_id.id:
+
                             line.analytic_account_id = rec.id
                             break
                         elif self.invoice_user_id.id in rec.user_add_ids.ids:
-                            print('****************************************2222')
-                            line.analytic_account_id = rec.id
-                            break
-                        elif rec.user_id.id == self.invoice_user_id.id:
-                            print('****************************************')
+
                             line.analytic_account_id = rec.id
                             break
                         elif rec.undefined_sales_person == True:
-                            print('****************************************33333')
+
                             line.analytic_account_id = rec.id
                             break
 
 
                     else:
-                        print('2222222222222222222222222222222222222')
+
                         line.analytic_account_id = False
 
 
@@ -201,58 +193,44 @@ class StockPicking(models.Model):
             if self.partner_id.cost_center_ids:
 
                 for cost in self.partner_id.cost_center_ids:
-                    print(line.product_id.product_id.id, '---------------', cost.product_line_id.id)
+
                     if line.product_id.product_id.id == cost.product_line_id.id:
-                        print('---------------------------------------')
+
                         line.analytic_account_id = cost.analytic_account_id.id
                         lines_list.append(line.product_id.product_id.id)
 
                 if line.product_id.product_id.id not in lines_list:
-                    print(line.product_id.product_id.id, "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT", lines_list)
+
                     for rec in analytic_account_obj:
                         if line.product_id.product_id.id == rec.product_id.id:
-                            if rec.salesteam_id == self.user_id.sale_team_id:
-                                print('****************************************salesteam')
+                            if rec.user_id.id == self.user_id.id:
+
                                 line.analytic_account_id = rec.id
                                 break
-                            elif self.user_id.id in rec.user_add_ids.ids:
-                                print('****************************************2222')
-                                line.analytic_account_id = rec.id
-                                break
-                            elif rec.user_id.id == self.user_id.id:
-                                print('****************************************')
-                                line.analytic_account_id = rec.id
-                                break
+
                             elif rec.undefined_sales_person == True:
-                                print('****************************************33333')
+
                                 line.analytic_account_id = rec.id
                                 break
 
 
                         else:
-                            print('2222222222222222222222222222222222222')
+
                             line.analytic_account_id = False
             else:
                 for rec in analytic_account_obj:
                     if line.product_id.product_id.id == rec.product_id.id:
-                        if rec.salesteam_id == self.user_id.sale_team_id:
-                            print('****************************************salesteam')
+                        if rec.user_id.id == self.user_id.id:
+
                             line.analytic_account_id = rec.id
                             break
-                        elif self.user_id.id in rec.user_add_ids.ids:
-                            print('****************************************2222')
-                            line.analytic_account_id = rec.id
-                            break
-                        elif rec.user_id.id == self.user_id.id:
-                            print('****************************************')
-                            line.analytic_account_id = rec.id
-                            break
+
                         elif rec.undefined_sales_person == True:
-                            print('****************************************33333')
+
                             line.analytic_account_id = rec.id
                             break
 
 
                     else:
-                        print('2222222222222222222222222222222222222')
+
                         line.analytic_account_id = False

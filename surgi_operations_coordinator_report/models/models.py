@@ -104,8 +104,21 @@ class ReportOperationCoordinator(models.AbstractModel):
             worksheet.write('B15', par.patient_name, header_format)
             worksheet.write('B16', par.patient_national_id, header_format)
             worksheet.write('B17', par.moh_approved_operation, header_format)
-            worksheet.write('B18', par.side, header_format)
-            worksheet.write('B19', par.patient_gender, header_format)
+            if par.side=='r':
+                worksheet.write('B18', "Right", header_format)
+            elif par.side=='l':
+                worksheet.write('B18', "Left", header_format)
+            else:
+                worksheet.write('B18', "", header_format)
+
+
+            if par.patient_gender=='m':
+                worksheet.write('B19', "Male", header_format)
+            elif par.patient_gender=='f':
+                worksheet.write('B19', "Female", header_format)
+            else:
+                worksheet.write('B19', "", header_format)
+
             worksheet.write('B21', par.hospital_id.name, header_format)
             worksheet.write('B22', par.authority, header_format)
             worksheet.write('B24', par.surgeon_id.name, header_format)
