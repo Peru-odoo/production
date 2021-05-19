@@ -19,12 +19,12 @@ class QuestionnairesAnswer(models.Model):
     employee_id = fields.Many2one(
         'hr.employee', string='Employee', readonly=True)
     grade_id = fields.Many2one(
-        'grade.grade', string='Grade', related='employee_id.grade_id', readonly=True)
+        'grade.grade', string='Grade', related='employee_id.grade_id', readonly=True,store=True)
     manager_id = fields.Many2one(comodel_name="hr.employee", string="Manager", readonly=True,
-                                 related='employee_id.parent_id')
+                                 related='employee_id.parent_id',store=True)
     department_id = fields.Many2one(comodel_name="hr.department", string="Department", readonly=True,
-                                    related='employee_id.department_id')
-    position_id = fields.Many2one(comodel_name="hr.job", string="Position", readonly=True, related='employee_id.job_id')
+                                    related='employee_id.department_id',store=True)
+    position_id = fields.Many2one(comodel_name="hr.job", string="Position", readonly=True, related='employee_id.job_id',store=True)
     answer_line_ids = fields.One2many('answer.line', 'answer_id',tracking=True)
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -60,6 +60,8 @@ class AnswerLine(models.Model):
     _name = 'answer.line'
 
     question_id = fields.Many2one('job.analysis.questionnaire')
+
+    question_description = fields.Text(related='question_id.description')
     row_answer_ids = fields.One2many('answer.row','answer_id')
     answer_id = fields.Many2one('questionnaires.answer')
     employee_id = fields.Many2one(
@@ -106,6 +108,7 @@ class Answer(models.Model):
                                     related='employee_id.department_id',store=True)
     position_id = fields.Many2one(comodel_name="hr.job", string="Position", readonly=True, related='employee_id.job_id',store=True)
     question_id = fields.Many2one(related='answer_id.question_id', store=True)
+    question_description = fields.Text(related='question_id.description')
     batch_id = fields.Many2one(related='answer_id.batch_id', store=True)
     manager_check = fields.Boolean('Manager')
     parent_check = fields.Boolean('Parent')

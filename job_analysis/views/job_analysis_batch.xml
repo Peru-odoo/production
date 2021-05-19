@@ -78,7 +78,9 @@
                         <page string="Questionnaire" name="questionnaire_ids">
                             <field name="questionnaire_ids" attrs="{'readonly':[('state','!=','draft')]}">
                                 <tree string="Questionnaire" editable="bottom">
+                                    <field name="code"/>
                                     <field name="name" string="Question"/>
+                                    <field name="description" string="Question"/>
                                 </tree>
                             </field>
                         </page>

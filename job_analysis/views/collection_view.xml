@@ -46,6 +46,7 @@
                         <tree create="false" delete="0">
                             <field name="employee_id"/>
                             <field name="question_id" readonly="1"/>
+                            <field name="question_description"/>
                         </tree>
                         <form string="Answer Rows">
                             <sheet>

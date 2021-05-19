@@ -10,6 +10,7 @@
                 <field name="employee_id" readonly="1"/>
                 <field name="grade_id" readonly="1"/>
                 <field name="question_id" readonly="1"/>
+                <field name="question_description" readonly="1"/>
                 <field name="name" readonly="1"/>
                 <field name="answer_date" readonly="1"/>
                 <field name="manager_check"
@@ -20,7 +21,8 @@
                 <field name="parent_answer" force_save="1"
                        attrs="{'readonly':['|',('is_parent','!=',True),('state','!=','manager')]}"/>
                 <field name="hr_check" attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
-                <field name="hr_answer" force_save="1" attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
+                <field name="hr_answer" force_save="1"
+                       attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
                 <field name="job_analysis_type_id"
                        attrs="{'readonly':['|',('is_hr','!=',True),('state','!=','parent')]}"/>
                 <field name="answer_id" invisible="1"/>
@@ -36,7 +38,8 @@
                 <button name="parent_approve" type="object"
                         attrs="{'invisible': ['|',('state', '!=', 'manager'),('is_parent', '!=', True)]}"
                         string="Parent Approve" class="oe_highlight"/>
-                <button name="hr_approve" type="object" attrs="{'invisible': ['|',('state', '!=', 'parent'),('is_hr', '!=', True)]}"
+                <button name="hr_approve" type="object"
+                        attrs="{'invisible': ['|',('state', '!=', 'parent'),('is_hr', '!=', True)]}"
                         string="HR Approve" class="oe_highlight"/>
                 <button name="reset" type="object"
                         attrs="{'invisible': ['|',('state', 'not in', ('manager','parent','hr')),('is_access','!=',True)]}"
@@ -54,6 +57,7 @@
                 <sheet>
                     <group>
                         <field name="question_id" readonly="1"/>
+                        <field name="question_description" readonly="1"/>
                         <field name="name" readonly="1"/>
                         <field name="collection_answer" readonly="1"/>
                         <field name="answer_date" readonly="1"/>
@@ -78,6 +82,7 @@
         <field name="arch" type="xml">
             <search string="Answer Search">
                 <field name="question_id" string="Question"/>
+                <field name="question_description" readonly="1"/>
                 <field name="employee_id"/>
                 <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
                 <filter string="Manager Approved" name="manager" domain="[('state','=','manager')]"/>
