@@ -105,7 +105,7 @@
 
                 <xpath expr="//header" position="inside">
 
-                    <button class="startscanclass" name="%(action_start_scanning_faked)d" type="action" string="Scan Dummy Items" attrs="{'invisible': ['|',('id', '=', False),('state', 'in', ['assigned', 'cancel'])]}" />
+                    <button class="startscanclass" name="%(action_start_scanning_faked)d" type="action" string="Scan Dummy Items" attrs="{'invisible': ['|',('id', '=', False),('state', 'in', ['done','assigned', 'cancel'])]}"/>
 
 
 

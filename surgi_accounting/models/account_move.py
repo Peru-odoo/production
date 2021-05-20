@@ -28,7 +28,7 @@ class AccountInvoiceInherit(models.Model):
     date_reconcile = fields.Date(string="Date", )#compute='_compute_payments_widget_reconciled_info'
     payment_name = fields.Char(string="Payment Name",)#compute='_compute_payments_widget_reconciled_info'
 
-    is_reviewed = fields.Boolean(string="IS Reviewed", )
+    is_reviewed = fields.Boolean(string="IS Reviewed", tracking=True)
     close_edit = fields.Boolean(string="", compute='compute_close_edit')
     close_edit22 = fields.Char(string="", )
 

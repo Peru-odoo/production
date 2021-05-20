@@ -2,8 +2,8 @@ from odoo import models, fields, api
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
-    is_surgi_printed = fields.Boolean(string="Printed",  )
-    is_printed = fields.Boolean(string="IS Printed", )
+    is_surgi_printed = fields.Boolean(string="Is Surgi Printed", tracking=True)
+    is_printed = fields.Boolean(string="IS Printed", tracking=True)
     printed_num = fields.Integer(string="Report Number", required=False, )
 
 
