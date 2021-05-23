@@ -2,13 +2,13 @@ from odoo import models, fields, api
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
-    is_surgi_printed = fields.Boolean(string="Is Surgi Printed", tracking=True)
+    is_surgi_printed = fields.Boolean(string="Is Surgi Printed")#, tracking=True
     is_printed = fields.Boolean(string="IS Printed", tracking=True)
     printed_num = fields.Integer(string="Report Number", required=False, )
 
 
-    is_equal_total = fields.Boolean(string="IS Equal",compute='compute_is_equal_total2',store=True  )
-    is_equal_total2 = fields.Boolean(string="",compute='compute_is_equal_total2'  )
+    is_equal_total = fields.Boolean(string="IS Equal",store=True  )#,compute='compute_is_equal_total2'
+    is_equal_total2 = fields.Boolean(string=""  )#,compute='compute_is_equal_total2'
 
     @api.depends('amount_total', 'printinvoicetoline')
     def compute_is_equal_total2(self):
