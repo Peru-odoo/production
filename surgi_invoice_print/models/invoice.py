@@ -7,20 +7,20 @@ class AccountMoveInherit(models.Model):
     printed_num = fields.Integer(string="Report Number", required=False, )
 
 
-    # is_equal_total = fields.Boolean(string="IS Equal",compute='compute_is_equal_total2',store=True  )
-    # is_equal_total2 = fields.Boolean(string="",compute='compute_is_equal_total2'  )
-    #
-    # @api.depends('amount_total', 'printinvoicetoline')
-    # def compute_is_equal_total2(self):
-    #     for rec in self:
-    #         rec.is_equal_total = False
-    #         rec.is_equal_total2 = False
-    #         total = 0.0
-    #         for line in rec.printinvoicetoline:
-    #             total += line.total
-    #         if rec.amount_total == total:
-    #             rec.is_equal_total = True
-    #             rec.is_equal_total2 = True
+    is_equal_total = fields.Boolean(string="IS Equal",compute='compute_is_equal_total2',store=True  )
+    is_equal_total2 = fields.Boolean(string="",compute='compute_is_equal_total2'  )
+
+    @api.depends('amount_total', 'printinvoicetoline')
+    def compute_is_equal_total2(self):
+        for rec in self:
+            rec.is_equal_total = False
+            rec.is_equal_total2 = False
+            total = 0.0
+            for line in rec.printinvoicetoline:
+                total += line.total
+            if rec.amount_total == total:
+                rec.is_equal_total = True
+                rec.is_equal_total2 = True
 
 
 
