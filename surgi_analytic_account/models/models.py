@@ -80,13 +80,13 @@ class AccountMoveLineInherit(models.Model):
     date_check_number = fields.Boolean(string="", )
 
 
-    def cron_all_account_move(self):
-        for rec in self.search([]):
-            if rec.move_id:
-                rec.move_id.compute_date_check_number()
-                rec.check_number_payment = rec.move_id.check_number_payment
-                rec.collection_receipt_number = rec.move_id.collection_receipt_number
-                rec.date_payment = rec.move_id.date_payment
+    # def cron_all_account_move(self):
+    #     for rec in self.search([]):
+    #         if rec.move_id:
+    #             rec.move_id.compute_date_check_number()
+    #             rec.check_number_payment = rec.move_id.check_number_payment
+    #             rec.collection_receipt_number = rec.move_id.collection_receipt_number
+    #             rec.date_payment = rec.move_id.date_payment
 
 
 class AccountMove(models.Model):
