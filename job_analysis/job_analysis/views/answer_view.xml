@@ -13,6 +13,8 @@
                 <field name="to_date"/>
                 <field name="employee_id"/>
                 <field name="grade_id"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirm'"/>
             </tree>
         </field>
     </record>
@@ -96,6 +98,9 @@
                             context="{'group_by': 'department_id'}"/>
                     <filter string="Position" name="position_id" domain="[]"
                             context="{'group_by': 'position_id'}"/>
+                    <filter string="Status" name="state" domain="[]" context="{'group_by': 'state'}"/>
+
+
                 </group>
             </search>
         </field>
