@@ -398,7 +398,18 @@
                 groups="surgi_operation.operations_manager_group"
 
         />
-
+<record id="create_so_location" model="ir.actions.act_window">
+    <field name="name">Your Module Name</field>
+    <field name="res_model">stock.quant</field>
+<!--    <field name="view_type">list</field>-->
+    <field name="view_mode">list</field>
+</record>
+    <menuitem
+action="create_so_location"
+id="create_so_location_id"
+parent="stock.view_stock_quant_tree"
+name="Create So"
+sequence="1"/>
         <record id="action_operations_stages" model="ir.actions.act_window">
             <field name="name">Operations Stages</field>
             <field name="type">ir.actions.act_window</field>
