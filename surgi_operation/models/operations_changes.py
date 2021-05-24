@@ -609,6 +609,7 @@ class operation_operation(models.Model):
     location_id = fields.Many2one(comodel_name='stock.location', string='Location')
     is_operation_freeze = fields.Boolean(related="location_id.operation_location_freeze",
                                          string="Is Operation Location Freeze", store=True)
+    is_operation_finished=fields.Boolean("Operation Finished")
     product_lines=fields.One2many('product.operation.line','operation_id',string="products")
     #component_ids = fields.Many2many('product.product', string="Components", track_visibility='onchange')
     tags_ids = fields.Many2many('operation.tag', string="Tags")
