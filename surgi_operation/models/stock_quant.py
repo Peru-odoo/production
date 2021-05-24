@@ -3,7 +3,7 @@ from odoo import fields, models, api, exceptions
 
 class stock_quant_inherit_wizard(models.Model):
     _inherit = 'stock.quant'
-    @api.models
+    @api.model
     def create_so_location(self):
         pass
 
