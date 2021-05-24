@@ -3,6 +3,10 @@ from odoo import fields, models, api, exceptions
 
 class stock_quant_inherit_wizard(models.Model):
     _inherit = 'stock.quant'
+    @api.models
+    def create_so_location(self):
+        pass
+
 
     @api.depends('location_id.warehouse_id.warehouse_users')
     def _get_wh_user(self):
