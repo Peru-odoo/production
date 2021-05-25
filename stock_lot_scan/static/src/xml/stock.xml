@@ -186,7 +186,8 @@
                   </div>
                   </div>
             </div>
-            <audio id="audio" src="http://www.soundjay.com/button/beep-04.wav" autostart="false" ></audio>
+            <audio id="audio" src="/stock_lot_scan/static/src/audio/beep-04.wav" autostart="false" ></audio>
+<!--            <audio id="audio" src="http://www.soundjay.com/button/beep-04.wav" autostart="false" ></audio>-->
         </div>
     </t>
 </templates>
