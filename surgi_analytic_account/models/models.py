@@ -98,23 +98,23 @@ class AccountMove(models.Model):
     date_payment = fields.Date(string="Due Date(Payment)", )
     collection_receipt_number = fields.Integer(string="Receipt Number(Payment)", required=False, )
 
-    date_check_number = fields.Boolean(string="")#, compute='compute_date_check_number'
+    date_check_number = fields.Boolean(string="" , compute='compute_date_check_number')#
 
-    # def compute_date_check_number(self):
-    #     self.date_check_number = False
-    #     for rec in self:
-    #         for pay in self.env['account.payment'].search([]):
-    #             if pay.move_id.id == rec.id or pay.ref == rec.name or str(rec.name) in str(pay.ref):
-    #
-    #                 rec.date_check_number = True
-    #                 rec.check_number_payment = pay.check_number
-    #                 rec.collection_receipt_number = pay.collection_receipt_number
-    #                 rec.date_payment = pay.date_due
-    #                 for line in rec.invoice_line_ids:
-    #
-    #                     line.check_number_payment = pay.check_number
-    #                     line.collection_receipt_number = pay.collection_receipt_number
-    #                     line.date_payment = pay.date_due
+    def compute_date_check_number(self):
+        self.date_check_number = False
+        for rec in self:
+            for pay in self.env['account.payment'].search([]):
+                if pay.move_id.id == rec.id or pay.ref == rec.name or str(rec.name) in str(pay.ref):
+
+                    rec.date_check_number = True
+                    rec.check_number_payment = pay.check_number
+                    rec.collection_receipt_number = pay.collection_receipt_number
+                    rec.date_payment = pay.date_due
+                    for line in rec.invoice_line_ids:
+
+                        line.check_number_payment = pay.check_number
+                        line.collection_receipt_number = pay.collection_receipt_number
+                        line.date_payment = pay.date_due
 
     # @api.onchange('is_check')
     def compute_analytic_account(self):

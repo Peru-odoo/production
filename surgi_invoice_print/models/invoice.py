@@ -6,9 +6,8 @@ class AccountMoveInherit(models.Model):
     is_printed = fields.Boolean(string="IS Printed", tracking=True)
     printed_num = fields.Integer(string="Report Number", required=False, )
 
-
-    is_equal_total = fields.Boolean(string="IS Equal",store=True  )#,compute='compute_is_equal_total2'
-    is_equal_total2 = fields.Boolean(string=""  )#,compute='compute_is_equal_total2'
+    is_equal_total = fields.Boolean(string="IS Equal", store=True, compute='compute_is_equal_total2')
+    is_equal_total2 = fields.Boolean(string="", compute='compute_is_equal_total2')
 
     @api.depends('amount_total', 'printinvoicetoline')
     def compute_is_equal_total2(self):
