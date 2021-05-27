@@ -179,6 +179,16 @@ class payment_register(models.TransientModel):
             pay.collection_receipt_number = self.collection_receipt_number
             pay.collection_rep = self.collection_rep
             pay.collection_rep_name = self.collection_rep_name
+            if pay.move_id:
+                pay.move_id.check_number_payment = pay.check_number
+                pay.move_id.date_payment = pay.date_due
+                pay.move_id.collection_receipt_number = pay.collection_receipt_number
+                for lin in pay.move_id.line_ids:
+                    lin.move_id.check_number_payment = pay.check_number
+                    lin.move_id.date_payment = pay.date_due
+                    lin.move_id.collection_receipt_number = pay.collection_receipt_number
+
+
 
         # payments.action_post()
         payments.state='posted'

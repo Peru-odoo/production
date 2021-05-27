@@ -6,18 +6,20 @@ class AccountPaymentRegisterInherit(models.TransientModel):
 
     def action_create_payments(self):
         res = super(AccountPaymentRegisterInherit, self).action_create_payments()
-        active_id = self.env.context.get('active_id')
-        if active_id:
-            for move in self.env['account.move'].browse(active_id):
+        context = self._context
 
-                move.check_number_payment = self.check_number
-                move.date_payment = self.date_due
-                move.collection_receipt_number = self.collection_receipt_number
-                for line in move.invoice_line_ids:
+        if context.get('active_ids'):
+            for register in context.get('active_ids'):
+                for move in self.env['account.move'].browse(register):
 
-                    line.check_number_payment = self.check_number
-                    line.collection_receipt_number = self.collection_receipt_number
-                    line.date_payment = self.date_due
+                    move.check_number_payment = self.check_number
+                    move.date_payment = self.date_due
+                    move.collection_receipt_number = self.collection_receipt_number
+                    for line in move.invoice_line_ids:
+
+                        line.check_number_payment = self.check_number
+                        line.collection_receipt_number = self.collection_receipt_number
+                        line.date_payment = self.date_due
 
         return res
 
@@ -102,19 +104,19 @@ class AccountMove(models.Model):
 
     def compute_date_check_number(self):
         self.date_check_number = False
-        for rec in self:
-            for pay in self.env['account.payment'].search([]):
-                if pay.move_id.id == rec.id or pay.ref == rec.name or str(rec.name) in str(pay.ref):
-
-                    rec.date_check_number = True
-                    rec.check_number_payment = pay.check_number
-                    rec.collection_receipt_number = pay.collection_receipt_number
-                    rec.date_payment = pay.date_due
-                    for line in rec.invoice_line_ids:
-
-                        line.check_number_payment = pay.check_number
-                        line.collection_receipt_number = pay.collection_receipt_number
-                        line.date_payment = pay.date_due
+        # for rec in self:
+        #     for pay in self.env['account.payment'].search([]):
+        #         if pay.move_id.id == rec.id or pay.ref == rec.name or str(rec.name) in str(pay.ref):
+        #
+        #             rec.date_check_number = True
+        #             rec.check_number_payment = pay.check_number
+        #             rec.collection_receipt_number = pay.collection_receipt_number
+        #             rec.date_payment = pay.date_due
+        #             for line in rec.invoice_line_ids:
+        #
+        #                 line.check_number_payment = pay.check_number
+        #                 line.collection_receipt_number = pay.collection_receipt_number
+        #                 line.date_payment = pay.date_due
 
     # @api.onchange('is_check')
     def compute_analytic_account(self):
@@ -204,7 +206,9 @@ class StockPicking(models.Model):
                     for rec in analytic_account_obj:
                         if line.product_id.product_id.id == rec.product_id.id:
                             if rec.user_id.id == self.user_id.id:
-
+                                line.analytic_account_id = rec.id
+                                break
+                            elif self.user_id.id in rec.user_add_ids.ids:
                                 line.analytic_account_id = rec.id
                                 break
 
@@ -212,8 +216,6 @@ class StockPicking(models.Model):
 
                                 line.analytic_account_id = rec.id
                                 break
-
-
                         else:
 
                             line.analytic_account_id = False
@@ -221,16 +223,14 @@ class StockPicking(models.Model):
                 for rec in analytic_account_obj:
                     if line.product_id.product_id.id == rec.product_id.id:
                         if rec.user_id.id == self.user_id.id:
-
                             line.analytic_account_id = rec.id
                             break
-
+                        elif self.user_id.id in rec.user_add_ids.ids:
+                            line.analytic_account_id = rec.id
+                            break
                         elif rec.undefined_sales_person == True:
-
                             line.analytic_account_id = rec.id
                             break
-
-
                     else:
 
                         line.analytic_account_id = False
