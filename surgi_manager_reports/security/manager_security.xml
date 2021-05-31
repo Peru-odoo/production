@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+         <record model="ir.module.category" id="surgi_line_manager_group_category">
+                  <field name="name">Manager Reports</field>
+        <field name="description">Manager Reports</field>
+            <field name="sequence">18</field>
+         </record>
+
+         <record id="manager_reports_viewrs_group" model="res.groups">
+            <field name="name">Manager Reports viewer Groups</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+        </record>
+
+         <record id="full_manager_reports_access" model="res.groups">
+            <field name="name">Full Manager Reports access</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+        </record>
+
+        <record id="manager_line_operation_group" model="res.groups">
+            <field name="name">Line Manager Operation Reports</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+        </record>
+
+        <record id="manager_line_sales_group" model="res.groups">
+            <field name="name">Line Manager Sales Reports</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+        </record>
+
+        <record id="manager_line_cus_inv_group" model="res.groups">
+            <field name="name">Line Manager Customer Invoice Reports</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+        </record>
+        <record id="manager_line_hr_expance_group" model="res.groups">
+            <field name="name">Line Manager Expance Reports</field>
+            <field name="category_id" ref="surgi_line_manager_group_category"/>
+
+        </record>
+
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
