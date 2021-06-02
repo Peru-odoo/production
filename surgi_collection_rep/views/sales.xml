@@ -41,6 +41,10 @@
                 <xpath expr="//button[@name='action_register_payment']" position="attributes">
                     <attribute name="groups">account.group_account_invoice,surgi_collection_rep.collection_rep_access_group_part</attribute>
                 </xpath>
+                <xpath expr="//group[@id='header_right_group']" position="inside">
+                    <field name="collection_state"/>
+                    <field name="is_collection_rep" invisible="1"/>
+                </xpath>
 
 
             </field>
