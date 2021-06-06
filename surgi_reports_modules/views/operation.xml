@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+
+
+        <record id="action_view_operation" model="ir.actions.server">
+            <field name="sequence" eval="1"/>
+            <field name="state">code</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_operation_operation"/>
+            <field name="code">action=model.button_operation_action()</field>
+            <field name="name">Operation</field>
+        </record>
+
+<!--        <record id="action_view_operation" model="ir.actions.act_window">-->
+<!--            <field name="name">Operation</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">operation.operation</field>-->
+<!--            <field name="view_mode">tree,form</field>-->
+<!--        </record>-->
+
+        <menuitem id="menu_operation_reports" name="Operation" parent="menu_reports_root"
+                  action="action_view_operation" sequence="2"/>
+
+
+    </data>
+</odoo>

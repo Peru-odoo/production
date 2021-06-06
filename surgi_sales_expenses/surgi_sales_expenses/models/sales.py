@@ -9,14 +9,14 @@ class SalaOrder(models.Model):
         for rec in self:
            lines_list=[(5,0,0)]
            rec.is_expenses_line_ids=False
-           for expen in self.env['hr.expense'].search([('sales_id','=',rec.id)]):
-               lines_list.append((0,0,{
-                   'expenses_id':expen.id,
-                   'date':expen.date,
-                   'total_amount':expen.total_amount,
-               }))
-               rec.is_expenses_line_ids =True
-           rec.expenses_line_ids=lines_list
+           # for expen in self.env['hr.expense'].search([('sales_id','=',rec.id)]):
+           #     lines_list.append((0,0,{
+           #         'expenses_id':expen.id,
+           #         'date':expen.date,
+           #         'total_amount':expen.total_amount,
+           #     }))
+           #     rec.is_expenses_line_ids =True
+           # rec.expenses_line_ids=lines_list
 
 
 class HRExpensesLine(models.Model):

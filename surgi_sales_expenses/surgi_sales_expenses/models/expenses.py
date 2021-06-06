@@ -17,9 +17,9 @@ class HrExpensesExpenses(models.Model):
 class HRExpensesInherit(models.Model):
     _inherit = 'hr.expense'
 
-    sales_id = fields.Many2one(comodel_name="sale.order", string="Sales Order",)
+    sales_id = fields.Many2one(comodel_name="operation.operation", string="Operation",)
     is_sales = fields.Boolean(string="IS Sales",related='product_id.is_sales_order'  )
-    sales_state = fields.Selection(string="Sales State",related='sales_id.state')
+    sales_state = fields.Char(string="Sales State",compute='compute_sales_state')
     # expenses_ids = fields.Many2many(comodel_name="hr.expense", relation="expenses_relation", column1="expenses_col1", column2="expenses_col2", string="Expenses",)
     expenses_lines_ids = fields.One2many(comodel_name="hr.expenses.expenses", inverse_name="expen_id", string="", required=False, )
     is_expenses_ids = fields.Boolean(string="",compute='filter_sales_id'  )
@@ -28,15 +28,22 @@ class HRExpensesInherit(models.Model):
     event_id = fields.Many2one(comodel_name="hr.expenses.event", string="Event", )
     sale_order_mandatory = fields.Boolean(string="Sale Order Mandatory",related='product_id.property_account_expense_id.sale_order_mandatory')
 
+    @api.depends('sales_id')
+    def compute_sales_state(self):
+        for rec in self:
+            rec.sales_state=''
+            if rec.sales_id:
+                rec.sales_state =rec.sales_id.state
+
 
     @api.onchange('date','sales_id')
     def filter_value_sales(self):
         sales_list=[]
         expense_date=datetime.strptime(str(self.date),'%Y-%m-%d').date()
         print('---------------------------------------------------555555555555')
-        for rec in self.env['sale.order'].search([]):
-            if rec.date_order:
-                date_order = datetime.strptime(str(rec.date_order).split(".")[0],
+        for rec in self.env['operation.operation'].search([]):
+            if rec.start_datetime:
+                date_order = datetime.strptime(str(rec.start_datetime).split(".")[0],
                                                       '%Y-%m-%d %H:%M:%S').date()
 
                 if date_order.month==expense_date.month:
