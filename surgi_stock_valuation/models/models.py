@@ -1,18 +1,13 @@
-# -*- coding: utf-8 -*-
+from odoo import models, fields, api
+class NewModule(models.Model):
+    _inherit = 'stock.valuation.layer'
 
-# from odoo import models, fields, api
+    company_id = fields.Many2one('res.company', "Company", readonly=False, required=True,default=lambda self: self.env.company,)
+    product_id = fields.Many2one('product.product', 'Product', readonly=False, required=True,)
+    quantity = fields.Float('Quantity', digits=0, help='Quantity', readonly=False)
+    unit_cost = fields.Monetary('Unit Value', readonly=False)
+    value = fields.Monetary('Total Value', readonly=False)
+    remaining_qty = fields.Float(digits=0, readonly=False)
+    description = fields.Char('Description', readonly=False)
 
 
-# class surgi_stock_valuation(models.Model):
-#     _name = 'surgi_stock_valuation.surgi_stock_valuation'
-#     _description = 'surgi_stock_valuation.surgi_stock_valuation'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
