@@ -2,7 +2,10 @@ from odoo import models, fields, api
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
+    city = fields.Char(related='partner_id.city', readonly=True)
+
     collection_rep = fields.Many2one('res.users', 'Collection Rep', track_visibility='onchange',)
+
     @api.onchange('partner_id')
     def compute_collection_rep(self):
         if self.partner_id:
