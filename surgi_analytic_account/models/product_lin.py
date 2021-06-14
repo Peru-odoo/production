@@ -5,4 +5,5 @@ class ProductLines(models.Model):
     _description = 'New Description'
 
     name = fields.Char()
-    product_line = fields.Char(string="Parent Product Line")
+    product_line = fields.Char(string="Parent Product Line old")
+    product_line_parent = fields.Char(string="Parent Product Line")

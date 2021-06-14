@@ -47,14 +47,16 @@ class AccountAnalyticAccount(models.Model):
     user_add_ids = fields.Many2many(comodel_name="res.users", string="Additional Users", )
 
     salesteam_id = fields.Many2one(comodel_name="crm.team", string="Sales Team", )
-    product_id = fields.Many2one(comodel_name="product.lines", string="Product Line", )
+    product_id = fields.Many2one(comodel_name="product.lines", string="Product Line old", )
+    product_line_id = fields.Many2one(comodel_name="product.lines", string="Product Line", )
     undefined_sales_person = fields.Boolean(string="Undefined Sales Person", )
 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    product_id = fields.Many2one(comodel_name="product.lines", string="Product Line", )
+    product_id = fields.Many2one(comodel_name="product.lines", string="Product Line old", )
+    product_line_id = fields.Many2one(comodel_name="product.lines", string="Product Line", )
 
 
 class AccountPaymentInherit(models.Model):
