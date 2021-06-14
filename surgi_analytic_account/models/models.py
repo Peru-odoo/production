@@ -82,6 +82,9 @@ class AccountMoveLineInherit(models.Model):
     date_payment = fields.Date(string="Due Date(Payment)", )
     collection_receipt_number = fields.Integer(string="Receipt Number(Payment)", required=False, )
     date_check_number = fields.Boolean(string="", )
+    product_line = fields.Many2one(comodel_name="product.lines", related='product_id.product_line_id',
+                                   string="Product Line",
+                                   readonly=True, store=True)
 
 
     # def cron_all_account_move(self):
