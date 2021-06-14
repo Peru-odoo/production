@@ -85,6 +85,9 @@ class AccountMoveLineInherit(models.Model):
     product_line = fields.Many2one(comodel_name="product.lines", related='product_id.product_line_id',
                                    string="Product Line",
                                    readonly=True, store=True)
+    product_line_parent = fields.Char(related='product_id.product_line_id.product_line_parent',
+                                      string="Product Line Parent",
+                                      readonly=True, store=True)
 
 
     # def cron_all_account_move(self):
