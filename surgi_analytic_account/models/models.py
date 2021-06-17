@@ -102,7 +102,7 @@ class AccountMoveLineInherit(models.Model):
     @api.depends('debit', 'credit')
     def _compute_sales_balance(self):
         for line in self:
-            line.sales_balance = line.debit - line.credit
+            line.sales_balance = line.credit - line.debit
 
     # def cron_all_account_move(self):
     #     for rec in self.search([]):

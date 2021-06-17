@@ -8,13 +8,12 @@ from odoo.exceptions import UserError
 class ReportAction(models.Model):
     _inherit = "ir.actions.report"
 
-    report_type = fields.Selection(selection_add=[("xlsx", "XLSX")],ondelete={'xlsx': 'cascade'})
-
-
-    # view_mode = fields.Selection(selection_add=[('hello_world', 'Hello World')], ondelete={'hello_world': 'cascade'})
+    report_type = fields.Selection(
+        selection_add=[("xlsx", "XLSX")], ondelete={"xlsx": "set default"}
+    )
 
     @api.model
-    def render_xlsx(self, docids, data):
+    def _render_xlsx(self, docids, data):
         report_model_name = "report.%s" % self.report_name
         report_model = self.env.get(report_model_name)
         if report_model is None:
