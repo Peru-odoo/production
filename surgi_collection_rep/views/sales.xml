@@ -1,6 +1,37 @@
 <odoo>
     <data>
 
+
+        <record id="tree_view_sale_order_inherit" model="ir.ui.view">
+            <field name="name">name.sale.order.inherit.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+
+                 <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="invoice_ids" widget="many2many_tags"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="form_view_sale_order_inherit_page" model="ir.ui.view">
+            <field name="name">name.sale.order.inherit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='date_order']" position="after">
+                    <field name="invoice_ids" widget="many2many_tags" readonly="1" force_save="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
         <!-- Inherit Form View to Modify it -->
         <record id="form_view_account_move_collection_payment_rep" model="ir.ui.view">
             <field name="name">name.account.move.collection.payment.rep</field>
@@ -24,9 +55,14 @@
                 <xpath expr="//field[@name='collection_rep']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-<!--                <xpath expr="//field[@name='check_number_payment']" position="after">-->
-<!--                    <field name="collection_rep"/>-->
-<!--                </xpath>-->
+                <xpath expr="//header" position="inside">
+                    <button name="button_invoice_attach" type="object"
+                            string="Invoice Attach" class="oe_highlight" attrs="{'invisible':[('is_invoice_attach','=',True)]}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='invoice_date']" position="after">
+                    <field name="is_invoice_attach"/>
+                </xpath>
 
             </field>
         </record>
@@ -59,35 +95,12 @@
                 <xpath expr="//field[@name='collection_rep']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
-                <xpath expr="//field[@name='collection_rep']" position="after">
-                    <field name="city"/>
-                </xpath>
+
 
             </field>
         </record>
 
-        <record id="surgi_view_quotation_tree_inhert" model="ir.ui.view">
-            <field name="name">surgi.sale.order.tree.inherit</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_quotation_tree"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="city" optional="hide" options="{'no_create': True}"/>
-                </xpath>
-            </field>
-        </record>
 
-        <record id="surgi_view_order_tree_inhert" model="ir.ui.view">
-            <field name="name">surgi.sale.order.tree.inherit.sale.stock</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_tree"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="city" optional="hide" options="{'no_create': True}"/>
-                </xpath>
-            </field>
-
-        </record>
         <record id="form_view_res_partner_inherit" model="ir.ui.view">
             <field name="name">name.res.partner.form.inherit</field>
             <field name="model">res.partner</field>

@@ -70,11 +70,25 @@
                     <field name="is_maintenance" invisible="1"/>
                     <field name="create_task" invisible="1"/>
                     <field name="appear_create_task" invisible="1"/>
-                    <field name="category_id" force_save="1" attrs="{'required': [('category_needed', '=',True)]}" />
+                    <field name="category_id" force_save="1" attrs="{'required': [('category_needed', '=',True)]}" options="{'no_open': True}"/>
                     <field name="is_user_manager" invisible="1"/>
                     <field name="other_request" invisible="1"/>
                     <field name="new_other_request" invisible="1"/>
                     <field name="request_user_id"/>
+                    <field name="next_sequence_stage" invisible="1"/>
+
+
+                    <field name="employee_full_name" attrs="{'invisible': [('type_helpdesk','!=','maintenance_helpdesk')]}" readonly="1" force_save="1"/>
+                    <field name="employee_email" attrs="{'invisible': [('type_helpdesk','!=','maintenance_helpdesk')]}" readonly="1" force_save="1"/>
+                    <field name="employee_phone" attrs="{'invisible': [('type_helpdesk','!=','maintenance_helpdesk')]}" readonly="1" force_save="1"/>
+                    <field name="employee_job_id" attrs="{'invisible': [('type_helpdesk','!=','maintenance_helpdesk')]}" readonly="1" force_save="1" options="{'no_open': True}"/>
+                    <field name="employee_department_id" attrs="{'invisible': [('type_helpdesk','!=','maintenance_helpdesk')]}" readonly="1" force_save="1" options="{'no_open': True}" />
+                    <field name="order_phone_num" attrs="{'invisible': ['|',('is_order_phone','=',False),('type_helpdesk','!=','maintenance_helpdesk')]}"/>
+
+
+                    <field name="is_order_phone" invisible="1"/>
+
+
                     <field name="type_helpdesk" invisible="1" force_save="1"/>
                     <field name="is_manager_appoval" readonly="1" force_save="1" />
 <!--                    attrs="{'invisible': [('type_helpdesk','=','maintenance_helpdesk')]}"-->
@@ -109,7 +123,7 @@
                 <xpath expr="//field[@name='fold']" position="after">
                     <field name="all_users"/>
                     <field name="user_ids" widget="many2many_tags"/>
-                    <field name="other_request_ids" widget="many2many_tags"/>
+<!--                    <field name="other_request_ids" widget="many2many_tags"/>-->
                 </xpath>
 
             </field>

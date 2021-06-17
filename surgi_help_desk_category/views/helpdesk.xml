@@ -17,7 +17,7 @@
 
 
         <record id="action_my_request_tickets" model="ir.actions.act_window">
-            <field name="name">My Request Tickets</field>
+            <field name="name">My Tickets</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">helpdesk.ticket</field>
             <field name="view_mode">list,kanban,form,activity</field>

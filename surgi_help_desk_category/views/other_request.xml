@@ -5,12 +5,12 @@
 
 
         <record id="action_other_request_tickets" model="ir.actions.act_window">
-            <field name="name">Other Request</field>
+            <field name="name">Other Tickets</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">helpdesk.ticket</field>
             <field name="view_mode">list,kanban,form,activity</field>
 <!--            ('receiver_user_ids','in',[uid])-->
-             <field name="domain">[('stage_id.other_request_ids', 'in', [uid]), ]</field>
+             <field name="domain">[('team_id.visibility_member_ids', 'in', [uid]), ]</field>
             <field name="context">{'default_type_helpdesk': 'maintenance_helpdesk'}</field>
 
             <field name="help" type="html">
@@ -25,7 +25,7 @@
         </record>
 
 
-        <menuitem id="menu_action_helpdesk_other_request" name="Other Requests"
+        <menuitem id="menu_action_helpdesk_other_request" name="Other Tickets"
                   parent="surgi_help_desk_category.menu_my_request_root"
                   action="action_other_request_tickets"
                   sequence="2"

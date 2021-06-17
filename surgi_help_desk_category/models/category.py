@@ -1,7 +1,12 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-class NewModule(models.Model):
+class HREmployeeInherit(models.Model):
+    _inherit = 'hr.employee'
+
+    address_home_id = fields.Many2one(comodel_name="res.partner", string="Address", required=False, )
+
+class HelpDeskCategoryInherit(models.Model):
     _name = 'helpdesk.category'
     _rec_name = 'name'
     _description = 'HelpDesk Category'
@@ -15,6 +20,8 @@ class HelpdeskTeamInherit(models.Model):
     category_needed = fields.Boolean(string="Category Needed", )
     is_maintenance = fields.Boolean(string="Equipment", )
     create_task = fields.Boolean(string="Create Task", )
+    is_order_phone = fields.Boolean(string="Phone",  )
+
 
 
 class HelpdeskTicketInherit(models.Model):
@@ -36,10 +43,31 @@ class HelpdeskTicketInherit(models.Model):
     is_maintenance = fields.Boolean(string="Maintenance",related='team_id.is_maintenance'  )
     appear_create_task = fields.Boolean(compute='compute_appear_create_task')
 
+    employee_full_name = fields.Char(string="Full Name",)
+    employee_email = fields.Char(string="Email",)
+    employee_phone = fields.Char(string="Phone",)
+    employee_job_id = fields.Many2one(comodel_name="hr.job",string="Job Position")
+    employee_department_id = fields.Many2one(comodel_name="hr.department",string="Department")
+    is_order_phone = fields.Boolean(string="",related='team_id.is_order_phone'  )
+
+    order_phone_num = fields.Char(string="رقم التليفون الخاص بالطلب", required=False, )
+    next_sequence_stage = fields.Integer(string="", required=False, )
+
+    @api.onchange('request_user_id')
+    def compute_fields_employee(self):
+        if self.request_user_id:
+            self.employee_full_name=self.request_user_id.employee_id.name
+            self.employee_email=self.request_user_id.employee_id.work_email
+            self.employee_phone=self.request_user_id.employee_id.work_phone
+            self.employee_job_id=self.request_user_id.employee_id.job_id.id
+            self.employee_department_id=self.request_user_id.employee_id.department_id.id
+
+
+    @api.depends('stage_id')
     def compute_appear_create_task(self):
         for rec in self:
             rec.appear_create_task=False
-            if rec.env.user.id in rec.stage_id.other_request_ids.ids:
+            if rec.env.user.id in rec.team_id.visibility_member_ids.ids:
                 rec.appear_create_task = True
 
     def button_create_task(self):
@@ -93,17 +121,31 @@ class HelpdeskTicketInherit(models.Model):
             elif self.env.user.id==rec.request_user_id.employee_id.parent_id.parent_id.parent_id.parent_id.parent_id.user_id.id:
                 rec.is_user_manager=True
 
-
-
     @api.onchange('stage_id')
     def constrain_stage_id(self):
-        statges_list=[]
-        statge_rec=self.env['helpdesk.stage']
+        statges_list = []
+        team_list = []
+        statge_rec = self.env['helpdesk.stage']
+
+        if (int(self.stage_id.sequence) - int(self.next_sequence_stage)) > 1:
+            for stag in statge_rec.search([]):
+                if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) < stag.sequence < self.stage_id.sequence:
+                    raise ValidationError("Not Allowed")
+        elif (int(self.stage_id.sequence) - int(self.next_sequence_stage)) < -1:
+            for stag in statge_rec.search([]):
+                if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) > stag.sequence > self.stage_id.sequence:
+                    raise ValidationError("Not Allowed")
+        else:
+            self.next_sequence_stage= self.stage_id.sequence
+
+
+
         for rec in statge_rec.search([]):
             if self.team_id.id in rec.team_ids.ids:
                 statges_list.append(int(rec.sequence))
+                team_list.append(int(rec.id))
 
-        print(self.stage_id.sequence,'eeeeeeeeeeeeeee',statges_list)
+
         if statges_list:
             if self.env.user.id not in self.stage_id.user_ids.ids and self.team_id.id in self.stage_id.team_ids.ids:
                 if int(self.stage_id.sequence) > int(min(statges_list)) :
@@ -111,8 +153,8 @@ class HelpdeskTicketInherit(models.Model):
             if self.is_manager_appoval==False and int(self.stage_id.sequence) > int(min(statges_list)):
                 raise ValidationError("Not Allowed doesn't has Permission Only For Manager")
 
-        else:
-            raise ValidationError("Please Enter Stage Sequence")
+        # else:
+        #     raise ValidationError("Please Enter Stage Sequence")
 
 
 
@@ -130,8 +172,8 @@ class HelpdeskStageInherit(models.Model):
     _inherit = 'helpdesk.stage'
 
     user_ids = fields.Many2many(comodel_name="res.users", string="User", )
-    other_request_ids = fields.Many2many(comodel_name="res.users", relation="other",
-                                         column1="req1", column2="req2", string="Other Request", )
+    # other_request_ids = fields.Many2many(comodel_name="res.users", relation="other",
+    #                                      column1="req1", column2="req2", string="Other Request", )
     all_users = fields.Boolean()
 
     @api.onchange('all_users')
