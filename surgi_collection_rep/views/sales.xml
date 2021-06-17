@@ -95,6 +95,9 @@
                 <xpath expr="//field[@name='collection_rep']" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='collection_rep']" position="after">
+                    <field name="city"/>
+                </xpath>
 
 
             </field>
@@ -111,6 +114,28 @@
                     <field name="collection_rep"/>
                 </xpath>
 
+            </field>
+        </record>
+
+        <record id="surgi_view_quotation_tree_inhert" model="ir.ui.view">
+            <field name="name">surgi.sale.order.tree.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="city" optional="hide" options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="surgi_view_order_tree_inhert" model="ir.ui.view">
+            <field name="name">surgi.sale.order.tree.inherit.sale.stock</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="city" optional="hide" options="{'no_create': True}"/>
+                </xpath>
             </field>
         </record>
 

@@ -2,6 +2,7 @@ from odoo import models, fields, api
 class SaleOrderInherit(models.Model):
     _inherit = 'sale.order'
 
+    city = fields.Char(related='partner_id.city', readonly=True)
     collection_rep = fields.Many2one('res.users', 'Collection Rep', track_visibility='onchange',)
 
     # account_moves_ids = fields.Many2many(comodel_name="", relation="", column1="", column2="", string="", )
