@@ -26,6 +26,13 @@
                     <field name="date_payment" optional="hide"/>
                     <field name="collection_receipt_number" optional="hide"/>
                 </xpath>
+                <xpath expr="//field[@name='analytic_account_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="product_line" optional="hide"/>
+                    <field name="product_line_parent" optional="hide"/>
+                    <field name="analytic_account_group_id" optional="hide"/>
+                    <field name="analytic_account_group_parent_id" optional="hide"/>
+                </xpath>
 
             </field>
         </record>
