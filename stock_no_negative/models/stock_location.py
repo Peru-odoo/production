@@ -7,6 +7,7 @@ from odoo import fields, models
 
 class StockLocation(models.Model):
     _inherit = "stock.location"
+    wharehouse_location = fields.Selection([('asset','Asset'),('sell','Selling')])
 
     allow_negative_stock = fields.Boolean(
         string="Allow Negative Stock",

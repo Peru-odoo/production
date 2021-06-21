@@ -15,7 +15,19 @@
                     name="allow_negative_stock"
                     attrs="{'invisible': [('usage', 'not in', ['internal', 'transit'])]}"
                 />
+
+                 <field
+                    name="wharehouse_location" string="Warehouse Location"
+                    attrs="{'invisible': [('usage', 'not in', ['internal', 'transit'])]}"
+                 />
+
             </field>
+
+
+
+
+
+
         </field>
     </record>
 </odoo>

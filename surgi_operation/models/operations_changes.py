@@ -273,6 +273,7 @@ class operation_operation(models.Model):
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
+            sale_order.changed_line_ids()
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
             for quant in quants:
@@ -289,6 +290,7 @@ class operation_operation(models.Model):
                 picking.synchronize_scan()
                 picking.compute_analytic_account()
                 picking.button_validate()
+
             print ("Sale_order: " + str(sale_order))
         else:
             raise Warning('No Quants Available in Hanged Location!')
@@ -344,6 +346,7 @@ class operation_operation(models.Model):
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
+            sale_order.changed_line_ids()
 
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
@@ -416,6 +419,8 @@ class operation_operation(models.Model):
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
+            sale_order.changed_line_ids()
+
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
             for quant in quants:

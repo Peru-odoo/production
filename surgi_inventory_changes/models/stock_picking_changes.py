@@ -34,7 +34,7 @@ class StockPickingInherit(models.Model):
                                       domain=[('so_delivery_type','=','exchange')])
     receipt_exchange_order_id = fields.Many2one(comodel_name='stock.picking', string="Exchange Receipt Order",
                                       help="used to set Exchange Receipt Order",
-                                      domain=[('inv_receipt_type', '=', 'receiptexchange')])
+                                      domain=[('receipt_exchange', '=', True)])
     gov_form_url = fields.Char(string="Gov Form URL",help="used to add Gov Form URL")
 
     approval_lines=fields.One2many('approval.line','pick_id')
