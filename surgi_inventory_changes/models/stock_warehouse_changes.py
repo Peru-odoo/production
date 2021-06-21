@@ -9,7 +9,7 @@ class StockWarehouseInherit(models.Model):
     warehouse_managers_id = fields.Many2one('res.users', string="Manager")
     
     manager_lines=fields.One2many('manager.line','warehouse_id')
-    wharehouse_type = fields.Selection([('asset','Asset'),('sell','Selling')])
+
 
 # ================= A.Salama ==================
 class stock_picking_type_changes(models.Model):
