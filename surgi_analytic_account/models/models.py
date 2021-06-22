@@ -96,11 +96,12 @@ class AccountMoveLineInherit(models.Model):
                                                        string='AC. Group Parent', readonly=True, store=True)
     sales_balance = fields.Monetary(string='Sales Balance', store=True,
                               currency_field='company_currency_id',
-                              compute='_compute_sales_balance',
+                              compute='compute_sales_balance_new',
                               help="Technical field holding the credit - debit in order to open meaningful graph views from reports")
 
-    @api.depends('debit', 'credit')
-    def _compute_sales_balance(self):
+
+    @api.depends('credit', 'debit')
+    def compute_sales_balance_new(self):
         for line in self:
             line.sales_balance = line.credit - line.debit
 
