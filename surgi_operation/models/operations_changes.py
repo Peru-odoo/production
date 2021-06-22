@@ -346,7 +346,6 @@ class operation_operation(models.Model):
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
-            sale_order.changed_line_ids()
 
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
