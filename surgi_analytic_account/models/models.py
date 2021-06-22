@@ -100,12 +100,6 @@ class AccountMoveLineInherit(models.Model):
                               compute='compute_sales_balance_new',
                               help="Technical field holding the credit - debit in order to open meaningful graph views from reports")
     
-    sales_balance_2 = fields.Monetary(string='Sales Balance2',
-                                      store=True,
-                                      currency_field='company_currency_id',
-                                      compute='compute_sales_balance_new',
-                                      help="Technical field holding the credit - debit in order to open meaningful graph views from reports")
-
     @api.depends('credit', 'debit')
     def compute_sales_balance_new(self):
         for line in self:
