@@ -94,11 +94,17 @@ class AccountMoveLineInherit(models.Model):
     analytic_account_group_parent_id = fields.Many2one(comodel_name='account.analytic.group',
                                                        related='analytic_account_group_id.parent_id',
                                                        string='AC. Group Parent', readonly=True, store=True)
-    sales_balance = fields.Monetary(string='Sales Balance', store=True,
+    sales_balance = fields.Monetary(string='Sales Balance',
+                                    store=True,
                               currency_field='company_currency_id',
                               compute='compute_sales_balance_new',
                               help="Technical field holding the credit - debit in order to open meaningful graph views from reports")
-
+    
+    sales_balance_2 = fields.Monetary(string='Sales Balance2',
+                                      store=True,
+                                      currency_field='company_currency_id',
+                                      compute='compute_sales_balance_new',
+                                      help="Technical field holding the credit - debit in order to open meaningful graph views from reports")
 
     @api.depends('credit', 'debit')
     def compute_sales_balance_new(self):
