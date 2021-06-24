@@ -49,6 +49,12 @@
                     <br/>
                     <label for="is_order_phone" string="Phone"/><br/>
                     <field name="is_order_phone" class="mt16"/>
+                    <br/>
+                    <label for="is_manager" string="IS Manager"/><br/>
+                    <field name="is_manager" class="mt16"/>
+                    <br/>
+                    <label for="is_request" string="IS Request"/><br/>
+                    <field name="is_request" class="mt16"/>
 
                 </xpath>
 

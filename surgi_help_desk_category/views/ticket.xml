@@ -57,7 +57,11 @@
 
                 <xpath expr="//button[@name='assign_ticket_to_self']" position="after">
                     <button name="button_manager_approval" string="Manager Approval"
-                            type="object" class="oe_highlight" attrs="{'invisible': [('is_user_manager', '=',False)]}"/>
+                            type="object" class="oe_highlight" attrs="{'invisible': ['|',
+                            ('is_user_manager', '=',False),
+                            ('is_manager', '=',False)
+
+                            ]}"/>
 
                     <button name="button_create_task" string="Create Task"
                             type="object" class="oe_highlight"
@@ -75,6 +79,7 @@
                     <field name="other_request" invisible="1"/>
                     <field name="new_other_request" invisible="1"/>
                     <field name="request_user_id"/>
+                    <field name="is_manager" invisible="1"/>
                     <field name="next_sequence_stage" invisible="1"/>
 
 

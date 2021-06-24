@@ -22,6 +22,11 @@ class HelpdeskTeamInherit(models.Model):
     create_task = fields.Boolean(string="Create Task", )
     is_order_phone = fields.Boolean(string="Phone",  )
 
+    is_manager = fields.Boolean(string="IS Manager",  )
+    is_request = fields.Boolean(string="IS Request",  )
+
+
+
 
 
 class HelpdeskTicketInherit(models.Model):
@@ -52,6 +57,8 @@ class HelpdeskTicketInherit(models.Model):
 
     order_phone_num = fields.Char(string="رقم التليفون الخاص بالطلب", required=False, )
     next_sequence_stage = fields.Integer(string="", required=False, )
+    is_manager = fields.Boolean(string="IS Manager",related='team_id.is_manager')
+
 
     @api.onchange('request_user_id')
     def compute_fields_employee(self):
@@ -127,16 +134,20 @@ class HelpdeskTicketInherit(models.Model):
         team_list = []
         statge_rec = self.env['helpdesk.stage']
 
-        if (int(self.stage_id.sequence) - int(self.next_sequence_stage)) > 1:
-            for stag in statge_rec.search([]):
-                if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) < stag.sequence < self.stage_id.sequence:
-                    raise ValidationError("Not Allowed")
-        elif (int(self.stage_id.sequence) - int(self.next_sequence_stage)) < -1:
-            for stag in statge_rec.search([]):
-                if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) > stag.sequence > self.stage_id.sequence:
-                    raise ValidationError("Not Allowed")
+        if self.team_id.is_request == True:
+
+            if (int(self.stage_id.sequence) - int(self.next_sequence_stage)) > 1:
+                for stag in statge_rec.search([]):
+                    if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) < stag.sequence < self.stage_id.sequence:
+                        raise ValidationError("Not Allowed")
+            elif (int(self.stage_id.sequence) - int(self.next_sequence_stage)) < -1:
+                for stag in statge_rec.search([]):
+                    if self.team_id.id in stag.team_ids.ids and int(self.next_sequence_stage) > stag.sequence > self.stage_id.sequence:
+                        raise ValidationError("Not Allowed")
+            else:
+                self.next_sequence_stage= self.stage_id.sequence
         else:
-            self.next_sequence_stage= self.stage_id.sequence
+            pass
 
 
 
@@ -146,7 +157,7 @@ class HelpdeskTicketInherit(models.Model):
                 team_list.append(int(rec.id))
 
 
-        if statges_list:
+        if statges_list and self.team_id.is_manager==True and self.team_id.is_request==True:
             if self.env.user.id not in self.stage_id.user_ids.ids and self.team_id.id in self.stage_id.team_ids.ids:
                 if int(self.stage_id.sequence) > int(min(statges_list)) :
                     raise ValidationError("Not Allowed User Access Has Not Permission Please Check User Stage")
