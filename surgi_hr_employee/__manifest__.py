@@ -20,6 +20,8 @@
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
+        'security/relations_groups.xml',
         ## 'views/eg_hr_payroll_report_templates.xml',
         'views/hr_employee_changes.xml',
         'views/hr_department_changes.xml',
@@ -27,6 +29,7 @@
         'views/hr_employee.xml',
         'report/badge.xml',
         'views/print_employee_badge.xml',
+        'views/employee_family.xml',
         # 'report/eg_hr_payroll_report.xml',
         # #'views/education_degree_view.xml',
     ],

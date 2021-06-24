@@ -3,8 +3,87 @@ from odoo import fields
 from odoo import models
 from odoo.models import _logger
 from odoo.exceptions import ValidationError
-from datetime import datetime, date
+import datetime
 from dateutil import relativedelta
+
+
+
+class Employee_relations(models.Model):
+    _name ='emp.relations'
+
+    employee_realtion_id = fields.Many2one('hr.employee',string='Employee Relations')
+    emp_family_name = fields.Char(string="Name")
+    attachment_family = fields.Binary( string="Attachment")
+
+    employee_relation = fields.Selection([('wifes', 'Wife'), ('husbands', 'Husband'), ('sons', 'Son'), ('daughters', 'Daughter')])
+    emp_family_gender = fields.Char(compute='_auto_gender_generate', string="Gender",store=True)
+
+    bdate = fields.Date(string="Date Of Birth")
+    relation_age = fields.Char(string="Age", compute="_get_age_from_relation", store=True)
+
+
+
+
+
+    @api.depends("employee_relation")
+    def _auto_gender_generate(self):
+        for rec in self:
+            if rec.employee_relation == "wifes":
+                rec.emp_family_gender = 'Female'
+            elif rec.employee_relation == "husbands":
+                rec.emp_family_gender = 'Male'
+            elif rec.employee_relation == "sons":
+                rec.emp_family_gender = 'Male'
+            elif rec.employee_relation == "daughters":
+                rec.emp_family_gender = 'Female'
+            else:
+                rec.emp_family_gender = "Not Providated...."
+
+
+    @api.depends("bdate")
+    def _get_age_from_relation(self):
+        """Age Calculation"""
+        today_date = datetime.date.today()
+        for stud in self:
+            if stud.bdate:
+                """
+                Get only year.
+                """
+                # bdate = fields.Datetime.to_datetime(stud.bdate).date()
+                # total_age = str(int((today_date - bdate).days / 365))
+                # stud.relation_age = total_age
+
+
+                currentDate = datetime.date.today()
+
+                deadlineDate= fields.Datetime.to_datetime(stud.bdate).date()
+                # print (deadlineDate)
+                daysLeft = currentDate - deadlineDate
+                # print(daysLeft)
+
+                years = ((daysLeft.total_seconds())/(365.242*24*3600))
+                yearsInt=int(years)
+
+                months=(years-yearsInt)*12
+                monthsInt=int(months)
+
+                days=(months-monthsInt)*(365.242/12)
+                daysInt=int(days)
+
+                hours = (days-daysInt)*24
+                hoursInt=int(hours)
+
+                minutes = (hours-hoursInt)*60
+                minutesInt=int(minutes)
+
+                seconds = (minutes-minutesInt)*60
+                secondsInt =int(seconds)
+
+                stud.relation_age = '{0:d} years, {1:d}  months, {2:d}  days,   \
+                old.'.format(yearsInt,monthsInt,daysInt,hoursInt)
+            else:
+                stud.relation_age = "Not Providated...."
+
 
 
 class DepartmentFields(models.Model):
@@ -57,6 +136,18 @@ class HrEmployeeBaseDate(models.AbstractModel):
     private_num = fields.Char(string="Private Number ", required=False, )
 
 
+
+
+
+    # @api.onchange('dob')
+    # def get_age(self):
+    #     res = {}
+    #     if self.dob:
+    #         dob = datetime.strptime(self.dob, "%Y-%m-%d")
+    #     age_calc = (datetime.today() - dob).days / 365
+    #     emp_age_family = str(age_calc) + ' Years'
+    #     self.emp_age_family = emp_age_family
+
 # class HREmployeeFields(models.Model):
 #     _inherit = 'hr.employee.public'
 #
@@ -107,6 +198,8 @@ class HrEmployeeBaseDate(models.AbstractModel):
 
 class HREmployeeFields(models.Model):
     _inherit = 'hr.employee'
+
+    employee_family_id = fields.One2many('emp.relations','employee_realtion_id', string='Employee Relation')
 
     # labor_linc_no = fields.Char(string="Labor Linc No.", )
     # id_from = fields.Char(string="ID From", store=True)

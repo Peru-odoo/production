@@ -33,6 +33,7 @@
         'views/sales.xml',
         'views/expenses_event.xml',
         'views/journal.xml',
+        'views/customer_payment.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

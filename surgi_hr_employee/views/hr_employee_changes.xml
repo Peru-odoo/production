@@ -103,8 +103,39 @@
                     </page>
                 </xpath>
 
+
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                        <page string="Employee Family" name="relations">
+                            <group>
+
+                            </group>
+
+                                <field name="employee_family_id" string="Employee Relation"
+                                    widget="section_and_note_one2many">
+
+                                    <tree string="Employee Relation" editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add a Relation"/>
+                                        </control>
+                                        <field name="employee_relation" />
+                                        <field name="emp_family_gender" />
+                                        <field name="emp_family_name" />
+                                        <field name="bdate" />
+                                        <field name="relation_age" />
+                                        <field name="attachment_family" filename="document_name"/>
+
+                                    </tree>
+                                </field>
+
+                    </page>
+                </xpath>
+
+
                     </field>
                 </record>
+
+
+
 
 
         <!-- Inherit Form View to Modify it -->
