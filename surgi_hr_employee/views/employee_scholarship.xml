@@ -17,7 +17,6 @@
 
                                         <field name="emp_family_gender" />
 
-                                        <field name="emp_family_gender" />
                                         <field name="emp_scholarship_name" />
                                         <field name="bdate" />
                                         <field name="relation_age" />
