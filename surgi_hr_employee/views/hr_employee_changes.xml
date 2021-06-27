@@ -130,7 +130,39 @@
                     </page>
                 </xpath>
 
+                <xpath expr="//page[@name='hr_settings']" position="after">
+                        <page string="Employee scholarship" name="scholarship">
+                            <group>
+                                <div>
 
+
+                                <field name="employee_scholarship_id" string="Scholarship"
+                                    widget="section_and_note_one2many">
+
+                                    <tree string="Scholarship" editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add Relation"/>
+                                        </control>
+                                        <field name="employee_relation" string="Relation"/>
+                                        <field name="emp_family_gender" string="Gender" />
+                                        <field name="emp_scholarship_name" string="Name"/>
+                                        <field name="bdate" />
+                                        <field name="relation_age" string="Age"/>
+                                          <field name="school_type" />
+                                          <field name="school_stage" />
+                                          <field name="school_year" />
+                                        <field name="degree_total" />
+                                        <field name="school_percentage" />
+
+                                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file"  class="oe_inline"/>
+
+                                    </tree>
+                                </field>
+                                </div>
+                            </group>
+
+                    </page>
+                </xpath>
                     </field>
                 </record>
 

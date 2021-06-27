@@ -191,6 +191,56 @@
                                             <!--                                            </group>-->
                                         </group>
                                     </page>
+                                    <page string="Employee Family" name="relations">
+                                            <group>
+                                            </group>
+                                        <field name="employee_family_id" string="Employee Relation"
+                                                    widget="section_and_note_one2many"  options="{'no_open':False,'no_create_edit': False}">
+                                            <tree string="Employee Relation" create="1" delete="1" editable="bottom" >
+                                                        <control>
+                                                            <create name="add_relation_control" string="Add a Relation"/>
+                                                        </control>
+                                                <field name="employee_relation" />
+                                                <field name="emp_family_gender" />
+                                                <field name="emp_family_name" />
+                                                <field name="bdate" />
+                                                <field name="relation_age" />
+                                                <field name="attachment_family" filename="document_name"/>
+
+                                            </tree>
+                                        </field>
+                                    </page>
+                                        <page string="Employee scholarship" name="scholarship">
+                            <group>
+                                <div>
+
+
+                                <field name="employee_scholarship_id" string="Scholarship"
+                                    widget="section_and_note_one2many" options="{'no_open':False,'no_create_edit': False}">
+
+                                    <tree string="Scholarship" create="1" delete="1" editable="bottom" >
+                                        <control>
+                                            <create name="add_relation_control" string="Add Relation"/>
+                                        </control>
+                                        <field name="employee_relation" string="Relation"/>
+                                        <field name="emp_family_gender" string="Gender" />
+                                        <field name="emp_scholarship_name" string="Name"/>
+                                        <field name="bdate" />
+                                        <field name="relation_age" string="Age"/>
+                                          <field name="school_type" />
+                                          <field name="school_stage" />
+                                          <field name="school_year" />
+                                        <field name="degree_total" />
+                                        <field name="school_percentage" />
+
+                                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file"  class="oe_inline"/>
+
+                                    </tree>
+                                </field>
+                                </div>
+                            </group>
+
+                    </page>
                                 </notebook>
                             </div>
                         </div>

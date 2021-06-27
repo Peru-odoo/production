@@ -7,6 +7,11 @@ import datetime
 from dateutil import relativedelta
 
 
+class stage_scholarship(models.Model):
+    _name = 'scholarship.stage'
+    # _rec_name = 'name'
+
+    name = fields.Char(string="Scholarship Stage")
 
 class Employee_relations(models.Model):
     _name ='emp.relations'
@@ -84,6 +89,89 @@ class Employee_relations(models.Model):
             else:
                 stud.relation_age = "Not Providated...."
 
+
+class Employee_scholarship(models.Model):
+    _name ='emp.scholarship'
+
+    name = fields.Many2one('hr.employee',string='Employee')
+    # employee_scholarship_code = fields.Many2one('hr.employee', related='employee_id.registration_number' ,string='Employee Code')
+    employee_scholarship_code = fields.Char(string="Registration Number",
+                                      related='name.registration_number',store=True)
+    employee_scholarship_wl = fields.Char(string="Work Location",
+                                      related='name.work_location', store=True)
+    emp_scholarship_name = fields.Char(string="Name")
+    # attachment_ids = fields.Binary( string="Attachment")
+    attachment_ids = fields.Many2many('ir.attachment', string="Attachment")
+
+    employee_relation = fields.Selection([ ('sons', 'Son'), ('daughters', 'Daughter')])
+    emp_family_gender = fields.Char(compute='_auto_gender_generate', string="Gender",store=True)
+
+    bdate = fields.Date(string="Date Of Birth")
+    relation_age = fields.Char(string="Age", compute="_get_age_from_relation", store=True)
+    school_type = fields.Selection([ ('ar', 'Arabic'),('gr', 'German'), ('fr', 'France'), ('en', 'English'),('co', 'Commercial'),('de', 'Demo'),('cr', 'Crafts') ])
+    school_stage = fields.Many2one('scholarship.stage' ,string="School Stage")
+    school_year = fields.Char(string="School Year")
+    degree_total = fields.Char(string="Dgree in Total")
+    school_percentage = fields.Char(string="Percentage")
+
+
+
+
+    @api.depends("employee_relation")
+    def _auto_gender_generate(self):
+        for rec in self:
+
+            if rec.employee_relation == "sons":
+                rec.emp_family_gender = 'Male'
+            elif rec.employee_relation == "daughters":
+                rec.emp_family_gender = 'Female'
+            else:
+                rec.emp_family_gender = "Not Providated...."
+
+
+    @api.depends("bdate")
+    def _get_age_from_relation(self):
+        """Age Calculation"""
+        today_date = datetime.date.today()
+        for stud in self:
+            if stud.bdate:
+                """
+                Get only year.
+                """
+                # bdate = fields.Datetime.to_datetime(stud.bdate).date()
+                # total_age = str(int((today_date - bdate).days / 365))
+                # stud.relation_age = total_age
+
+
+                currentDate = datetime.date.today()
+
+                deadlineDate= fields.Datetime.to_datetime(stud.bdate).date()
+                # print (deadlineDate)
+                daysLeft = currentDate - deadlineDate
+                # print(daysLeft)
+
+                years = ((daysLeft.total_seconds())/(365.242*24*3600))
+                yearsInt=int(years)
+
+                months=(years-yearsInt)*12
+                monthsInt=int(months)
+
+                days=(months-monthsInt)*(365.242/12)
+                daysInt=int(days)
+
+                hours = (days-daysInt)*24
+                hoursInt=int(hours)
+
+                minutes = (hours-hoursInt)*60
+                minutesInt=int(minutes)
+
+                seconds = (minutes-minutesInt)*60
+                secondsInt =int(seconds)
+
+                stud.relation_age = '{0:d} years, {1:d}  months,   \
+                old.'.format(yearsInt,monthsInt,daysInt,hoursInt)
+            else:
+                stud.relation_age = "Not Providated...."
 
 
 class DepartmentFields(models.Model):
@@ -200,6 +288,8 @@ class HREmployeeFields(models.Model):
     _inherit = 'hr.employee'
 
     employee_family_id = fields.One2many('emp.relations','employee_realtion_id', string='Employee Relation')
+    employee_scholarship_id = fields.One2many('emp.scholarship','name', string='Employee Scholarship')
+
 
     # labor_linc_no = fields.Char(string="Labor Linc No.", )
     # id_from = fields.Char(string="ID From", store=True)
@@ -232,7 +322,7 @@ class HREmployeeFields(models.Model):
     # edu_note = fields.Text("Education Notes")
     # experience_y = fields.Integer(compute="_calculate_experience", string="Experience",
     #                               help="experience in our company", store=True)
-    # experience_m = fields.Integer(compute="_calculate_experience", string="Experience monthes", store=True)
+    # experience_m = fields.Integer(compute="_calculateregistration_number_experience", string="Experience monthes", store=True)
     # experience_d = fields.Integer(compute="_calculate_experience", string="Experience dayes", store=True)
     # payrolled_employee = fields.Boolean("Payrolled Employee", track_visibility='onchange')
     # employee_arabic_name = fields.Char(string="Arabic Name")

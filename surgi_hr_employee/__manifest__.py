@@ -30,6 +30,8 @@
         'report/badge.xml',
         'views/print_employee_badge.xml',
         'views/employee_family.xml',
+        'views/employee_scholarship.xml',
+        'views/schoar_stage.xml',
         # 'report/eg_hr_payroll_report.xml',
         # #'views/education_degree_view.xml',
     ],
