@@ -17,7 +17,7 @@ This application allows you to add multiple write off into single/batch customer
     """,
     'website': 'http://www.technaureus.com/',
     'author': 'Technaureus Info Solutions Pvt. Ltd.',
-    'depends': ['account'],
+    'depends': ['account','surgi_analytic_account'],
     'price': 110,
     'currency': 'EUR',
     'license': 'Other proprietary',

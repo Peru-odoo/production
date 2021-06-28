@@ -222,19 +222,18 @@
                                         <control>
                                             <create name="add_relation_control" string="Add Relation"/>
                                         </control>
-                                        <field name="employee_relation" string="Relation"/>
-                                        <field name="emp_family_gender" string="Gender" />
-                                        <field name="emp_scholarship_name" string="Name"/>
+                                        <field name="employee_relation" string="الصلة"/>
+                                        <field name="emp_family_gender"  />
+                                        <field name="emp_scholarship_name" />
                                         <field name="bdate" />
-                                        <field name="relation_age" string="Age"/>
-                                          <field name="school_type" />
+                                        <field name="relation_age" />
+                                          <field name="school_type" string="نوع المدرسة"/>
                                           <field name="school_stage" />
-                                          <field name="school_year" />
-                                        <field name="degree_total" />
+                                          <field name="school_year" string="السنة الدراسية"/>
                                         <field name="school_percentage" />
-
-                                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file"  class="oe_inline"/>
-
+                                        <field name="attachment_brith"   class="oe_inline"/>
+                                        <field name="attachment_grade"    class="oe_inline"/>
+                                        <field name="attachment_other"    class="oe_inline"/>
                                     </tree>
                                 </field>
                                 </div>

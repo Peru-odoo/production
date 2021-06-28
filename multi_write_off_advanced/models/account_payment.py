@@ -4,6 +4,7 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
+from datetime import datetime,date
 
 
 
@@ -180,13 +181,17 @@ class payment_register(models.TransientModel):
             pay.collection_rep = self.collection_rep
             pay.collection_rep_name = self.collection_rep_name
             if pay.move_id:
-                pay.move_id.check_number_payment = pay.check_number
-                pay.move_id.date_payment = pay.date_due
-                pay.move_id.collection_receipt_number = pay.collection_receipt_number
+                pay.move_id.check_number_payment = self.check_number
+                pay.move_id.date_payment = self.date_due
+                pay.move_id.collection_receipt_number = self.collection_receipt_number
+
+
                 for lin in pay.move_id.line_ids:
-                    lin.move_id.check_number_payment = pay.check_number
-                    lin.move_id.date_payment = pay.date_due
-                    lin.move_id.collection_receipt_number = pay.collection_receipt_number
+                    lin.check_number_payment = self.check_number
+                    lin.date_payment = self.date_due
+                    lin.collection_receipt_number = self.collection_receipt_number
+
+
 
 
 
@@ -362,6 +367,7 @@ class account_payment(models.Model):
 
     def post(self):
         for move in self:
+
             if move.payment_difference_handling == 'reconcile' and move.post_diff_acc == 'multi':
                 amount = 0
                 for payment in move.writeoff_multi_acc_ids:
@@ -502,7 +508,36 @@ class account_payment(models.Model):
 
         return line_vals_list
 
+    def action_post(self):
+        res = super(account_payment, self).action_post()
+        for rec in self:
 
+            rec.move_id.date=date.today()
+            # print(date.today(),'DDDDDDDDDDDDDDDDDDDDDDDDDD')
+
+            if rec.move_id.check_number_payment==False or rec.date_payment==False or rec.collection_receipt_number==False:
+                rec.move_id.check_number_payment=rec.check_number
+                rec.move_id.date_payment=rec.date_due
+                rec.move_id.collection_receipt_number=rec.collection_receipt_number
+
+
+            rec.move_id.date_reconcile = rec.date
+            rec.move_id.payment_name = rec.name
+            for line in rec.move_id.line_ids:
+                # line.date_pay = rec.date
+                # line.payment_name = rec.name
+
+                line.check_number_payment = rec.check_number
+                line.date_payment = rec.date_due
+                line.collection_receipt_number = rec.collection_receipt_number
+
+            # for inv in rec.move_id.invoice_line_ids:
+            #     inv.date_pay = rec.date
+            #     inv.payment_name = rec.name
+
+
+
+        return res
 
 
 class writeoff_accounts(models.Model):

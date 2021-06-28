@@ -11,7 +11,7 @@ class stage_scholarship(models.Model):
     _name = 'scholarship.stage'
     # _rec_name = 'name'
 
-    name = fields.Char(string="Scholarship Stage")
+    name = fields.Char(string="المرحلة الدراسية")
 
 class Employee_relations(models.Model):
     _name ='emp.relations'
@@ -93,26 +93,27 @@ class Employee_relations(models.Model):
 class Employee_scholarship(models.Model):
     _name ='emp.scholarship'
 
-    name = fields.Many2one('hr.employee',string='Employee')
+    name = fields.Many2one('hr.employee',string='اسم الموظف')
     # employee_scholarship_code = fields.Many2one('hr.employee', related='employee_id.registration_number' ,string='Employee Code')
-    employee_scholarship_code = fields.Char(string="Registration Number",
+    employee_scholarship_code = fields.Char(string="كود الموظف",
                                       related='name.registration_number',store=True)
-    employee_scholarship_wl = fields.Char(string="Work Location",
+    employee_scholarship_wl = fields.Char(string="منطقة العمل",
                                       related='name.work_location', store=True)
-    emp_scholarship_name = fields.Char(string="Name")
+    emp_scholarship_name = fields.Char(string="أسم الابن")
     # attachment_ids = fields.Binary( string="Attachment")
-    attachment_ids = fields.Many2many('ir.attachment', string="Attachment")
+    attachment_brith = fields.Binary( string="شهادة الميلاد")
+    attachment_grade = fields.Binary( string="شهادة اخر مرحلة")
+    attachment_other = fields.Binary( string="اخري")
 
-    employee_relation = fields.Selection([ ('sons', 'Son'), ('daughters', 'Daughter')])
-    emp_family_gender = fields.Char(compute='_auto_gender_generate', string="Gender",store=True)
+    employee_relation = fields.Selection([ ('sons', 'ابن'), ('daughters', 'أبنة')])
+    emp_family_gender = fields.Char(compute='_auto_gender_generate', string="النوع",store=True)
 
-    bdate = fields.Date(string="Date Of Birth")
-    relation_age = fields.Char(string="Age", compute="_get_age_from_relation", store=True)
-    school_type = fields.Selection([ ('ar', 'Arabic'),('gr', 'German'), ('fr', 'France'), ('en', 'English'),('co', 'Commercial'),('de', 'Demo'),('cr', 'Crafts') ])
-    school_stage = fields.Many2one('scholarship.stage' ,string="School Stage")
-    school_year = fields.Char(string="School Year")
-    degree_total = fields.Char(string="Dgree in Total")
-    school_percentage = fields.Char(string="Percentage")
+    bdate = fields.Date(string="تاريخ الميلاد")
+    relation_age = fields.Char(string="السن", compute="_get_age_from_relation", store=True)
+    school_type = fields.Selection([ ('ar', 'عربي'),('gr', 'ألماني'), ('fr', 'فرنساوي'), ('en', 'انجليزي'),('co', 'تجاري'),('de', 'تجريبي'),('cr', 'صنايع') ])
+    school_stage = fields.Many2one('scholarship.stage' ,string="المرحلة الدراسية")
+    school_year = fields.Selection([ ('one', '1'), ('two', '2'),('three', '3'), ('four', '4'),('five', '5'), ('six', '6')])
+    school_percentage = fields.Char(string="نسبة النجاح لأخر مرحلة دارسية")
 
 
 
@@ -122,9 +123,9 @@ class Employee_scholarship(models.Model):
         for rec in self:
 
             if rec.employee_relation == "sons":
-                rec.emp_family_gender = 'Male'
+                rec.emp_family_gender = 'ذكر'
             elif rec.employee_relation == "daughters":
-                rec.emp_family_gender = 'Female'
+                rec.emp_family_gender = 'انثي'
             else:
                 rec.emp_family_gender = "Not Providated...."
 
