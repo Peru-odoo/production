@@ -640,8 +640,7 @@ class operation_operation(models.Model):
     consumed_items_file = fields.Binary(string='Consumed Items')
     # delivery_type = fields.Selection(string="Delivery Type", selection=[('delivery_exchange', 'Delivery Exchange'), ('sale_delivery', 'Sales Delivery'),('load_delivery','Loaded Delivery') ], required=False, )
     operation_delivery_type = fields.Selection(string="Delivery Type ", tracking=True,
-                                        selection=[('normal', 'Normal')
-                                            , ('delivery2customer', 'Delivery To Customer')
+                                        selection=[('delivery2customer', 'Delivery To Customer')
                                             , ('delivery2tender', 'Delivery To Tender')
                                             , ('deliveryorder', 'Delivery Order')
                                             , ('loading', 'Loading')

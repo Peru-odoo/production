@@ -21,11 +21,11 @@ class sale_order(models.Model):
     # ============= NewFields ================
     # for the new cycle (Operation type) By Zienab Moesy
 
-    so_type = fields.Selection([('normal', 'Normal'),
+    so_type = fields.Selection([
                                 ('operation', 'Operation'),
                                 ('tender', 'Tender'),
                                 ('supply_order', 'Supply Order'),
-                                ], string='Sale Order Type', default="normal")
+                                ], string='Sale Order Type')
     # delivery_type = fields.Selection(string="Delivery Type ",
     #                                  selection=[('normal', 'Normal'),('loading','Loading')
     #                                             ,('exchange','Exchange ')
