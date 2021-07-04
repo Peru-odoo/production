@@ -92,7 +92,8 @@ class compined_sales_order(models.Model):
             if rec.order_line:
                 # here there will be all the code
                 for line in rec.order_line:
-                    productslines[line.product_id.id]={'qunatity':line.product_uom_qty,'name':line.name,'price':line.price_unit}
+                    pricediscount=line.price_subtotal/line.product_uom_qty
+                    productslines[line.product_id.id]={'qunatity':line.product_uom_qty,'name':line.name,'price':pricediscount}
                     if line.pro_group != '' and line.pro_group != 'unknown':  # check if the product have group
                         if line.pro_group in products.keys():
                             products[line.pro_group]['totalq'] += line.product_uom_qty
@@ -102,7 +103,7 @@ class compined_sales_order(models.Model):
                                 'totalq': line.product_uom_qty,
                                 'products': line.product_id.id,
                                 'pro_name': line.product_id.name,
-                                'price':line.price_unit
+                                'price':pricediscount
                             }
                     else:  # in not have group
                         if line.product_id.name in products.keys():
@@ -205,8 +206,9 @@ class compined_sales_order(models.Model):
                             if line.pro_group in compions[r]['groups'].keys() and line.pro_group  not in grouplisted:
                                 group=str(line.pro_group)
                                 up=line.price_unit
+                                pricediscount=line.price_subtotal/line.product_uom_qty
                                 uquantity=compions[r]['groups'][group]['quantity']
-                                cost+=line.price_unit*compions[r]['groups'][group]['quantity']
+                                cost+=pricediscount*compions[r]['groups'][group]['quantity']
                                 grouplisted.append(line.pro_group)
                         self.env["product.compination.movement.surgi"].create(
                             {
