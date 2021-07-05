@@ -223,8 +223,8 @@
                         Create a new document
                     </p>
                 </field>
-                <field name="domain">[[('employee_id.leave_manager_id.id', '=', uid)]]</field>
-                <field name="context">{}</field>
+                <field name="domain">[('employee_id.leave_manager_id.id', '=', uid)]</field>
+                <field name="context">{'group_by': ['date_to:month']}</field>
                 <field name="search_view_id" ref="surgi_ess_hr_attendance_sheet_filter"/>
         </record>
 

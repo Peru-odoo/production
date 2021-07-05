@@ -21,12 +21,12 @@ class sale_order(models.Model):
     discount_options = fields.Selection(
         selection=[("No Discount", "No Discount"),
                    ("Trade Discount", "Trade Discount")]
-        , string="Choose Discount Type", store=True)
+        , string="Choose Discount Type", store=True, tracking=True)
     discount_value = fields.Float('Sale Discount')
     # amount_after_discount = fields.Monetary('Amount After Discount', store=True, readonly=True,
     #                                         compute='_compute_amount_after_discount',
     #                                         )
-    discount_type_id = fields.Selection(selection=[("Precent", "Precent"),("Fixed", "Fixed")], string="Choose Discount Type", store=True)
+    discount_type_id = fields.Selection(selection=[("Precent", "Precent"),("Fixed", "Fixed")], string="Choose Discount Type", store=True, tracking=True)
     def calculate_tax_fixed_total(self,quantity,unitprice,totalammount,fixedammount):
         itemprice=(quantity*unitprice)/totalammount
         itemprice_fixed=round(fixedammount/totalammount,2)*100
