@@ -9,6 +9,21 @@
             <field name="sequence">15</field>
         </record>
 
+        <record id="group_attendance_sheet_employee" model="res.groups">
+            <field name="name">Employee</field>
+            <field name="category_id"
+                   ref="module_category_human_resources_attendances_sheet"/>
+            <field name="implied_ids"
+                   eval="[(4, ref('group_attendance_sheet_user'))]"/>
+        </record>
+
+        <record id="group_attendance_sheet_manager_view" model="res.groups">
+            <field name="name">Manager View</field>
+            <field name="category_id"
+                   ref="module_category_human_resources_attendances_sheet"/>
+            <field name="implied_ids"
+                   eval="[(4, ref('group_attendance_sheet_user'))]"/>
+        </record>
 
         <record id="group_attendance_sheet_user" model="res.groups">
             <field name="name">User</field>

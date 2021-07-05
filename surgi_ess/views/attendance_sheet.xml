@@ -139,7 +139,7 @@
             <field name="name">surgi.ess.attendance.sheet.tree.view</field>
             <field name="model">attendance.sheet</field>
             <field name="arch" type="xml">
-                <tree string="Attednance Sheets">
+                <tree string="Attednance Sheets" create="0" edit="0" delete="0">
 
                       <field name="name"/>
                       <field name="employee_id"/>
@@ -203,12 +203,55 @@
 
         <menuitem id="first_menu_employee_attendance_sheet_list" name="Attendance Sheets"
                   parent="category_menu_employee_attendance_list" action="surgi_ess_employee_attendance_sheet_action"
-                  groups="rm_hr_attendance_sheet.group_attendance_sheet_user"
+                  groups="rm_hr_attendance_sheet.group_attendance_sheet_employee"
                   sequence="4"/>
         <record model="ir.ui.menu" id="hr_attendance.menu_hr_attendance_root">
              <field name="groups_id"
                eval="[(4, ref('rm_hr_attendance_sheet.group_attendance_sheet_user'))]"/>
          </record>
+
+        <!-- ========================================================================================================= -->
+
+         <!--        ========================================= attend sheet action==============================================================-->
+        <record id="surgi_ess_manager_attendance_sheet_action" model="ir.actions.act_window">
+                <field name="name">Attendance Sheets Manager</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">attendance.sheet</field>
+                <field name="view_mode">tree,form</field>
+                <field name="help" type="html">
+                    <p class="o_view_nocontent_smiling_face">
+                        Create a new document
+                    </p>
+                </field>
+                <field name="domain">[[('employee_id.leave_manager_id.id', '=', uid)]]</field>
+                <field name="context">{}</field>
+                <field name="search_view_id" ref="surgi_ess_hr_attendance_sheet_filter"/>
+        </record>
+
+
+        <record model="ir.actions.act_window.view" id="surgi_ess_manager_attendance_sheet_action_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="surgi_ess_attendance_sheet_tree_view"/>
+            <field name="act_window_id" ref="surgi_ess_manager_attendance_sheet_action"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="surgi_ess_manager_attendance_sheet_action_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="surgi_ess_attendance_sheet_form_view"/>
+            <field name="act_window_id" ref="surgi_ess_manager_attendance_sheet_action"/>
+        </record>
+
+
+
+
+         <!--  =======================================================================================================-->
+
+
+        <menuitem id="first_menu_manager_attendance_sheet_list" name="Attendance Sheets for Manager"
+                  parent="menu_manager_to_approve_list" action="surgi_ess_manager_attendance_sheet_action"
+                  groups="rm_hr_attendance_sheet.group_attendance_sheet_manager_view"
+                  sequence="4"/>
 
         
     </data>
