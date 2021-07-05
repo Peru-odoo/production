@@ -60,6 +60,7 @@
                    <page name="salary_items" string="Salary Items" groups="hr.group_hr_manager">
                        <group>
                        <group name="salary" string="Salary Details">
+                        <field name="payment_method"/>
                         <field name="basic_salary"/>
                         <field name="basic_salary_precent"/>
                         <field name="increase_2014"/>

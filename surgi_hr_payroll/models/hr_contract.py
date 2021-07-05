@@ -30,6 +30,7 @@ class HrContract(models.Model):
     allowances = fields.Float(string="Allowances", digits=dp.get_precision('Payroll'),track_visibility='onchange')
     prev_raise = fields.Float(string="previous Annual Raises", digits=dp.get_precision('Payroll'),track_visibility='onchange')
     phone_limit = fields.Float(string="Phone Limit", digits=dp.get_precision('Payroll'),track_visibility='onchange')
+    payment_method = fields.Selection([('cash', 'Cash'), ('bank', 'Bank')], string='Payment Method')
 
     wage = fields.Monetary('Wage', required=True, tracking=True, help="Employee's monthly gross wage.",compute='calculate_wage')
 
