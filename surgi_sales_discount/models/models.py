@@ -31,7 +31,8 @@ class sale_order(models.Model):
         itemprice=(quantity*unitprice)/totalammount
         itemprice_fixed=round(fixedammount/totalammount,2)*100
         return (fixedammount/totalammount)*100
-    @api.onchange("discount_value")
+    #@api.onchange("discount_value")
+    #@api.model
     def change_discount_value(self):
         if self.discount_type_id=="Precent":
             self.reset_all_discount_lines(self.discount_value)

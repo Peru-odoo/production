@@ -77,5 +77,19 @@
                 </field>
             </field>
         </record>
+
+    <record id="view_order_form_discount" model="ir.ui.view">
+    <field name="name">view.order.form.discount</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+
+                <button name="change_discount_value" string="Apply Discount" type="object"/>
+
+        </xpath>
+    </field>
+</record>
+
   </data>
 </odoo>

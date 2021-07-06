@@ -5,6 +5,7 @@ from odoo.models import _logger
 from odoo.exceptions import ValidationError
 import datetime
 from dateutil import relativedelta
+from datetime import date,datetime
 
 
 class stage_scholarship(models.Model):
@@ -379,7 +380,7 @@ class HREmployeeFields(models.Model):
         for emp in self:
             if emp.start_date:
                 date_format = '%Y-%m-%d'
-                current_date = (datetime.today()).strftime(date_format)
+                current_date = (date.today()).strftime(date_format)
                 d1 = datetime.strptime(str(emp.start_date), date_format).date()
                 d2 = datetime.strptime(current_date, date_format).date()
                 # r = relativedelta(d2, d1)
@@ -403,7 +404,7 @@ class HREmployeeFields(models.Model):
         for emp in self.search([]):
             if emp.start_date:
                 date_format = '%Y-%m-%d'
-                current_date = (datetime.today()).strftime(date_format)
+                current_date = (date.today()).strftime(date_format)
                 d1 = datetime.strptime(str(emp.start_date), date_format).date()
                 d2 = datetime.strptime(current_date, date_format).date()
                 r = relativedelta.relativedelta(d2, d1)

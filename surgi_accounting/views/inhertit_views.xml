@@ -70,6 +70,12 @@
                     </page>
                 </xpath>
 
+                <xpath expr="//field[@name='payment_reference']" position="after">
+                    <field name="payment_date_paid"/>
+                    <field name="check_payment_date_paid" invisible="1"/>
+
+                </xpath>
+
             </field>
         </record>
 

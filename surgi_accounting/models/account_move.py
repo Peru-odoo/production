@@ -32,6 +32,32 @@ class AccountInvoiceInherit(models.Model):
     close_edit = fields.Boolean(string="", compute='compute_close_edit')
     close_edit22 = fields.Char(string="", )
 
+    payment_date_paid = fields.Date(string="Payment Date",)
+    check_payment_date_paid= fields.Boolean(compute='compute_edit_invoice_payments_widget'  )
+
+
+    def _get_reconciled_info_JSON_values(self):
+        res=super(AccountInvoiceInherit, self)._get_reconciled_info_JSON_values()
+        for rec in res:
+            if self.payment_date_paid:
+                rec['date']=self.payment_date_paid
+                return res
+            else:
+                return res
+
+
+
+    @api.depends('payment_date_paid','invoice_payments_widget')
+    def compute_edit_invoice_payments_widget(self):
+        lines_dic={}
+        for rec in self:
+            rec.check_payment_date_paid=False
+            if rec.payment_date_paid and rec.invoice_payments_widget:
+                rec.check_payment_date_paid=True
+                # rec._get_reconciled_info_JSON_values()
+
+
+
     @api.depends('is_reviewed')
     def compute_close_edit(self):
         for rec in self:
