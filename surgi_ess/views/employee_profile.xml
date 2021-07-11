@@ -227,8 +227,8 @@
                                         <field name="emp_scholarship_name" />
                                         <field name="bdate" />
                                         <field name="relation_age" />
-                                          <field name="school_type" string="نوع المدرسة"/>
-                                          <field name="school_stage" />
+                                          <field name="school_type" string="نوع المدرسة" />
+                                          <field name="school_stage" options="{'no_open':True,'no_create_edit': True}"  widget="selection"/>
                                           <field name="school_year" string="السنة الدراسية"/>
                                         <field name="school_percentage" />
                                         <field name="attachment_brith"   class="oe_inline"/>

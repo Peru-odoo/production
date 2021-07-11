@@ -3,9 +3,8 @@ from odoo import fields
 from odoo import models
 from odoo.models import _logger
 from odoo.exceptions import ValidationError
-import datetime
 from dateutil import relativedelta
-from datetime import date,datetime
+import datetime
 
 
 class stage_scholarship(models.Model):
@@ -134,16 +133,12 @@ class Employee_scholarship(models.Model):
     @api.depends("bdate")
     def _get_age_from_relation(self):
         """Age Calculation"""
-        today_date = datetime.date.today()
+        # today_date = datetime.date.today()
         for stud in self:
             if stud.bdate:
                 """
                 Get only year.
                 """
-                # bdate = fields.Datetime.to_datetime(stud.bdate).date()
-                # total_age = str(int((today_date - bdate).days / 365))
-                # stud.relation_age = total_age
-
 
                 currentDate = datetime.date.today()
 
