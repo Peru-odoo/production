@@ -10,7 +10,8 @@ class CustomStockProductionLot(models.Model):
 
     lot_name = fields.Char(string='Lot Name',  help="Unique Serial Number")
     lot_no = fields.Char(string='Lot Fake no work with',  help="Unique Serial Number")
-    expiration_date = fields.Date()
+    expiration_date = fields.Date(string='Expiration Date')
+    effective_date = fields.Date(string='Effective Date')
     gs_mrn = fields.Char(string='GS MRN')
     import_ref = fields.Char(string='Import Ref.')
 

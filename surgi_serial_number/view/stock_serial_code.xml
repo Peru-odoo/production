@@ -9,6 +9,7 @@
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="lot_name"/>
                     <field name="expiration_date"/>
+                    <field name="effective_date"/>
                     <field name="import_ref" invisible="0" readonly="0"/>
                 </xpath>
             </field>
