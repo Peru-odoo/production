@@ -22,7 +22,6 @@
                    ref="module_category_human_resources_attendances_sheet"/>
             <field name="implied_ids"
                    eval="[(4, ref('group_attendance_sheet_user'))]"/>
-
         </record>
         
         <record id="base.user_admin" model="res.users">
