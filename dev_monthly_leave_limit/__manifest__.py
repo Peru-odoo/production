@@ -56,7 +56,9 @@ Odoo HR Leave
     'depends': ['hr_holidays'],
     'data': [
         'views/hr_leave_type_view.xml',
-        ],
+        'views/hr_leave_type.xml',
+
+    ],
     'demo': [],
     'test': [],
     'css': [],
