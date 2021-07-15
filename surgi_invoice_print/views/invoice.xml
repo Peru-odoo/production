@@ -18,32 +18,10 @@
                 <xpath expr="//field[@name='invoice_date']" position="after">
                     <field name="is_equal_total"/>
                     <field name="is_equal_total2" invisible="1"/>
-                     <field name="printedby" readonly="1"/>
                 </xpath>
-                 <xpath expr="//form//header" position="inside">
 
-                <button name="surgi_invoice_print" string="Print Invoice" type="object"/> # button_type like object/action
-
-                </xpath>
             </field>
         </record>
-        
-         <record id="form_view_inherit_sales_order_printed" model="ir.ui.view">
-            <field name="name">name.sales.order.printed.inherit</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
-              <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="is_equal_total"/>
-              </xpath>
-               <xpath expr="//form/header/button[@class='btn-primary']" position="attributes">
-                  <attribute name="attrs">{'invisible': [('is_equal_total', '=', False)]}</attribute>
-            </xpath>
-                
-        </field>
-        </record>
-        
-        
 
     </data>
 </odoo>

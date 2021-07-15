@@ -1,6 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import AccessError, UserError, RedirectWarning, ValidationError, Warning
-
 class AccountMoveInherit(models.Model):
     _inherit = 'account.move'
 
@@ -10,20 +8,6 @@ class AccountMoveInherit(models.Model):
 
     is_equal_total = fields.Boolean(string="IS Equal", store=True, compute='compute_is_equal_total2')
     is_equal_total2 = fields.Boolean(string="", compute='compute_is_equal_total2')
-    totalprintedprice=fields.Float("Printed Total",compute="gettotalprintedinvoice")
-    printedby=fields.Many2one("res.users", string="Printed By",track_visibility=True )
-    def gettotalprintedinvoice(self):
-        total=0.0
-        for i in self.printinvoicetoline:
-            total+=i.total
-        self.totalprintedprice= total
-        pass
-    def surgi_invoice_print(self):
-        if self.amount_total != self.totalprintedprice:
-            raise Warning("Total in invoice Lines not Equal in print Invoice")
-        #return {'type': 'ir.actions.report', 'report_name': 'surgi_invoice_print.report_invoice_demo','report_type': "qweb-pdf" } 
-        self.printedby=self.env.user.id
-        return self.env.ref("surgi_invoice_print.surgi_invoice_print_report").report_action(self, config=False)
 
     @api.depends('amount_total', 'printinvoicetoline')
     def compute_is_equal_total2(self):

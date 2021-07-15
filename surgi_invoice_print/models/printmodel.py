@@ -171,20 +171,9 @@ class PrintInvoice(models.Model):
     _inherit="sale.order"
 
     printquationtoline = fields.One2many('account.move.printedinvoice.lines', 'linestoprintquation')
-    is_equal_total = fields.Boolean(string="IS Equal", store=True, compute='compute_is_equal_total2')
-    @api.depends('amount_total', 'printquationtoline')
-    def compute_is_equal_total2(self):
-      for rec in self:
-         rec.is_equal_total = False
-         total = 0.0
-         for line in rec.printquationtoline:
-            total += line.total
-         rec.is_equal_total = (rec.amount_total == total)
     pass
 class PrintInvoice1(models.Model):
     _name = "account.move.printedinvoice.lines"
-    #_inherit = ['mail.thread']
-      
     sequance=fields.Integer("Sequance")
     description=fields.Char("description")
     uquantity=fields.Float("Quantity")
@@ -192,7 +181,6 @@ class PrintInvoice1(models.Model):
     total=fields.Float("Total",compute='_computeTotal')
     linestoprintinvoice=fields.Many2one("account.move")
     linestoprintquation = fields.Many2one("sale.order")
-    #designation = fields.Char(string='Designation', track_visibility='always') 
 #
     @api.depends('total','uquantity','uprice')
     def _computeTotal(self):

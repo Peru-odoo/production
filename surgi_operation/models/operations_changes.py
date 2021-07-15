@@ -347,7 +347,7 @@ class operation_operation(models.Model):
             sale_order = self.env['sale.order'].create(values)
             self.so_created = True
             sale_order.action_confirm()
-            sale_order.changed_line_ids()
+            # sale_order.changed_line_ids()
 
             pickings = sale_order.mapped('picking_ids')
             scan_product_ids_lst = []
@@ -633,7 +633,6 @@ class operation_operation(models.Model):
     message_com =fields.Char(string='Components',track_visibility=True)
     message_item =fields.Char(string='Operation Items',track_visibility=True)
     active = fields.Boolean(default=True)
-    # product_qunat_tab = fields.One2many('stock.quant', 'operation_id', 'Related Quant')
 
     invoice_id = fields.Many2one(comodel_name='account.move', string='Invoice', readonly=True)
     surgeon_id_first_confirmation = fields.Many2one('res.partner', string="Surgeon", track_visibility='onchange')
