@@ -319,7 +319,7 @@
     <field name="margin_bottom">0</field>
 
 </record>
- <report
+<!--  <report
         id="account_invoices"
         model="account.move"
         string="Invoice Print Report"
@@ -327,9 +327,14 @@
         file="surgi_invoice_print.report_invoice_demo"
         report_type="qweb-pdf"
         paperformat="invoice_pformat"
-    />
+    /> -->
 
-
+ <record id="surgi_invoice_print_report" model="ir.actions.report">
+        <field name="name">printed Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">surgi_invoice_print.report_invoice_demo</field>
+    </record>
 
 
 </odoo>
