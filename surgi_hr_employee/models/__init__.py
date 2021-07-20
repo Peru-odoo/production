@@ -1,1 +1,1 @@
-from . import hr_employee_changes
+from . import hr_employee_changes,hr_scolarship
