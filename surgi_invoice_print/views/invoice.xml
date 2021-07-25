@@ -22,7 +22,7 @@
                 </xpath>
                  <xpath expr="//form//header" position="inside">
 
-                <button name="surgi_invoice_print" string="Print Invoice" type="object"/> # button_type like object/action
+                <button name="surgi_invoice_print" string="Print Invoice" type="object" groups="account.group_account_invoice"/> # button_type like object/action
 
                 </xpath>
             </field>
