@@ -10,7 +10,7 @@
 
 from odoo import models, api, _
 from odoo.exceptions import ValidationError
-
+import datetime
 
 class HrLeave(models.Model):
     _inherit = 'hr.leave'
@@ -46,5 +46,45 @@ class HrLeave(models.Model):
                             (req.holiday_status_id.leave_limit_days,
                              float(leave_days),
                              float(remaining)))
+            if req.holiday_status_id.flag_weekly_limit:
+                leave_ids = self.env['hr.leave'].search(
+                    [('employee_id', '=', req.employee_id.id),
+                     ('holiday_status_id', '=', req.holiday_status_id.id),("request_date_from","!=",req.date_from),('state', 'in', ('validate','draft','confirm'))])#
+                if req.number_of_days > req.holiday_status_id.weekly_leave_limit_days:
+                    raise ValidationError(
+                        _("You Can Only Take %s days per week") % req.holiday_status_id.weekly_leave_limit_days)
+                if leave_ids:
+                    current_leave_date = req.request_date_from
+                    current_leave_year = int(current_leave_date.year)
+                    current_leave_month = int(current_leave_date.month)
+                    current_leave_week= int(current_leave_date.isocalendar()[1])
+                    leave_days = 0.00
+                    remaining = req.holiday_status_id.weekly_leave_limit_days
+                    leave_date_x=""
+                    for leave in leave_ids:
+                        leave_date = leave.request_date_from
+
+                        year = int(leave_date.year)
+                        month = int(leave_date.month)
+                        week=int(leave_date.isocalendar()[1])
+                        if year == current_leave_year and \
+                                         week == current_leave_week:
+                            leave_date_x = leave_date_x + str(leave_date) + " ** "
+                            leave_days += leave.number_of_days
+                            remaining = remaining - leave.number_of_days
+                    #raise ValidationError(remaining)
+                    #if remaining < 0:
+
+                    if req.number_of_days > remaining   :
+                        raise ValidationError(
+                            _("You Weekly Leave Limit is : %s\nYou have "
+                              "already taken %s leaves in this Week\nNow your "
+                              "remaining leaves are :  %s") %
+                            (req.holiday_status_id.weekly_leave_limit_days,
+                             float(leave_days),
+                             float(remaining)))
+
+
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

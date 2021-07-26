@@ -16,5 +16,8 @@ class HrLeaveType(models.Model):
 
     flag_monthly_limit = fields.Boolean(string="Monthly Leave Limit")
     leave_limit_days = fields.Float(string="Leave Limit Days")
+    flag_weekly_limit = fields.Boolean(string="Weekly Leave Limit")
+    weekly_leave_limit_days = fields.Float(string="Leave Limit Days")
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
