@@ -179,7 +179,7 @@ class PrintInvoice(models.Model):
          total = 0.0
          for line in rec.printquationtoline:
             total += line.total
-         rec.is_equal_total = (rec.amount_total == total)
+         rec.is_equal_total = (rec.amount_total-total>= -1 and rec.amount_total-total<=1 )
     pass
 class PrintInvoice1(models.Model):
     _name = "account.move.printedinvoice.lines"
