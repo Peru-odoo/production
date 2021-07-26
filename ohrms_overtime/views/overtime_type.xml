@@ -68,7 +68,7 @@
 
         <!-- MenuItems -->
         <menuitem id="overtime_type_submenu" name="Overtime Types"
-                  parent="overtime_submenu"
+                  parent="overtime_config_menu"
                   groups="hr_holidays.group_hr_holidays_user"
                   action="hr_overtime_type_action"/>
 

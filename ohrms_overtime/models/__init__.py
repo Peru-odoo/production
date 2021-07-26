@@ -4,3 +4,4 @@ from . import hr_payslip
 from . import overtime_budget
 from . import hr_employee
 from . import hr_department
+from . import overtime_reviewers

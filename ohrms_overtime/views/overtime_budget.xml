@@ -37,9 +37,9 @@
                         </group>
                         <hr/>
                         <button name="auto_fill_department_budget"
-                                    type="object" class="btn-primary"
-                                    attrs="{'invisible':[('status', '!=', 'draft')]}"
-                                    string="Departments Auto Fill"/>
+                                type="object" class="btn-primary"
+                                attrs="{'invisible':[('status', '!=', 'draft')]}"
+                                string="Departments Auto Fill"/>
                         <field name="departments_budget" attrs="{'readonly':[('status', '!=', 'draft')]}">
                             <tree editable="bottom">
                                 <field name="department_id"/>
@@ -80,9 +80,13 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <!-- MenuItems -->
+        <!-- MenuItems -->,
+        <menuitem id="overtime_config_menu" name="Configuration"
+                  parent="overtime_submenu" sequence="99"
+                  groups="hr_payroll.group_hr_payroll_manager"/>
+
         <menuitem id="overtime_budget_menu" name="Overtime Budget"
-                  parent="overtime_submenu"
+                  parent="overtime_config_menu"
                   action="overtime_budget_action"/>
 
     </data>

@@ -6,3 +6,4 @@ access_attendance_attendance,attendance_attendance,model_attendance_attendance,,
 access_overtime_budget_manager,access_overtime_budget_manager,model_overtime_budget,hr.group_hr_manager,1,1,1,1
 access_overtime_employee_budget,access_overtime_employee_budget,model_overtime_employee_budget,hr.group_hr_manager,1,1,1,1
 access_overtime_department_budget,access_overtime_department_budget,model_overtime_department_budget,hr.group_hr_manager,1,1,1,1
+access_hr_overtime_reviewers,access.hr.overtime.reviewers,model_hr_overtime_reviewers,base.group_user,1,1,1,1
