@@ -33,7 +33,7 @@ class AccountMoveInherit(models.Model):
             total = 0.0
             for line in rec.printinvoicetoline:
                 total += line.total
-            if 1>rec.amount_total-total>-1:
+            if rec.amount_total-total<1 and rec.amount_total-total>-1:
                 rec.is_equal_total = True
                 rec.is_equal_total2 = True
 
