@@ -45,6 +45,9 @@
                     </page>
                 </xpath>
 
+                <group name="sale_info" position="inside">
+            </group>
+
             </field>
         </record>
 

@@ -36,14 +36,23 @@
               <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="is_equal_total"/>
               </xpath>
+
+
+
+<!--                </xpath>-->
+                <group name="sale_info" position="inside">
+                <field name="force_invoiced" groups="surgi_invoice_print.group_force_invoice" />
+<!--                <field name="force_deliverd"  />-->
+
+            </group>
                <xpath expr="//form/header/button[@class='btn-primary']" position="attributes">
-                   <attribute name="attrs">{'invisible': ['|',('is_equal_total', '=', False),('invoice_status', '!=', 'to invoice'),('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
+                  <attribute name="attrs">{'invisible': [('is_equal_total', '=', False)]}</attribute>
             </xpath>
                 
         </field>
         </record>
         
-        
+
 
     </data>
 </odoo>

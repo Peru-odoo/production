@@ -50,6 +50,16 @@ class StockPickingInherit(models.Model):
 
     check_exchange = fields.Boolean(string="Exchange Status",compute='check_is_exchange')
 
+    force_deliverd = fields.Boolean(
+        string="Force Delivery",
+        help="When you set this field, the sales order will be considered as "
+        "fully invoiced, even when there may be ordered or delivered "
+        "quantities pending to invoice.",
+        readonly=False,
+        # states={"done": [("readonly", False)], "sale": [("readonly", False)]},
+
+        copy=False,
+    )
 
     state_delivery = fields.Boolean(string="",compute='change_state_delivery'  )
     @api.depends('sale_id')
@@ -61,6 +71,11 @@ class StockPickingInherit(models.Model):
                     if sale.product_uom_qty !=sale.qty_delivered:
                         rec.state_delivery=True
                         rec.sale_id.state_delivery='not_delivered'
+
+                    elif rec.force_deliverd == True:
+                        rec.state_delivery=True
+
+                        rec.sale_id.state_delivery = 'delivered'
                         break
                     else:
                         rec.state_delivery=True

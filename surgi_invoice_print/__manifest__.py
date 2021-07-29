@@ -9,6 +9,7 @@ Change Invoice Template
     """,
     'depends': ['account','sale'],
     'data': [
+        'security/invoice_security.xml',
         'views/template.xml',
         'views/invoice.xml',
 

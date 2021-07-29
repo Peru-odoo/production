@@ -24,8 +24,16 @@ class SaleOrder(models.Model):
 
     check_exchange_so = fields.Boolean(string="Exchange Status",readonly=1)
 
-    state_delivery = fields.Selection(string="Delivered", selection=[('delivered', 'Delivered'), ('not_delivered','Not Delivered'), ], readonly=True,default='not_delivered' )
+    state_delivery = fields.Selection(string="Delivered", selection=[('delivered', 'Delivered'), ('not_delivered','Not Delivered'), ], readonly=True,default='not_delivered',  )
 
+
+    # @api.depends("force_deliverd")
+    # def change_delivery(self):
+    #     for rec in self:
+    #         if rec.force_deliverd == True:
+    #             rec.state_delivery = 'delivered'
+    #         elif rec.force_deliverd == False:
+    #             rec.state_delivery = 'not_delivered'
 
     # @api.depends('name')
     def compute_total_cocs(self):

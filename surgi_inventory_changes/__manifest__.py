@@ -8,6 +8,7 @@ Warehouse modifications
     """,
     'depends': ['stock','stock_account','surgi_product_template','sale'],
     'data': [
+        # 'security/stock_security.xml',
         'views/stock_picking_changes_view.xml',
         'views/stock_picking_type_changes_view.xml',
         'views/stock_warehouse_view_changes.xml',
@@ -19,5 +20,6 @@ Warehouse modifications
         'views/inventory_menu.xml',
         'security/ir.model.access.csv',
         'security/stock_inventory_security.xml',
+
     ],
 }

@@ -59,7 +59,8 @@
 
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="check_exchange" invisible="1"/>
-                    <field name="state_delivery"/>
+                    <field name="state_delivery" />
+
                     <field name="sale_id" string="Operation Sales Order" readonly="0" options="{'no_create': True, 'no_open': True}"
                            attrs="{'invisible':[('picking_type_code', '=', 'internal')]}"/><!-- 'required':[('picking_type_code', '=', 'outgoing')],-->
                     <field name="user_sales_id" string="Salesperson"
@@ -130,6 +131,21 @@
                 </xpath>
             </field>
         </record>
+
+
+           <record id="view_force_derlivery_form_inherit" model="ir.ui.view">
+            <field name="name">view.force_delivery.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state_delivery']" position="after">
+                    <field name="force_deliverd"  groups="surgi_invoice_print.group_force_invoice"/>
+                </xpath>
+            </field>
+           </record>
+
+
+
 
         <record id="view_approval_line" model="ir.ui.view">
             <field name="name">approval line</field>
