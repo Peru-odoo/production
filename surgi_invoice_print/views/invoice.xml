@@ -37,7 +37,7 @@
                     <field name="is_equal_total"/>
               </xpath>
                <xpath expr="//form/header/button[@class='btn-primary']" position="attributes">
-                  <attribute name="attrs">{'invisible': ['|',('is_equal_total', '=', False),('state', '!=', 'draft'), ('invoice_status', '!=', 'to invoice'), ('invoice_count','&gt;=',1)]}</attribute>
+                   <attribute name="attrs">{'invisible': ['|',('is_equal_total', '=', False),('invoice_status', '!=', 'to invoice'),('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </xpath>
                 
         </field>
