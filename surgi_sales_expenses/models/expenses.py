@@ -40,7 +40,7 @@ class HRExpensesInherit(models.Model):
 
                 rec.filter_value_sales()
 
-    @api.depends('sales_id','expenses_lines_ids')
+    # @api.depends('sales_id','expenses_lines_ids')
     def compute_total_expense_amount(self):
         for rec in self:
             total_expense_amount=0.0
@@ -119,6 +119,10 @@ class HrExpenseSheetInherit(models.Model):
         res=super(HrExpenseSheetInherit, self).action_sheet_move_create()
         if self.account_move_id:
             self.account_move_id.date=date.today()
+            for rec in self.expense_line_ids:
+                for line in self.account_move_id.line_ids:
+                    # if rec.product_id==line.product_id:
+                        line.name= "["+rec.product_id.default_code+"]" +" " +rec.product_id.name
         return res
 
 class AccountAccountInherit(models.Model):
