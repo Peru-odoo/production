@@ -4,9 +4,9 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     delivery_type = fields.Selection(string="Delivery Type ", tracking=True, required= True,
-                                     selection=[('normal', '')
+                                     selection=[('normal', 'Normal')
                                          , ('delivery2customer', 'Delivery To Customer')
-                                         , ('delivery2tender', 'Delivery To Tender Cancelled')
+                                         , ('delivery2tender', 'Delivery To Tender')
                                          , ('deliveryorder', 'Delivery Order')
                                          , ('loading', 'Loading')
                                          , ('exchange', 'Exchange')
