@@ -49,3 +49,4 @@ waiting_list_wizard_stock_quant,wizard_stock_quant,model_wizard_stock_quant,,1,1
 waiting_list_wizard_back_to_warehouse,wizard_back_to_warehouse,model_wizard_back_to_warehouse,,1,1,1,1
 waiting_list_wizard_move_to_hanged_warehouse,wizard_move_to_hanged_warehouse,model_wizard_move_to_hanged_warehouse,,1,1,1,1
 waiting_list_wizard_wizard_move_to_location,wizard_move_to_location,model_wizard_move_to_location,,1,1,1,1
+access_stock_items_id,access_stock_items,model_stock_items,,1,1,1,1

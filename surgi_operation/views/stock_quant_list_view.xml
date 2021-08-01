@@ -48,43 +48,39 @@
         </record>
 
    ////////////////////////////////////////////////////////////////////
-<!--          &lt;!&ndash;Inherit Tree View&ndash;&gt;-->
-<!--        <record id="stock_quant_operation_tree_inherit" model="ir.ui.view">-->
-<!--            <field name="name">stock.quant.operation.tree.inherit</field>-->
-<!--            <field name="model">operation.operation</field>-->
-<!--            <field name="inherit_id" ref="surgi_operation.operation_form"/>-->
-<!--            <field name="arch" type="xml">-->
+          <!--Inherit Tree View-->
+        <record id="stock_quant_operation_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.quant.operation.tree.inherit</field>
+            <field name="model">operation.operation</field>
+            <field name="inherit_id" ref="surgi_operation.operation_form"/>
+            <field name="arch" type="xml">
 
-<!--                <xpath expr="//notebook" position="inside">-->
-<!--                    <page string="product qount">-->
-<!--						<group>-->
-<!--                        </group>-->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Add Items">
+						<group>
+                        </group>
 
-<!--                                <field name="product_qunat_tab" string="product qunts"-->
-<!--                                    widget="section_and_note_one2many">-->
+                                <field name="product_qunat_tab" string="product"
+                                    widget="section_and_note_one2many">
 
-<!--                                    <tree editable="bottom">-->
-<!--                                        <control>-->
-<!--                                            <create name="add_relation_control" string="Add"/>-->
-<!--                                        </control>-->
-<!--                                             <field name="quant_id" />-->
+                                    <tree editable="bottom" >
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+                                             <field name="product_id"   create="false" open="false" edit="false"/>
 
-<!--                                            <field name="prod_femorel" />-->
-<!--                                            <field name="prod_insert_qu" />-->
-<!--                                            <field name="prod_tibial" />-->
-<!--                                            <field name="prod_cement" />-->
-<!--                                            <field name="prod_replacement" />-->
-<!--                                            <field name="prod_accessories" />-->
+                                            <field name="internal" />
+                                            <field name="external" />
+                                            <field name="prod_replacement" />
 
+                                    </tree>
+                                </field>
 
-<!--                                    </tree>-->
-<!--                                </field>-->
+                    </page>
+                </xpath>
 
-<!--                    </page>-->
-<!--                </xpath>-->
-
-<!--            </field>-->
-<!--        </record>-->
+            </field>
+        </record>
 
 
         <!--'search_default_internal_loc': 1-->

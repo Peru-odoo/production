@@ -5,23 +5,9 @@ from odoo import fields, models, api, exceptions
 
 
 
-
-
-
-
 class stock_quant_inherit_wizard(models.Model):
     _inherit = 'stock.quant'
-    # prod_femorel = fields.Boolean(string='Femoral')
-    # prod_insert_qu = fields.Boolean(string='Insert')
-    # prod_tibial = fields.Boolean(string='Tibial')
-    # prod_cement = fields.Boolean(string='Cement')
-    # prod_replacement = fields.Boolean(string='الاستبدالات')
-    # prod_accessories = fields.Char(string='مشتملات')
-    #
-    #
-    # quant_id = fields.Char( readonly=True, compute='get_operation_locationss_quant',string='product')
-    # operation_id=fields.Many2one('operation.operation',string="Operation", readonly=True)
-    #
+
 
 
     @api.depends('location_id.warehouse_id.warehouse_users')

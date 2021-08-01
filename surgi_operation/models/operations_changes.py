@@ -633,7 +633,7 @@ class operation_operation(models.Model):
     message_com =fields.Char(string='Components',track_visibility=True)
     message_item =fields.Char(string='Operation Items',track_visibility=True)
     active = fields.Boolean(default=True)
-    # product_qunat_tab = fields.One2many('stock.quant', 'operation_id', 'Related Quant')
+    product_qunat_tab = fields.One2many('stock.items', 'operation_id', 'Related')
 
     invoice_id = fields.Many2one(comodel_name='account.move', string='Invoice', readonly=True)
     surgeon_id_first_confirmation = fields.Many2one('res.partner', string="Surgeon", track_visibility='onchange')
@@ -871,3 +871,23 @@ class operation_operation(models.Model):
     }
 
     flag=fields.Boolean(default=False )
+
+
+
+
+class product_inherit_item(models.Model):
+    _inherit = 'product.product'
+
+
+
+class stock_items_inherit_wizard(models.Model):
+    _name = 'stock.items'
+
+    product_id = fields.Many2one('product.product',string='Product')
+    internal = fields.Boolean(string='Internal')
+    external = fields.Boolean(string='External')
+    prod_replacement = fields.Boolean(string='Empties')
+
+
+    operation_id=fields.Many2one('operation.operation',string="Operation")
+
