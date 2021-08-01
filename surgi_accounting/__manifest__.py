@@ -27,12 +27,10 @@
     # always loaded
     'data': [
         'security/accounting_groups.xml',
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/inhertit_views.xml',
         'views/account_payment_register.xml',
-        'views/account_account.xml',
-        'views/account_move_line.xml',
         'views/account_bank_statement.xml',
         'views/register_payment.xml',
         'views/stock_quant_change_accounting_view.xml',
