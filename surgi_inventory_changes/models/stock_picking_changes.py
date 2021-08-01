@@ -12,9 +12,9 @@ class StockPickingInherit(models.Model):
     # delivery_exchange = fields.Boolean(string="Delivery Exchange",tracking=True,
     #                                   help="Used ot show if type is receipt exchange or not")
     so_delivery_type = fields.Selection(string="Delivery Type ", related='sale_id.delivery_type',
-                                        selection=[('normal', 'Normal')
+                                        selection=[('normal', '')
                                             , ('delivery2customer', 'Delivery To Customer')
-                                            , ('delivery2tender', 'Delivery To Tender')
+                                            , ('delivery2tender', 'Delivery To Tender Cancelled')
                                             , ('deliveryorder', 'Delivery Order')
                                             , ('loading', 'Loading')
                                             , ('deliveryexchange', 'Delivery Exchange')
