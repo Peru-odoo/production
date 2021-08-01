@@ -46,7 +46,7 @@
 
             </group>
                <xpath expr="//form/header/button[@class='btn-primary']" position="attributes">
-                  <attribute name="attrs">{'invisible': [('is_equal_total', '=', False)]}</attribute>
+                  <attribute name="attrs">{'invisible': [('state', '!=', 'sale')],'invisible': [('is_equal_total', '=',False)],'invisible': ['|',('is_equal_total', '=',False),('invoice_status', '!=', 'to invoice')]}</attribute>
             </xpath>
                 
         </field>
