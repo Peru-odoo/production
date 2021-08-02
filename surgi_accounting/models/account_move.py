@@ -39,12 +39,8 @@ class AccountInvoiceInherit(models.Model):
     def _get_reconciled_info_JSON_values(self):
         res=super(AccountInvoiceInherit, self)._get_reconciled_info_JSON_values()
         for rec in res:
-            payment_account=self.env['account.payment'].search([('id','=',rec['account_payment_id'])],limit=1)
             if self.payment_date_paid:
                 rec['date']=self.payment_date_paid
-                payment_account.date=self.payment_date_paid
-                payment_account.move_id.date=self.payment_date_paid
-
                 return res
             else:
                 return res
