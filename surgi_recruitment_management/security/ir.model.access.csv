@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hiring_request,access.hiring.request,model_hiring_request,base.group_user,1,1,1,1
+access_request_resource,access.request.resource,model_request_resource,base.group_user,1,0,0,0
+access_interview_process,access.interview.process,model_interview_process,base.group_user,1,0,0,0
+access_interview_process_line,access.interview.process.line,model_interview_process_line,base.group_user,1,0,0,0
+access_applicant_process_line,access.applicant.process.line,model_applicant_process_line,base.group_user,1,0,0,0
+access_applicant_survey_line,access.applicant.survey.line,model_applicant_survey_line,base.group_user,1,0,0,0
+
+access_request_resource_manager,access.request.resource.manager,model_request_resource,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_interview_process_manager,access.interview.process.manager,model_interview_process,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_interview_process_line_manager,access.interview.process.line.manager,model_interview_process_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_applicant_process_line_manager,access.applicant.process.line.manager,model_applicant_process_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_applicant_survey_line_manager,access.applicant.survey.line.manager,model_applicant_survey_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1

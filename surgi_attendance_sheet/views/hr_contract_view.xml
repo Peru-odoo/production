@@ -10,8 +10,16 @@
                     <page string="Surgi attendance sheet" name="surgi_attendance_sheet">
                       <group>
                         <field name="multi_shift"/>
+                          <field name="random_shift"/>
                         <field name="shift_allowance"/>
                       </group>
+                        <group attrs="{'invisible' : [('random_shift', '=', False)]}">
+                            <field name="shiftslist">
+                                <tree editable="bottom">
+                                    <field name="resource_calendar_id"/>
+                                </tree>
+                            </field>
+                        </group>
                     </page>
                 </xpath>
             </field>

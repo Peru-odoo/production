@@ -8,12 +8,13 @@
 #    It is forbidden to publish, distribute, sublicense, or sell copies
 #    of the Software or modified copies of the Software.
 ##############################################################################
+import math
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 import pytz
 from datetime import datetime, date, timedelta, time
-
+import logging
 
 class AttendanceSheet(models.Model):
     _inherit = 'attendance.sheet'
@@ -32,6 +33,7 @@ class AttendanceSheet(models.Model):
     tot_shift_allowance = fields.Float(compute="_compute_sheet_total",
                             string="Total Shift Allowance", readonly=True,
                             store=True)
+    
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
@@ -213,6 +215,48 @@ class AttendanceSheet(models.Model):
 
                     work_intervals = calendar_id.att_interval_clean(
                         work_intervals)
+                elif contract.random_shift:
+                    attendance_intervalx = self.get_attendance_intervals(emp, day_start, day_end, tz)
+                    # calendar_id.att_get_work_intervals(
+                    #     day_start,
+                    #     day_end, tz)
+                    if attendance_intervalx:
+                        curretday=day_str
+                        chek_in_time=pytz.utc.localize(attendance_intervalx[0][0]).astimezone(tz).time()
+                        chek_out_time = pytz.utc.localize(attendance_intervalx[0][1]).astimezone(tz).time()
+                        time=0
+                        for i in contract.shiftslist:
+                            for x in i.resource_calendar_id.attendance_ids:
+                                if x.dayofweek==curretday:
+                                    frac, whole = math.modf(x.hour_from)
+                                    frac=int(frac)
+                                    whole=int(whole)
+                                    hfrom=datetime(2000,1,1,whole,frac,0).time()
+                                    frac, whole = math.modf(x.hour_to)
+                                    frac = int(frac)
+                                    whole = int(whole)
+                                    hto=datetime(2000,1,1,whole,frac,0).time()
+                                    #actintime=hfrom.max(chek_in_time)
+                                    if hfrom > chek_in_time:
+                                        actintime=hfrom
+                                    else:
+                                        actintime=chek_in_time
+
+                                    #actouttime=hto.min(chek_out_time)
+                                    if hto< chek_out_time:
+                                        actouttime=hto
+                                    else:
+                                        actouttime=chek_out_time
+                                    FMT = '%H:%M:%S'
+                                    tdelta = datetime.strptime(str(actouttime), FMT) - datetime.strptime(str(actintime), FMT)
+                                    if tdelta.total_seconds()>time:
+                                        time=tdelta.total_seconds()
+                                        calendar_id=i.resource_calendar_id
+                    work_intervals = calendar_id.att_get_work_intervals(
+                        day_start,
+                        day_end, tz)
+
+
 
                 else:
                     work_intervals = calendar_id.att_get_work_intervals(
@@ -272,7 +316,8 @@ class AttendanceSheet(models.Model):
                                     'act_overtime': act_float_overtime,
                                     'att_sheet_id': self.id,
                                     'status': 'ph',
-                                    'note': _("working on Public Holiday")
+                                    'note': _("working on Public Holiday"),
+                                    'resource_calendar_id': calendar_id.id
                                 }
                                 att_line.create(values)
                         else:
@@ -281,6 +326,7 @@ class AttendanceSheet(models.Model):
                                 'day': day_str,
                                 'att_sheet_id': self.id,
                                 'status': 'ph',
+                                'resource_calendar_id': calendar_id.id,
                             }
                             att_line.create(values)
                     else:
@@ -444,7 +490,8 @@ class AttendanceSheet(models.Model):
                                     'miss_pen': miss_amount,
                                     'status': '',
                                     'note': note,
-                                    'att_sheet_id': self.id
+                                    'att_sheet_id': self.id,
+                                    'resource_calendar_id': calendar_id.id,
 
                                 }
                                 att_line.create(values)
@@ -665,7 +712,8 @@ class AttendanceSheet(models.Model):
                                 'diff_time': float_diff,
                                 'act_diff_time': act_float_diff,
                                 'status': status,
-                                'att_sheet_id': self.id
+                                'att_sheet_id': self.id,
+                                'resource_calendar_id': calendar_id.id,
                             }
                             att_line.create(values)
                         out_work_intervals = [x for x in attendance_intervals if
@@ -700,7 +748,8 @@ class AttendanceSheet(models.Model):
                                     'worked_hours': float_worked_hours,
                                     'act_overtime': act_float_overtime,
                                     'note': _("overtime out of work intervals"),
-                                    'att_sheet_id': self.id
+                                    'att_sheet_id': self.id,
+                                    'resource_calendar_id': calendar_id.id
                                 }
                                 att_line.create(values)
                 else:
@@ -740,7 +789,8 @@ class AttendanceSheet(models.Model):
                                 'worked_hours': float_worked_hours,
                                 'att_sheet_id': self.id,
                                 'status': 'weekend',
-                                'note': _("working in weekend")
+                                'note': _("working in weekend"),
+                                'resource_calendar_id': calendar_id.id
                             }
                             att_line.create(values)
                     else:
@@ -749,7 +799,8 @@ class AttendanceSheet(models.Model):
                             'day': day_str,
                             'att_sheet_id': self.id,
                             'status': 'weekend',
-                            'note': ""
+                            'note': "",
+                            'resource_calendar_id': calendar_id.id
                         }
                         att_line.create(values)
 
@@ -771,3 +822,4 @@ class AttendanceSheetLine(models.Model):
         default='right')
     miss_pen = fields.Float("Miss punch Penalty", readonly=True)
     shift_allowance = fields.Float('Shift Allowance')
+    resource_calendar_id = fields.Many2one('resource.calendar', 'Working Schedule', readonly=False)

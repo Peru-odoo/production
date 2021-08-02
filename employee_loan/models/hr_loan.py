@@ -56,10 +56,51 @@ class HrLoan(models.Model):
     total_paid_amount = fields.Float(string="Total Paid Amount", compute='_compute_loan_amount',
                                      help="Total paid amount")
 
+    check_submit = fields.Boolean(compute='compute_check_submit')
+
+
+    # check_states = fields.Boolean(compute='compute_check_states')
+    # def compute_check_states(self):
+    #     for rec in self:
+    #         rec.check_states=False
+            # part=False
+            # if (self.env.user.id==rec.employee_id.parent_id.user_id.id or self.env.user.id==rec.employee_id.parent_id.parent_id.user_id.id)  and rec.state !='waiting_approval_1':
+            #     rec.check_states = True
+            #     print("11111111111111111111111111111111111111111111")
+            #     part=True
+            # elif self.env.user.id==rec.employee_id.user_id.id and rec.state !='draft' and part==False:
+            #     print("22222222222222222222222222222222222222222")
+            #     rec.check_states = True
+            # elif  self.env.user.has_group('hr.group_hr_manager') and rec.state !='approve':
+            #     print("333333333333333333333333333333333333")
+            #     rec.check_states=True
+            #
+            # elif  self.env.user.has_group('employee_loan.access_finance_approve') and rec.state !='finance_approval':
+            #     rec.check_states=True
+            #     print("44444444444444444444444444444444")
+
+
+
+
+
+    @api.depends('state')
+    def compute_check_submit(self):
+        for rec in self:
+            if rec.state=='draft' and (rec.employee_id.parent_id.user_id.id==self.env.user.id or rec.employee_id.parent_id.parent_id.user_id.id==self.env.user.id or rec.employee_id.parent_id.parent_id.user_id.id==self.env.user.id):
+                rec.check_submit=True
+            else:
+                rec.check_submit = False
+
+
+
+
+
+
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('waiting_approval_1', 'Submitted'),
-        ('approve', 'Approved'),
+        ('waiting_approval_1', 'Manager Approval'),
+        ('approve', 'HR Approved'),
+        ('finance_approval', 'Finance Approved'),
         ('refuse', 'Refused'),
         ('cancel', 'Canceled'),
     ], string="State", default='draft', track_visibility='onchange', copy=False, )
@@ -115,6 +156,10 @@ class HrLoan(models.Model):
                 raise UserError(
                     'You cannot delete a loan which is not in draft or cancelled state')
         return super(HrLoan, self).unlink()
+
+    def finance_approval_button(self):
+        self.state = 'finance_approval'
+        self.action_approve_finance()
 
 
 class InstallmentLine(models.Model):

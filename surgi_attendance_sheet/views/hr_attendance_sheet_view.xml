@@ -50,6 +50,7 @@
                 </xpath>
                 <xpath expr="//field[@name='line_ids']/tree/field[@name='diff_time']"
                        position="after">
+                     <field name="resource_calendar_id"/>
                     <field name="miss_type" optional="hide"/>
                     <field name="miss_pen" optional="hide"/>
                     <field name="shift_allowance" optional="hide"/>

@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <record id="email_template_data_applicant_meeting" model="mail.template">
+            <field name="name">Calendar: Meeting Invitation</field>
+            <field name="model_id" ref="calendar.model_calendar_attendee"/>
+            <field name="subject">Interview Meeting to ${object.event_id.job_id.name}</field>
+            <field name="email_from">${(object.event_id.user_id.email_formatted or user.email_formatted or '') | safe}
+            </field>
+            <field name="email_to">
+                ${('' if object.partner_id.email and object.partner_id.email == object.email else object.email) | safe}
+            </field>
+            <field name="partner_to">
+                ${object.partner_id.id if object.partner_id.email and object.partner_id.email == object.email else False}
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="body_html" type="html">
+                <table border="0" cellpadding="0" cellspacing="0" width="590"
+                       style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                    <tr>
+                        <td valign="top">
+                            <div style="font-size: 13px; margin: 0px; padding: 0px;">
+                                Hello <strong>${object.event_id.applicant_id.partner_name}</strong>,
+                                <br/>
+                                <br/>
+                                Thank you for your interest in joining the
+                                <b>${object.event_id.user_id.company_id.name}</b>
+                                team.
+                                <br/>
+                                Interview Details Meeting
+                                <br/>
+                                Date:
+                                <strong>${object.event_id.start}</strong>
+                                <br/>
+                                Location:
+                                <b>${object.event_id.location}</b>
+                                <br/>
+                                Exam Links:
+                                <ul>
+                                    % for ex in object.event_id.survey_ids:
+                                    <li>
+                                        <div style="display: inline-block; border-radius: 50%; width: 10px; height: 10px; background:'white';"></div>
+                                        <span style="margin-left:5px">${ex.session_link}</span>
+                                    </li>
+                                    % endfor
+                                </ul>
+                                <br/>
+                                Thank you,
+                                <div style="font-size: 11px; color: grey;">
+                                    % if object.event_id.user_id:
+                                    --
+                                    <br/>
+                                    <strong>${object.event_id.user_id.name}</strong>
+                                    <br/>
+                                    Email: ${object.event_id.user_id.email or ''}
+                                    <br/>
+                                    Phone: ${object.event_id.user_id.phone or ''}
+                                    % else:
+                                    --
+                                    <br/>
+                                    ${object.event_id.user_id.company_id.name}
+                                    <br/>
+                                    The HR Team
+                                    % endif
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

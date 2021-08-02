@@ -14,27 +14,28 @@ class HrLoanAcc(models.Model):
 
     state = fields.Selection([
         ('draft', 'Draft'),
-        ('waiting_approval_1', 'Submitted'),
+        ('waiting_approval_1', 'Manager Approval'),
         ('waiting_approval_2', 'Waiting Approval'),
-        ('approve', 'Approved'),
+        ('approve', 'HR Approved'),
+        ('finance_approval', 'Finance Approved'),
         ('refuse', 'Refused'),
         ('cancel', 'Canceled'),
     ], string="State", default='draft', track_visibility='onchange', copy=False, )
 
-    def action_approve(self):
+    def action_approve_finance(self):
         """This create account move for request.
             """
-        loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
-        contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)])
-        if not contract_obj:
-            raise UserError('You must Define a contract for employee')
+        # loan_approve = self.env['ir.config_parameter'].sudo().get_param('account.loan_approve')
+        # contract_obj = self.env['hr.contract'].search([('employee_id', '=', self.employee_id.id)])
+        # if not contract_obj:
+        #     raise UserError('You must Define a contract for employee')
         if not self.loan_lines:
             raise UserError('You must compute installment before Approved')
-        if loan_approve:
-            self.write({'state': 'waiting_approval_2'})
+        # if loan_approve:
+        #     self.write({'state': 'waiting_approval_2'})
         else:
-            if not self.employee_account_id or not self.treasury_account_id or not self.journal_id:
-                raise UserError("You must enter employee account & Treasury account and journal to approve ")
+            # if not self.employee_account_id or not self.treasury_account_id or not self.journal_id:
+            #     raise UserError("You must enter employee account & Treasury account and journal to approve ")
             if not self.loan_lines:
                 raise UserError('You must compute Loan Request before Approved')
             timenow = time.strftime('%Y-%m-%d')
@@ -45,6 +46,8 @@ class HrLoanAcc(models.Model):
                 journal_id = loan.journal_id.id
                 debit_account_id = loan.treasury_account_id.id
                 credit_account_id = loan.employee_account_id.id
+                print(debit_account_id,'---------------------------------',loan.treasury_account_id.id)
+                print(credit_account_id,'---------------------------------',loan.employee_account_id.id)
                 debit_vals = {
                     'name': loan_name,
                     'account_id': debit_account_id,
@@ -73,7 +76,7 @@ class HrLoanAcc(models.Model):
                 }
                 move = self.env['account.move'].create(vals)
                 move.post()
-            self.write({'state': 'approve'})
+            self.write({'state': 'finance_approval'})
         return True
 
     def action_double_approve(self):
