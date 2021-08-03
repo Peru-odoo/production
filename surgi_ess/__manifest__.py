@@ -29,11 +29,13 @@
         'surgi_evaluation',
         'surgi_attendance_sheet',
         'attendance_sheet_extra',
+        'surgi_hr_payroll',
 
         'hr_appraisal',
         'survey',
         'hr_payroll',
         'crm',
+        'surgi_recruitment_management',
         'surgi_operation'
         # 'hr_holidays',
     ],
@@ -63,6 +65,7 @@
         'views/survey_invite.xml',
         'views/daily_plan.xml',
         'views/daily_plan_acual.xml',
+        'views/hiring_request_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

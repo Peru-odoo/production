@@ -7,3 +7,11 @@ class HrEmployee(models.Model):
 
     def action_unfollow(self):
         pass
+
+
+
+class HrhiringReq(models.Model):
+    _inherit = 'hiring.request'
+
+class Grade(models.Model):
+    _inherit = 'grade.grade'
