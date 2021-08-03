@@ -139,5 +139,5 @@
 
 
     <menuitem id="menu_ess_hiring_request" action="action_ess_hiring_request" parent="menu_root_ess_surgi"
-              name="Hiring Request" sequence="3" groups="surgi_ess.surgi_hiring_request_group"/>
+              name="Hiring Request" sequence="3"  />
 </odoo>
