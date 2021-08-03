@@ -92,7 +92,10 @@ class compined_sales_order(models.Model):
             if rec.order_line:
                 # here there will be all the code
                 for line in rec.order_line:
-                    pricediscount=line.price_subtotal/line.product_uom_qty
+                    try:
+                        pricediscount=line.price_subtotal/line.product_uom_qty
+                    except:
+                        pricediscount=0
                     productslines[line.product_id.id]={'qunatity':line.product_uom_qty,'name':line.name,'price':pricediscount}
                     if line.pro_group != '' and line.pro_group != 'unknown':  # check if the product have group
                         if line.pro_group in products.keys():
