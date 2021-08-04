@@ -43,6 +43,7 @@ class sale_order(models.Model):
             for line in self.order_line:
                 discount=self.calculate_tax_fixed_total(line.product_uom_qty,line.price_unit,totalammountx,self.discount_value)
                 line.discount = discount
+        super(sale_order, self).changed_line_ids()        
 
 
 
