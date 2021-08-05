@@ -119,10 +119,10 @@ class HrExpenseSheetInherit(models.Model):
         res=super(HrExpenseSheetInherit, self).action_sheet_move_create()
         if self.account_move_id:
             self.account_move_id.date=date.today()
-            for rec in self.expense_line_ids:
-                for line in self.account_move_id.line_ids:
-                    # if rec.product_id==line.product_id:
-                        line.name= "["+rec.product_id.default_code+"]" +" " +rec.product_id.name
+            # for rec in self.expense_line_ids:
+            #     for line in self.account_move_id.line_ids:
+            #         # if rec.product_id==line.product_id:
+            #             line.name= "["+rec.product_id.default_code+"]" +" " +rec.product_id.name
         return res
 
 class AccountAccountInherit(models.Model):
