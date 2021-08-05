@@ -601,6 +601,7 @@ class operation_operation(models.Model):
     notes = fields.Text(string="Notes")
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
+    operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)
     component_ids = fields.Many2many('product.product', string="Components")
     state = fields.Selection(selection=lambda self: [(x.state_name, x.name) for x in self.env['operation.stage'].search([('is_active', '=', True)])], string='Status', readonly=True, default="draft")
     #stage_id = fields.Many2one(comodel_name="operation.stage", string="Stage id", track_visibility='onchange', required=False, select=True,copy=False,

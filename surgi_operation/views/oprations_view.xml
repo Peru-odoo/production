@@ -210,6 +210,7 @@
                         <group>
                             <group>
                                 <field name="warehouse_id"/>
+                                <field name="operation_stock_branches" options="{'no_create': True, 'no_open': True}"/>
                             </group>
                             <group>
                                 <field name="location_id" attrs="{'invisible':[('location_id','=',False)]}"/>
@@ -323,6 +324,7 @@
                     <field name="name" string="Name"/>
                     <field name="start_datetime" string="Starting Date"/>
                     <field name="patient_name"/>
+                    <field name="operation_stock_branches"/>
                     <field name="patient_national_id"/>
                     <field name="patient_gender"/>
                     <field name="surgeon_id"/>

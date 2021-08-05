@@ -18,8 +18,10 @@ Warehouse modifications
         'views/stock_quant_change_view.xml',
         'views/stock_move_line_changes.xml',
         'views/inventory_menu.xml',
+        'views/branches_view.xml',
         'security/ir.model.access.csv',
         'security/stock_inventory_security.xml',
+
 
     ],
 }

@@ -10,6 +10,7 @@
                 <xpath expr="//field[@name='code']" position="after">
 
                     <field name="warehouse_managers_id" />
+                    <field name="stock_branches" options="{'no_create': True, 'no_open': True}" />
                 </xpath>
                 <xpath expr="//page[2]" position="after">
                     <page string="Warehouse Approval Users" colspan="4">

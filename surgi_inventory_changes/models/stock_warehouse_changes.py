@@ -10,9 +10,14 @@ class StockWarehouseInherit(models.Model):
     
     manager_lines=fields.One2many('manager.line','warehouse_id')
 
-
+    stock_branches = fields.Many2one('branch.location',string='Branch',store=True)
 # ================= A.Salama ==================
 class stock_picking_type_changes(models.Model):
     _inherit = 'stock.picking.type'
     # add field to relate with many2many field in stock warehuse
     warehouse_users = fields.Many2many(related="warehouse_id.warehouse_users",comodel_name='res.users', string="Users")
+
+
+class branches_location_wharehouse(models.Model):
+    _name= 'branch.location'
+    name = fields.Char(string="Branch",store=True)
