@@ -41,10 +41,10 @@ class operation_stage(models.Model):
         if invoice:
             report = self.env.ref('surgi_waitinglist.report_saleorderwaitinginhert',False)
             if report:
-                pdf_content, content_type = report._render_qweb_pdf(invoiceid)
+                pdf_content, content_type = report.sudo()._render_qweb_pdf(invoiceid)
             else:
                 raise UserError('No Report.')
-            attachment = self.env['ir.attachment'].create({
+            attachment = self.env['ir.attachment'].sudo().create({
                 'name': "sales order",
                 'type': 'binary',
                 'datas': base64.encodebytes(pdf_content),
