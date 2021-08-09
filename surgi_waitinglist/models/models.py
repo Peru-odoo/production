@@ -42,7 +42,7 @@ class operation_stage(models.Model):
             report = self.env.ref('surgi_waitinglist.report_saleorderwaitinginhert',False)
             if report:
                 pdf_content, content_type = report.sudo()._render_qweb_pdf(invoice.id)
-                raise UserError('Done.')
+                
             else:
                 raise UserError('No Report.')
             attachment = self.env['ir.attachment'].sudo().create({
@@ -52,6 +52,7 @@ class operation_stage(models.Model):
                 'res_model': 'sale.order',#invoice._name,
                 'res_id': invoice.id
             })
+            raise UserError('Done.')
             subject = '%s, Sales Order' % (invoice.patient_name)
             template = self.env.ref('surgi_waitinglist.sales_report_waiting_mail', raise_if_not_found=False)
             if template:
