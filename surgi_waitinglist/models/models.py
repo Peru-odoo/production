@@ -33,20 +33,25 @@ class operation_stage(models.Model):
 
     def send_waitinglist_sales_order(self):
         invoice = self.env['sale.order'].search([("operation_id", "=", self.id)])
+
+        sql = "select * from sale_order where operation_id = %d" % self.id
+        self.env.cr.execute(sql)
+        invoice=self.env.cr.dictfetchone()
+        invoiceid=invoice['id']
         if invoice:
             report = self.env.ref('surgi_waitinglist.report_saleorderwaitinginhert',False)
             if report:
-                pdf_content, content_type = report._render_qweb_pdf(invoice.id)
+                pdf_content, content_type = report._render_qweb_pdf(invoiceid)
             else:
                 raise UserError('No Report.')
             attachment = self.env['ir.attachment'].create({
                 'name': "sales order",
                 'type': 'binary',
                 'datas': base64.encodebytes(pdf_content),
-                'res_model': invoice._name,
-                'res_id': invoice.id
+                'res_model': 'sale.order',#invoice._name,
+                'res_id': invoiceid
             })
-            subject = '%s, Sales Order' % (invoice.patient_name)
+            subject = '%s, Sales Order' % (invoice['patient_name'])
             template = self.env.ref('surgi_waitinglist.sales_report_waiting_mail', raise_if_not_found=False)
             if template:
                 email_values = {
@@ -66,6 +71,8 @@ class operation_stage(models.Model):
         pass
     def send_waitinglist_sales_order1(self):
         invoice=self.env['sale.order'].search([("operation_id","=",self.id)])
+        sql="select * from sale_order where operation_id = %s"%self.id
+        invoice=self.env.cr.execute(sql)
         if invoice:
             template_id = self.env['ir.model.data'].get_object_reference('surgi_waitinglist','sales_report_waiting_mail')[1]
             email_template_obj = self.env['mail.template'].browse(template_id)
