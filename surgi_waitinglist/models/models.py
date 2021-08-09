@@ -46,7 +46,7 @@ class operation_stage(models.Model):
             else:
                 raise UserError('No Report.')
             attachment = self.env['ir.attachment'].sudo().create({
-                'name': str(invoice.patient_name)+" Invoice"+".pdf",
+                'name': str(invoice.patient_name)+" - "+str(invoice.operation_id.patient_national_id)+" Invoice"+".pdf",
                 'type': 'binary',
                 'datas': base64.encodebytes(pdf_content),
                 'res_model': 'sale.order',#invoice._name,
