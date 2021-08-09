@@ -118,7 +118,7 @@
                             <group>
                                 <field name="op_type" required="1"/>
                                 <field name="operation_delivery_type" attrs="{'invisible': [('so_created', '=',True)]}"/>
-                                <field name="patient_national_identification" attrs="{'invisible': [('op_type', '!=', 'tender')],'required': [('op_type', '=', 'tender')]}" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="patient_national_identification" attrs="{'invisible': [('op_type', '!=', 'tender')],'required': [('op_type', '=', 'tender')]}" />
                             </group>
                             <group>
                                 <field name="responsible" invisible="False" readonly="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}" options="{'no_create': True, 'no_open': True}"/>

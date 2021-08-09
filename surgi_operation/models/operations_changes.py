@@ -1,6 +1,6 @@
 from datetime import date
 from datetime import datetime
-from odoo import api
+from odoo import api,_
 from odoo import exceptions
 from odoo import fields
 from odoo import models
@@ -9,9 +9,8 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools import pytz
 #from odoo.tools import timedelta
 from datetime import timedelta
-from odoo.exceptions import Warning
 # from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import  ValidationError
 # =============== A.Salama =============
 class operation_operation(models.Model):
     _name = 'operation.operation'
@@ -19,6 +18,8 @@ class operation_operation(models.Model):
     _inherit = ['mail.thread']
 
     # ==================== Methods =========================
+
+
     #get name
     @api.onchange('hospital_id')
     def _get_name(self):
@@ -145,6 +146,7 @@ class operation_operation(models.Model):
             'location_id': res_location.id,
             'name': self.sequence
         })
+
 
     #        operations = self.env['operation.operation'].search(['|', ('state', '=', 'confirm'), ('state', '=', 'done')])
     #        for operation in operations:
@@ -368,6 +370,7 @@ class operation_operation(models.Model):
                 picking.change_state_delivery()
             print (sale_order)
             print ("Sale_order: " + str(sale_order))
+            self.write({'state': 'so_created', })
         else:
             raise Warning('No Quants Available in  Location!')
 
@@ -603,7 +606,7 @@ class operation_operation(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
     operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)
     component_ids = fields.Many2many('product.product', string="Components")
-    state = fields.Selection(selection=lambda self: [(x.state_name, x.name) for x in self.env['operation.stage'].search([('is_active', '=', True)])], string='Status', readonly=True, default="draft")
+    state = fields.Selection(selection=lambda self: [(x.state_name, x.name) for x in self.env['operation.stage'].search([('is_active', '=', True)])], string='Status', readonly=False, default="draft")
     #stage_id = fields.Many2one(comodel_name="operation.stage", string="Stage id", track_visibility='onchange', required=False, select=True,copy=False,
     #                          default=lambda self: self.env.ref('surgi_operation.operation_confirm_stage', False), domain=[('is_active', '=', True)])
 
@@ -792,10 +795,13 @@ class operation_operation(models.Model):
     ], string='Type', default="private")
     tender_so = fields.Many2one('sale.order', string='Tender SO', domain=[('so_type', '=', 'tender')])
     patient_national_identification = fields.Many2one('waiting.list.patients', string='Patient National ID',
-                                          domain=[('is_active', '=', True)], track_visibility='onchange')
+                                          domain=[('is_active', '=', True)], track_visibility='onchange' )
     supply_so = fields.Many2one('sale.order', string='Supply SO', domain=[('so_type', '=', 'supply_order')])
 
     moh_approved_operation = fields.Char(string="MOH Approved Operation")
+
+
+
 
 
     @api.onchange('patient_national_identification', 'op_type')
