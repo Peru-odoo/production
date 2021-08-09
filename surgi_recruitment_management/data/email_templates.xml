@@ -3,7 +3,7 @@
         <record id="email_template_data_applicant_meeting" model="mail.template">
             <field name="name">Calendar: Meeting Invitation</field>
             <field name="model_id" ref="calendar.model_calendar_attendee"/>
-            <field name="subject">Interview Meeting to ${object.event_id.job_id.name}</field>
+            <field name="subject">SurgiTech - Interview Invitation</field>
             <field name="email_from">${(object.event_id.user_id.email_formatted or user.email_formatted or '') | safe}
             </field>
             <field name="email_to">
@@ -19,21 +19,39 @@
                     <tr>
                         <td valign="top">
                             <div style="font-size: 13px; margin: 0px; padding: 0px;">
-                                Hello <strong>${object.event_id.applicant_id.partner_name}</strong>,
+                                Dear <strong>${object.event_id.applicant_id.partner_name}</strong>,
                                 <br/>
                                 <br/>
-                                Thank you for your interest in joining the
-                                <b>${object.event_id.user_id.company_id.name}</b>
-                                team.
+                                Thank you for your interest to join Surgi-Tech as a
+                                <b>${object.event_id.job_id.name}</b>
+                                ,
+                                we were impressed with your background and would like to invite you to an interview to
+                                tell you more about our role and to get to know you a little better.
                                 <br/>
-                                Interview Details Meeting
                                 <br/>
-                                Date:
+                                <br/>
+                                Interviews have been scheduled for
                                 <strong>${object.event_id.start}</strong>
+                                per confirmed in our phone call and the interviewing cycle and company details as
+                                below:-
                                 <br/>
-                                Location:
-                                <b>${object.event_id.location}</b>
                                 <br/>
+                                <br/>
+                                <strong>The interview Process:-</strong>
+                                <br/>
+                                <ul>
+                                    <li>
+                                        Technical Interview
+                                    </li>
+                                    <li>
+                                        HR Interview
+                                    </li>
+                                    <li>
+                                        GM Interview
+                                    </li>
+                                </ul>
+                                <br/>
+                                % if object.event_id.survey_ids:
                                 Exam Links:
                                 <ul>
                                     % for ex in object.event_id.survey_ids:
@@ -43,24 +61,42 @@
                                     </li>
                                     % endfor
                                 </ul>
+                                % endif
                                 <br/>
-                                Thank you,
+                                Company details and location:-
+                                <br/>
+                                Company Website: ${object.event_id.user_id.company_id.website}
+                                <br/>
+                                Company Location GPS: https://maps.google.com/?q=30.014057,31.297894
+                                <br/>
+                                Company Address: ${object.event_id.user_id.company_id.street}
+                                <br/>
+                                Dress Code: Formal Code.
+                                <br/>
+                                Please submit a recent photo for you
+                                <br/>
+                                <br/>
+                                <br/>
+                                We sincerely appreciate the time and effort you dedicated to applying for this position
+                                and wish you success in your job search.
+                                <br/>
+                                Sincerely
                                 <div style="font-size: 11px; color: grey;">
-                                    % if object.event_id.user_id:
-                                    --
                                     <br/>
                                     <strong>${object.event_id.user_id.name}</strong>
+                                    <br/>
+                                    HR Section Head
+                                    <br/>
+                                    ${object.event_id.user_id.company_id.name}
                                     <br/>
                                     Email: ${object.event_id.user_id.email or ''}
                                     <br/>
                                     Phone: ${object.event_id.user_id.phone or ''}
-                                    % else:
-                                    --
                                     <br/>
-                                    ${object.event_id.user_id.company_id.name}
+                                    Mobile: ${object.event_id.user_id.mobile or ''}
                                     <br/>
-                                    The HR Team
-                                    % endif
+                                    Website: ${object.event_id.user_id.company_id.website}
+                                    <br/>
                                 </div>
                             </div>
                         </td>

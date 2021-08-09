@@ -14,19 +14,7 @@ class CalendarEvent(models.Model):
         if email:
             for meeting in self:
                 if meeting.job_id:
-                    meeting.attendee_ids._send_mail_to_attendees('surgi_recruitment_management.email_template_data_applicant_meeting')
+                    meeting.attendee_ids._send_mail_to_attendees('surgi_recruitment_management.email_template_data_applicant_meeting',force_send=True)
                 else:
                     meeting.attendee_ids._send_mail_to_attendees('calendar.calendar_template_meeting_invitation')
-        return True
-
-    @api.model
-    def send_email_to_applicant_meeting(self):
-        template = self.env.ref('surgi_recruitment_management.email_template_data_applicant_meeting')
-        for event in self:
-            self.env['mail.thread'].message_post_with_template(
-                template.id,
-                model=event._name,
-                res_id=event.id,
-                composition_mode='mass_mail',
-            )
         return True

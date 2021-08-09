@@ -109,7 +109,8 @@
                 <separator/>
                 <filter string="Success" name="scoring_success" domain="[('scoring_success', '!=', False)]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Application" name="applicant_id" domain="[]" context="{'group_by': 'applicant_id'}"/>
+                    <filter string="Application" name="applicant_id" domain="[]"
+                            context="{'group_by': 'applicant_id'}"/>
                     <filter string="Job Position" name="job_id" domain="[]" context="{'group_by': 'job_id'}"/>
                     <filter string="Department" name="department_id" domain="[]"
                             context="{'group_by': 'department_id'}"/>
@@ -131,5 +132,18 @@
     <menuitem id="menu_applicant_survey_line" action="action_applicant_survey_line"
               parent="hr_recruitment.menu_crm_case_categ0_act_job"
               name="All Exams Result" sequence="90"/>
+
+    <menuitem id="menu_hr_interviewer_evaluation"
+              name="Interviewer Evaluation"/>
+
+    <menuitem
+            name="All Applications"
+            parent="menu_hr_interviewer_evaluation"
+            id="menu_interviewer_evaluation_all_app" action="hr_recruitment.crm_case_categ0_act_job" sequence="1"/>
+
+    <menuitem id="menu_applicant_survey_evaluation" action="action_applicant_survey_line"
+              parent="menu_hr_interviewer_evaluation"
+              name="All Exams Result" sequence="2"/>
+
 
 </odoo>

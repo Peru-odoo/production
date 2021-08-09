@@ -85,11 +85,13 @@ class HRApplicant(models.Model):
     def action_makeMeeting(self):
         res = super(HRApplicant, self).action_makeMeeting()
         survey_ids = self.line_ids.filtered(lambda m: m.stage_id == self.stage_id.id).mapped('applicant_survey_ids')
-        partners = []
-        partners.extend([self.partner_id.id,self.user_id.partner_id.id])
+        partners = [self.user_id.partner_id.id]
+        if self.partner_id:
+            partners.append(self.partner_id.id)
         if self.line_ids:
             for line in self.line_ids:
-                partners.append(line.user_id.partner_id.id)
+                if line.user_id.partner_id:
+                    partners.append(line.user_id.partner_id.id)
         res['context'].update({
             'default_partner_ids': partners,
             'default_job_id': self.job_id.id,
