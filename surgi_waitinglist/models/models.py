@@ -60,11 +60,11 @@ class operation_stage(models.Model):
                     'attachment_ids': attachment,
                 }
 
-                template.send_mail(
+                template.sudo().send_mail(
                     invoice.id,
                     email_values=email_values,
                     notif_layout='mail.mail_notification_light')
-                raise UserError('Done.')
+                
             else:
                 raise UserError('No Sales Order.')
 
