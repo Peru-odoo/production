@@ -59,11 +59,12 @@ class operation_stage(models.Model):
                 email_values = {
                     'attachment_ids': attachment,
                 }
-                raise UserError('Done.')
+
                 template.send_mail(
                     invoice.id,
                     email_values=email_values,
                     notif_layout='mail.mail_notification_light')
+                raise UserError('Done.')
             else:
                 raise UserError('No Sales Order.')
 
