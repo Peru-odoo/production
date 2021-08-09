@@ -39,6 +39,10 @@
                         <strong>Patient Name:</strong>
                         <p class="m-0" t-field="doc.patient_name"/>
                     </div>
+                    <div t-if="doc.operation_id.patient_national_id" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Patient National Id:</strong>
+                        <p class="m-0" t-field="doc.operation_id.patient_national_id"/>
+                    </div>
                 </div>
 
                 <!-- Is there a discount on at least one line? -->
