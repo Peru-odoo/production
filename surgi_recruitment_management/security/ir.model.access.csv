@@ -4,10 +4,22 @@ access_request_resource,access.request.resource,model_request_resource,base.grou
 access_interview_process,access.interview.process,model_interview_process,base.group_user,1,0,0,0
 access_interview_process_line,access.interview.process.line,model_interview_process_line,base.group_user,1,0,0,0
 access_applicant_process_line,access.applicant.process.line,model_applicant_process_line,base.group_user,1,0,0,0
-access_applicant_survey_line,access.applicant.survey.line,model_applicant_survey_line,base.group_user,1,0,0,0
+access_applicant_survey_line,access.applicant.survey.line,model_applicant_survey_line,base.group_user,1,1,0,0
 
 access_request_resource_manager,access.request.resource.manager,model_request_resource,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
 access_interview_process_manager,access.interview.process.manager,model_interview_process,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
 access_interview_process_line_manager,access.interview.process.line.manager,model_interview_process_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
 access_applicant_process_line_manager,access.applicant.process.line.manager,model_applicant_process_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
 access_applicant_survey_line_manager,access.applicant.survey.line.manager,model_applicant_survey_line,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+
+access_hr_applicant_reviewer,hr.applicant.reviewer,hr_recruitment.model_hr_applicant,base.group_user,1,0,0,0
+access_hr_recruitment_stage_reviewer,hr.recruitment.stage.reviewer,hr_recruitment.model_hr_recruitment_stage,base.group_user,1,0,0,0
+access_survey_reviewer,survey.survey.reviewer,survey.model_survey_survey,base.group_user,1,0,0,0
+access_survey_question_reviewer,survey.question.reviewer,survey.model_survey_question,base.group_user,1,0,0,0
+access_survey_question_answer_reviewer,survey.question.answer.reviewer,survey.model_survey_question_answer,base.group_user,1,0,0,0
+access_survey_user_input_reviewer,survey.user_input.reviewer,survey.model_survey_user_input,base.group_user,1,1,1,0
+access_survey_user_input_line_reviewer,survey.user_input.line.reviewer,survey.model_survey_user_input_line,base.group_user,1,1,1,0
+
+
+
+

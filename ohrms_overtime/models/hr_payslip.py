@@ -21,6 +21,7 @@ from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import ValidationError
+RULE = {'weekend':'weekend','holiday':'holiday','workday':'workday'}
 
 
 def make_aware(dt):
@@ -101,7 +102,7 @@ class PayslipOverTime(models.Model):
 
     def get_overtime_hours(self):
         self.ensure_one()
-        overtime_ids = self.env['hr.overtime'].search([('employee_id', '=', self.employee_id.id),
+        overtime_ids = self.env['hr.overtime'].sudo().search([('employee_id', '=', self.employee_id.id),
                                                        ('contract_id', '=', self.contract_id.id),
                                                        ('state', '=', 'f_approved'), ('payslip_paid', '=', False)])
         hours = 0
@@ -111,14 +112,25 @@ class PayslipOverTime(models.Model):
                 date_from = datetime.strptime(str(ovt.date_from), "%Y-%m-%d %H:%M:%S").astimezone(tz)
                 time_string = str(datetime_to_string(date_from, tz)[11:16])
                 date_from = float(time_string.replace(":", "."))
-                rule = ovt.overtime_type_id.rule_line_ids.filtered(
-                    lambda rule: rule.from_hrs <= date_from and rule.to_hrs >= date_from)
-                if rule.hrs_amount > 0.0:
-                    hours += ovt.days_no_tmp * rule.hrs_amount
+                print()
+                if ovt.public_holiday:
+                    rule = ovt.overtime_type_id.rule_line_ids.filtered(
+                        lambda rule: rule.name == 'holiday')
+                elif ovt.is_weekend:
+                    rule = ovt.overtime_type_id.rule_line_ids.filtered(
+                        lambda rule: rule.name == 'weekend')
+                else:
+                    rule = ovt.overtime_type_id.rule_line_ids.filtered(
+                        lambda rule: rule.from_hrs <= date_from and rule.to_hrs >= date_from)
+                if rule[0] and rule[0].hrs_amount > 0.0:
+                    hours += ovt.days_no_tmp * rule[0].hrs_amount
+                else:
+                    hours += ovt.days_no_tmp
         work_entry_type = self.env['hr.work.entry.type'].search([('code', '=', 'OT100')], limit=1)
         if not work_entry_type:
             raise UserError(_('You must set a Overtime Work type.'))
-
+        if self._get_worked_day_lines_hours_per_day() < 0.0:
+            raise UserError(_('You must add Average Hour per Day on Working Hours.'))
         self.worked_days_line_ids = [(0, 0, {
             'sequence': work_entry_type.sequence,
             'work_entry_type_id': work_entry_type.id,

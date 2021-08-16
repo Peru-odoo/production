@@ -21,28 +21,30 @@ class HRApplicant(models.Model):
         ('rejected ', 'Rejected'),
         ('shortlisted ', 'Shortlisted')
     ], string='Interview Status')
+    reviewer_ids = fields.Many2many('res.users',string='Reviewers')
+
+
+    @api.onchange('stage_id')
+    def onchange_stage_id(self):
+        if self.line_ids:
+            self._compute_reviewer_ids()
+
+
+
 
     @api.onchange('job_id')
     @api.constrains('job_id')
-    def onchange_job_id(self):
+    def onchange_job_id_steps(self):
         if self.job_id:
             self.line_ids.unlink()
             last = self.env['applicant.survey.line'].search([('applicant_id', '=', self.id)]).unlink()
-            setup = self.env['interview.process'].search([('job_ids', '=', self.job_id.id)], limit=1)
+            setup = self.env['interview.process'].search([('job_ids', 'in', self.job_id.id)], limit=1)
             if setup:
-                new_partner_id = self.env['res.partner'].search([('email','=',self.email_from)], limit=1)
-                if not new_partner_id:
-                    new_partner_id = self.env['res.partner'].create({
-                        'is_company': False,
-                        'type': 'private',
-                        'name': self.partner_name,
-                        'email': self.email_from,
-                        'phone': self.partner_phone,
-                        'mobile': self.partner_mobile
-                    })
-                self.partner_id = new_partner_id.id
+                users =[]
                 for line in setup.line_ids:
-                    process_line_id = self.env['applicant.process.line'].create({
+                    users = [x.id for x in line.reviewer_ids]
+                    users.append(line.user_id.id)
+                    process_line_id = self.env['applicant.process.line'].sudo().create({
                         'name': line.name,
                         'stage_id': line.stage_id.id,
                         'user_id': line.user_id.id,
@@ -51,25 +53,44 @@ class HRApplicant(models.Model):
                         'applicant_id': self.id,
                         'reviewer_ids': line.reviewer_ids.ids,
                         'type': line.type})
-                    users = [x.id for x in line.reviewer_ids]
                     for su in line.survey_ids:
-                        users.append(line.user_id.id)
-                        self.env['applicant.survey.line'].create({'survey_id': su.id,
+                        self.env['applicant.survey.line'].sudo().create({'survey_id': su.id,
                                                                   'partner_id': line.user_id.partner_id.id,
                                                                   'applicant_id': self.id,
                                                                   'user_ids': users,
                                                                   'stage_id': line.stage_id.id,
                                                                   'process_line_id': process_line_id.id})
                     for sur in line.applicant_survey_ids:
-                        self.env['applicant.survey.line'].create({'survey_id': sur.id,
-                                                                  'partner_id': new_partner_id.id,
+                        self.env['applicant.survey.line'].sudo().create({'survey_id': sur.id,
+                                                                  'partner_id': self.partner_id.id,
                                                                   'applicant_id': self.id,
+                                                                  'user_ids': users,
                                                                   'stage_id': line.stage_id.id,
                                                                   'process_line_id': process_line_id.id})
+
+    def _compute_reviewer_ids(self):
+        for rec in self:
+            users = []
+            if rec.line_ids:
+                for line in rec.line_ids:
+                    users = [x.id for x in line.reviewer_ids]
+                    users.append(line.user_id.id)
+            rec.update({'reviewer_ids': users})
 
     @api.model
     def create(self, values):
         values['number'] = self.env['ir.sequence'].next_by_code('hr.applicant') or '/'
+        new_partner_id = self.env['res.partner'].search([('email', '=', values['email_from'])], limit=1)
+        if not new_partner_id:
+            new_partner_id = self.env['res.partner'].create({
+                'is_company': False,
+                'type': 'private',
+                'name': values['partner_name'],
+                'email': values['email_from'],
+                'phone': values['partner_phone'],
+                'mobile': values['partner_mobile'],
+            })
+        values['partner_id'] = new_partner_id.id
         return super().create(values)
 
     def show_surveys(self):
@@ -116,7 +137,7 @@ class ApplicantProcessLine(models.Model):
     accepted = fields.Boolean()
     rejected = fields.Boolean()
     shortlisted = fields.Boolean()
-    applicant_id = fields.Many2one('hr.applicant')
+    applicant_id = fields.Many2one('hr.applicant',ondelete='cascade')
     type = fields.Selection([
         ('zoom', 'Zoom'),
         ('physically ', 'Physically')
@@ -127,8 +148,8 @@ class ApplicantProcessLine(models.Model):
         self.env['applicant.survey.line'].search([('process_line_id', '=', self.id)]).unlink()
         for line in self:
             users = [x.id for x in line.reviewer_ids]
+            users.append(line.user_id.id)
             for su in line.survey_ids:
-                users.append(line.user_id.id)
                 self.env['applicant.survey.line'].create({'survey_id': su.id,
                                                           'partner_id': line.user_id.partner_id.id,
                                                           'applicant_id': self.id,
@@ -139,6 +160,7 @@ class ApplicantProcessLine(models.Model):
                 self.env['applicant.survey.line'].create({'survey_id': sur.id,
                                                           'partner_id': line.applicant_id.partner_id.id,
                                                           'applicant_id': self.id,
+                                                          'user_ids': users,
                                                           'stage_id': line.stage_id.id,
                                                           'process_line_id': line.id})
     def write(self, values):
@@ -152,6 +174,13 @@ class ApplicantProcessLine(models.Model):
         if 'reviewer_ids' in values:
             self.update_lines()
         return res
+
+    def unlink(self):
+        for line in self:
+            survey_history = self.env['applicant.survey.line'].search([('process_line_id', '=', line.id)])
+            if survey_history:
+                survey_history.unlink()
+        return super(ApplicantProcessLine, self).unlink()
 
 
 
@@ -173,6 +202,14 @@ class ApplicantSurveyLine(models.Model):
     scoring_total = fields.Float(related='response_id.scoring_total', store=True)  # stored for perf reasons
     scoring_success = fields.Boolean(related='response_id.scoring_success', store=True)  # stored for perf reasons
     partner_id = fields.Many2one('res.partner')
+    is_current_user = fields.Boolean(compute='_compute_is_current_user')
+
+    def _compute_is_current_user(self):
+        for rec in self:
+            if rec.partner_id and self.env.user.partner_id == rec.partner_id:
+                rec.is_current_user = True
+            else:
+                rec.is_current_user = False
 
     @api.depends('applicant_id', 'stage_id')
     def _compute_meeting_date(self):

@@ -21,19 +21,6 @@
                     <header>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,m_approved,hr_approved,f_approved"/>
-                        <button name="to_manager_approve" string="Manager Approve"
-                                type="object" class="btn-primary"
-                                attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'draft')]}"/>
-                        <button name="to_hr_approve" string="HR Approve" type="object"
-                                class="btn-primary"
-                                attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'm_approved')]}"/>
-                        <button name="to_final_approve" string="Final Approve" type="object"
-                                class="btn-primary"
-                                attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'hr_approved')]}"/>
-                        <button name="reject" string="Refuse" type="object"
-                                class="btn-primary"
-                                attrs="{'invisible': [('is_review_user','=',False)]}"
-                        />
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -52,7 +39,8 @@
                                 <field name='manager_id'/>
                                 <field name="duration_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="is_review_user"
-                                       invisible="1"/>
+                                       invisible="1"
+                                />
                             </group>
                             <group>
                                 <field name='current_user' invisible="1"/>
@@ -61,10 +49,9 @@
                                        filename="attchd_copy_name"
                                        attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name='type' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name='overtime_type_id' groups="hr_payroll.group_hr_payroll_manager" attrs="{'readonly': [('state', '!=', 'f_approved')],
-                                 'invisible': [('state', '=', 'draft')]}"/>
-                                <field name='budget_id' groups="hr.group_hr_user" attrs="{'readonly': [('state', '!=', 'f_approved')],
-                                 'invisible': ['|', ('state', '=', 'draft'), ('type', '!=', 'cash')], 'required': [('state', '=', 'f_approved'), ('type', '=', 'cash')]}"/>
+                                <field name='overtime_type_id' groups="hr_payroll.group_hr_payroll_manager" attrs="{'readonly': [('state', '=', 'f_approved')],'required': [('state', '=', 'hr_approved')]}"/>
+                                <field name='budget_id' groups="hr_payroll.group_hr_payroll_manager" attrs="{'readonly': [('state', '=', 'f_approved')],
+                                 'invisible': [('type', '!=', 'cash')], 'required': [('state', '=', 'hr_approved')]}"/>
                                 <field name="cash_hrs_amount" force_save="1"
                                        attrs="{'invisible': ['|','|',('state', '=', 'draft'),('type','!=', 'cash'),('duration_type','!=','hours')]}"/>
                                 <field name="cash_day_amount" force_save="1"
@@ -129,7 +116,7 @@
                             </page>
                             <page string="Task">
                                 <group>
-                                    <field name="task_id" required="True" domain="[('user_id', '=', uid)]"/>
+                                    <field name="task_id" required="True" domain="[('user_id', '=', current_user)]"/>
                                 </group>
                             </page>
                             <page string="Reviewers" groups="hr.group_hr_manager">
@@ -165,8 +152,22 @@
                     <field name="days_no_tmp"/>
                     <field name="state"/>
                     <field name="type" invisible="1"/>
+                    <field name="is_review_user" invisible="1"/>
                     <field name="payslip_paid" groups="hr.group_hr_manager" readonly="1"
                            attrs="{'invisible': [('type','!=', 'cash')]}" widget="toggle_button"/>
+                    <button name="to_manager_approve" string="Manager Approve"
+                            type="object" class="btn-primary"
+                            attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'draft')]}"/>
+                    <button name="to_hr_approve" string="HR Approve" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'm_approved')]}"/>
+                    <button name="to_final_approve" string="Final Approve" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'hr_approved')]}"/>
+                    <button name="reject" string="Refuse" type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|',('is_review_user','=',False),('state', '!=', 'refused')]}"
+                    />
                 </tree>
             </field>
         </record>
@@ -174,10 +175,10 @@
         <!-- Actions -->
         <!-- overtime -->
         <record id="hr_overtime_action" model="ir.actions.act_window">
-            <field name="name">Overtime Request</field>
+            <field name="name">My Overtime Request</field>
             <field name="res_model">hr.overtime</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">['|', ('employee_id.user_id', '=', uid), ('manager_id', '=', uid)]</field>
+            <field name="domain">[('employee_id.user_id', '=', uid)]</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create new Pre Approval Overtime Request.
@@ -185,13 +186,26 @@
             </field>
         </record>
 
+        <record id="hr_overtime_approval_action" model="ir.actions.act_window">
+            <field name="name">Overtime Request Approval</field>
+            <field name="res_model">hr.overtime</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
 
         <!-- MenuItems -->
         <menuitem id="overtime_submenu" name="Overtime Request"
                   groups="base.group_user" web_icon="ohrms_overtime,static/description/overtime_icon.png"/>
-        <menuitem id="overtime" name="Overtime Request"
+        <menuitem id="overtime_parent_menu" name="Overtime Request"
                   parent="overtime_submenu"
+                  groups="base.group_user"/>
+        <menuitem id="my_overtime_menu" name="My Overtime Request"
+                  parent="overtime_parent_menu"
                   action="hr_overtime_action"
+                  groups="base.group_user"/>
+        <menuitem id="overtime_approval_menu" name="Overtime Request Approval"
+                  parent="overtime_parent_menu"
+                  action="hr_overtime_approval_action"
                   groups="base.group_user"/>
 
 

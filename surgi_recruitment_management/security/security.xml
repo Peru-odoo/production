@@ -10,33 +10,57 @@
             <field name="category_id" ref="base.module_category_hidden"/>
         </record>
 
+        <record id="applicant_process_line_rule_reviewer" model="ir.rule">
+            <field name="name">reviewer:Applicant Process Line</field>
+            <field name="model_id" ref="surgi_recruitment_management.model_applicant_process_line"/>
+            <field name="domain_force">['|',('user_id','=',user.id),('reviewer_ids','in', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
         <record id="applicant_process_line_rule_user" model="ir.rule">
             <field name="name">User:Applicant Process Line</field>
             <field name="model_id" ref="surgi_recruitment_management.model_applicant_process_line"/>
-            <field name="domain_force">[('user','=',user.id),('reviewer_ids','in', user.id)]
+            <field name="domain_force">[(1,'=',1)]
             </field>
             <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
         </record>
-         <record id="applicant_survey_line_user" model="ir.rule">
+        <record id="applicant_survey_line_reviewer" model="ir.rule">
+            <field name="name">reviewer:Applicant Survey Line</field>
+            <field name="model_id" ref="surgi_recruitment_management.model_applicant_survey_line"/>
+            <field name="domain_force">[('user_ids','in', user.id)]
+            </field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        <record id="applicant_survey_line_user" model="ir.rule">
             <field name="name">User:Applicant Survey Line</field>
             <field name="model_id" ref="surgi_recruitment_management.model_applicant_survey_line"/>
-            <field name="domain_force">[('user_ids','=',False),('user_ids','in', user.id)]
+            <field name="domain_force">[(1,'=', 1)]
             </field>
             <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
         </record>
-        <record id="applicant_process_line_rule_manager" model="ir.rule">
-            <field name="name">Manager:Applicant Process Line</field>
-            <field name="model_id" ref="surgi_recruitment_management.model_applicant_process_line"/>
-            <field name="domain_force">[(1,'=',1)]
+         <record id="hr_applicant_rule_reviewer" model="ir.rule">
+            <field name="name">reviewer:Applicants</field>
+            <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+            <field name="domain_force">['|',('reviewer_ids','in', user.id),('user_id','=', user.id)]
             </field>
-            <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>
-        <record id="applicant_survey_line_manager" model="ir.rule">
-            <field name="name">Manager:Applicant Survey Line</field>
-            <field name="model_id" ref="surgi_recruitment_management.model_applicant_survey_line"/>
-            <field name="domain_force">[(1,'=',1)]
+         <record id="hr_applicant_rule_user" model="ir.rule">
+            <field name="name">User:Applicants</field>
+            <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+            <field name="domain_force">[(1,'=', 1)]
             </field>
-            <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
+            <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_user'))]"/>
+        </record>
+        <record id="survey_user_input_rule_survey_user_reviewer" model="ir.rule">
+            <field name="name">Survey user input: Reviewer</field>
+            <field name="model_id" ref="survey.model_survey_user_input"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="perm_unlink" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
         </record>
     </data>
 </odoo>

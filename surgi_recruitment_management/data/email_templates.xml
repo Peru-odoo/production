@@ -31,7 +31,7 @@
                                 <br/>
                                 <br/>
                                 Interviews have been scheduled for
-                                <strong>${object.event_id.start}</strong>
+                                <strong>${object.event_id.get_interval('dayname', tz=object.partner_id.tz if not object.event_id.allday else None)} ${object.event_id.get_interval('day', tz=object.partner_id.tz if not object.event_id.allday else None)} ${object.event_id.get_interval('month', tz=object.partner_id.tz if not object.event_id.allday else None)} ${object.event_id.get_interval('time', tz=object.partner_id.tz if not object.event_id.allday else None)}</strong>
                                 per confirmed in our phone call and the interviewing cycle and company details as
                                 below:-
                                 <br/>

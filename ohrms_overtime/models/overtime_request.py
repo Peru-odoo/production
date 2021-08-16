@@ -1,5 +1,14 @@
 # -*- coding: utf-8 -*-
 
+import pytz
+from datetime import datetime, date, timedelta, time
+from dateutil.relativedelta import relativedelta
+from odoo import models, fields, tools, api, exceptions, _
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.misc import format_date
+from odoo.addons.resource.models.resource import float_to_time, HOURS_PER_DAY, \
+    make_aware, datetime_to_string, string_to_datetime
+
 from dateutil import relativedelta
 import pandas as pd
 from odoo import api, fields, models, _
@@ -28,8 +37,6 @@ from datetime import datetime
 from odoo import api, fields, models, _
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.exceptions import ValidationError
-
-
 
 WEEKDAYS = {'Monday': 0,
             'Tuesday': 1,
@@ -138,9 +145,10 @@ class HrOverTime(models.Model):
     cash_day_amount = fields.Float(string='Overtime Amount', compute='_get_hour_amount', store=True)
     payslip_paid = fields.Boolean('Paid in Payslip', readonly=True)
 
-    task_id = fields.Many2one("project.task", )
+    task_id = fields.Many2one("project.task")
     budget_id = fields.Many2one("overtime.budget")
     reviewer_ids = fields.Many2many('res.users', string='Reviewer')
+
 
     def _compute_is_review_user(self):
         for rec in self:
@@ -153,25 +161,28 @@ class HrOverTime(models.Model):
                 rec.is_review_user = False
 
     def compute_reviewers(self, state):
-        reviewers = []
-        if state:
-            reviewers = self.env['hr.overtime.reviewers'].search([('state', '=', state)], limit=1,
-                                                                 order='id desc')
-        return reviewers.reviewer_ids
+        for rec in self:
+            result = []
+            if state:
+                reviewers = self.env['hr.overtime.reviewers'].search([('state', '=', state)], limit=1,
+                                                                     order='id desc')
+                if reviewers:
+                    result = reviewers.reviewer_ids.ids
+            return result
 
-    @api.onchange('employee_id')
-    def _get_defaults(self):
-        for sheet in self:
-            if sheet.employee_id:
-                employee_id = sheet.employee_id.sudo()
-                department_id = employee_id.department_id
-                job_id = employee_id.job_id
-                manager_id = employee_id.parent_id
-                sheet.update({
-                    'department_id': department_id.id if department_id else None,
-                    'job_id': job_id.id if job_id else None,
-                    'manager_id': manager_id.user_id.id if manager_id and manager_id.user_id else None
-                })
+    # @api.onchange('employee_id')
+    # def _get_defaults(self):
+    #     for sheet in self:
+    #         if sheet.employee_id:
+    #             employee_id = sheet.employee_id.sudo()
+    #             department_id = employee_id.department_id
+    #             job_id = employee_id.job_id
+    #             manager_id = employee_id.parent_id
+    #             sheet.update({
+    #                 'department_id': department_id.id if department_id else None,
+    #                 'job_id': job_id.id if job_id else None,
+    #                 'manager_id': manager_id.user_id.id if manager_id and manager_id.user_id else None
+    #             })
 
     @api.depends('project_id')
     def _get_project_manager(self):
@@ -179,22 +190,6 @@ class HrOverTime(models.Model):
             if sheet.project_id:
                 sheet.update({
                     'project_manager_id': sheet.project_id.user_id.id,
-                })
-
-    @api.depends('date_from', 'date_to')
-    def _get_days(self):
-        for recd in self:
-            if recd.date_from and recd.date_to:
-                if recd.date_from > recd.date_to:
-                    raise ValidationError('Start Date must be less than End Date')
-                if ((recd.date_to - recd.date_from).total_seconds() / 3600.0) > 24.0:
-                    raise ValidationError('Over time can not be more than 24 hrs.')
-
-        for sheet in self:
-            if sheet.date_from and sheet.date_to:
-                days_no_tmp = sheet.date_to - sheet.date_from
-                sheet.update({
-                    'days_no_tmp': days_no_tmp.total_seconds() / 3600.0 if sheet.duration_type == 'hours' else days_no_tmp.days
                 })
 
     @api.depends('overtime_type_id')
@@ -289,7 +284,7 @@ class HrOverTime(models.Model):
 
         elif self.overtime_type_id.type == 'cash':
             request_date = self.date_from.date()
-            if not self.budget_id.date_from <= request_date <= self.budget_id.date_to:
+            if self.budget_id.date_from and self.budget_id.date_to and not self.budget_id.date_from <= request_date <= self.budget_id.date_to:
                 raise ValidationError("Request date is out budget period.")
 
             employee_budget_line = self.env['overtime.employee.budget'].search(
@@ -373,7 +368,7 @@ class HrOverTime(models.Model):
 
         elif self.overtime_type_id.type == 'cash':
             request_date = self.date_from.date()
-            if not self.budget_id.date_from <= request_date <= self.budget_id.date_to:
+            if self.budget_id.date_from and self.budget_id.date_to and not self.budget_id.date_from <= request_date <= self.budget_id.date_to:
                 raise ValidationError("Request date is out budget period.")
 
             employee_budget_line = self.env['overtime.employee.budget'].search(
@@ -436,7 +431,9 @@ class HrOverTime(models.Model):
     def create(self, values):
         seq = self.env['ir.sequence'].next_by_code('hr.overtime') or '/'
         values['name'] = seq
-        reviewers = [x.id for x in self.compute_reviewers(state='m_approved')]
+        reviewers =[]
+        if self.compute_reviewers(state='m_approved'):
+            reviewers = [x.id for x in self.compute_reviewers(state='m_approved')]
         manager_id = self.env['hr.employee'].browse(values['employee_id']).parent_id.user_id
         if manager_id:
             reviewers.append(manager_id.id)
@@ -507,7 +504,8 @@ class HrOverTime(models.Model):
         week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
         check_in_day = week_days.index(day.strftime("%A").lower())
         work_from = self.env['resource.calendar.attendance'].search(
-            [('calendar_id', '=', self.employee_id.resource_calendar_id.id), ('dayofweek', '=', str(check_in_day))], limit=1)
+            [('calendar_id', '=', self.employee_id.resource_calendar_id.id), ('dayofweek', '=', str(check_in_day))],
+            limit=1)
         if work_from:
             return True
         return False
@@ -518,29 +516,83 @@ class HrOverTime(models.Model):
             :return Boolean based on condition
         """
 
-        work_from = self.employee_id.resource_calendar_id.global_leave_ids.filtered(lambda line: line.date_from <= date and line.date_to >= date)
+        work_from = self.employee_id.resource_calendar_id.global_leave_ids.filtered(
+            lambda line: line.date_from <= date and line.date_to >= date)
         if work_from:
             return True
         return False
 
+    def get_working_from_to(self, day):
+        """""
+            get work from & to and convert it as time object after adding and check a flixable hours
+            :return list of float object 0 index is work from and 1 index is work to
+            if attendance day is a work day else wil return false
+        """
+        working_day = self.is_same_working_day(day)
+        if working_day:
+            calendar = self.employee_id.resource_calendar_id
+            week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+            day_name = week_days.index(day.strftime("%A").lower())
+            work_from = self.env['resource.calendar.attendance'].search(
+                [('calendar_id', '=', calendar.id), ('dayofweek', '=', day_name)], limit=1).hour_from
+
+            work_to = self.env['resource.calendar.attendance'].search(
+                [('calendar_id', '=', calendar.id), ('dayofweek', '=', day_name)], limit=1).hour_to
+            return work_from, work_to
+
+    def over_time_calculate(self, date_from, date_to):
+        """""
+            calculate all over time hours depend on hours per days for the current employee and the actual worked hours
+            :return the overtime number if it's gt or eq 1
+        """
+        if date_from and date_to and date_to > date_from:
+            for date in date_utils.date_range(date_from, date_to):
+                if self.is_same_working_day(date) and not self.is_public_holidays_day(date):
+                    actual_worked = (date_to - date_from).total_seconds() / 3600.0
+                    h_per_day = self.employee_id.resource_calendar_id.hours_per_day
+                    overtime = actual_worked - h_per_day
+                    if overtime > 0.0:
+                        return overtime if self.duration_type == 'hours' else (
+                                    overtime / self.employee_id.resource_calendar_id.hours_per_day)
+                    else:
+                        return 0.0
+                else:
+                    days_no_tmp = (date_to - date_from)
+                    overtime = days_no_tmp.total_seconds() / 3600.0 if self.duration_type == 'hours' else days_no_tmp.days
+                    return overtime
+
+    @api.depends('date_from', 'date_to', 'duration_type')
+    def _get_days(self):
+        for sheet in self:
+            if sheet.date_from and sheet.date_to:
+                days_no_tmp = self.over_time_calculate(sheet.date_from, sheet.date_to)
+                sheet.update({
+                    'days_no_tmp': days_no_tmp
+                })
+
     @api.constrains('date_from', 'date_to')
     def _validate_check_out_date(self):
         for rec in self:
+            if rec.date_from and rec.date_to:
+                if rec.date_from > rec.date_to:
+                    raise ValidationError('Start Date must be less than End Date')
+                if ((rec.date_to - rec.date_from).total_seconds() / 3600.0) > 24.0:
+                    raise ValidationError('Over time can not be more than 24 hrs.')
+
             for date in date_utils.date_range(rec.date_from, rec.date_to):
                 if self.is_same_working_day(date) and not self.is_public_holidays_day(date):
-                    hr_attendance = self.env['hr.attendance'].search([('employee_id', '=', rec.employee_id.id),('check_in', '<=', date),('check_out', '>=', date)])
-                    if not hr_attendance:
+                    tz = pytz.timezone(rec.employee_id.tz)
+                    date_from = rec.date_from.astimezone(tz).replace(tzinfo=None)
+                    date_to = rec.date_to.astimezone(tz).replace(tzinfo=None)
+
+                    attendances = self.env['hr.attendance'].sudo().search([
+                        ('employee_id', '=', rec.employee_id.id),
+                        ('check_in', '<=', rec.date_from),
+                        ('check_out', '>=', rec.date_to),
+                    ])
+                    if not attendances:
                         raise ValidationError(
                             'There must be an attendances in this day request')
-            # for res in self.attendance_ids:
-            #     if self.date_to > res.check_out:
-            #         raise ValidationError('check out in attendance must be greater than Date To in Overtime Request')
-            #
-            #     if self.date_from < res.check_in:
-            #         raise ValidationError('check in in attendance must be less than Date From in Overtime Request')
-
-                # if res.check_in not in self.attendance_ids:
-                #     raise ValidationError('check in  attendance did not set ')
 
     def _get_day_night_hours(self,
                              day_start: float, day_end: float,
@@ -548,6 +600,9 @@ class HrOverTime(models.Model):
                              interval_start: datetime, interval_end: datetime):
         if day_end != night_start:
             raise ValidationError("There is an empty gap in day/night configuration.")
+
+        if not interval_start and not interval_end:
+            raise ValidationError("Please insert Date from , Date to on request.")
 
         # TODO: fix hardcode +2 timezone
         interval_start = interval_start + timedelta(hours=2)

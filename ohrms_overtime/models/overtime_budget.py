@@ -131,7 +131,7 @@ class OvertimeBudget(models.Model):
                     else:
                         raise ValidationError("This department %s has no budget configured in department budget section." % key)
 
-            elif rec.status == 'draft' and rec.request_ids:
-                raise ValidationError("Can not get back to draft state since there are requests registered to this budget.")
+            # elif rec.status == 'draft' and rec.request_ids:
+            #     raise ValidationError("Can not get back to draft state since there are requests registered to this budget.")
 
 
