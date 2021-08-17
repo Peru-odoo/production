@@ -6,7 +6,7 @@ from odoo import models, fields, api
 class Operation_operation_qulity(models.Model):
     _inherit = 'operation.operation'
 
-    quality_check = fields.Boolean(string='Quality' , store=True,readonly=True,tracking=True,compute='quality_check_button')
+    quality_check = fields.Boolean(string='Quality' , store=True,readonly=True,tracking=True,default=False)
 
 
 
