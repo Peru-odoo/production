@@ -29,7 +29,7 @@ class InterviewProcess(models.Model):
     _description = 'Interview Process'
 
     name = fields.Char(default='New')
-    job_ids = fields.Many2many('hr.job',string='Job Position')
+    job_ids = fields.Many2many('hr.job',string='Job Position',domain="[('job_state','=','gm')]")
     survey_ids = fields.Many2many('survey.survey', string="Applicant's Survey")
     line_ids = fields.One2many('interview.process.line','interview_id')
 

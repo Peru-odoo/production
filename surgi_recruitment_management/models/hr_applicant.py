@@ -105,7 +105,7 @@ class HRApplicant(models.Model):
 
     def action_makeMeeting(self):
         res = super(HRApplicant, self).action_makeMeeting()
-        survey_ids = self.line_ids.filtered(lambda m: m.stage_id == self.stage_id.id).mapped('applicant_survey_ids')
+        survey_ids = self.line_ids.filtered(lambda m: m.stage_id == self.stage_id).mapped('applicant_survey_ids')
         partners = [self.user_id.partner_id.id]
         if self.partner_id:
             partners.append(self.partner_id.id)

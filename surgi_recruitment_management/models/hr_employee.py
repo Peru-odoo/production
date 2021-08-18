@@ -4,9 +4,18 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from werkzeug.urls import url_join
 
+class HRcontract(models.Model):
+    _inherit = 'hr.contract'
+
+    job_id = fields.Many2one('hr.job', compute='_compute_employee_contract', store=True, readonly=False,
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]", string='Job Position')
+
 
 class HREmployee(models.Model):
     _inherit = 'hr.employee'
+
+    job_id = fields.Many2one('hr.job', "Job Position", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]")
+
 
     def action_create_request(self):
         for rec in self:

@@ -24,13 +24,14 @@
     'license': 'AGPL-3',
     # any module necessary for this one to work correctly
 
-    'depends': ['base','mail','hr','portal','hr_recruitment','surgi_hr_payroll','survey','hr_recruitment_survey'],
+    'depends': ['base','mail','hr','portal','hr_recruitment','surgi_hr_payroll','survey','hr_recruitment_survey','hr_contract'],
 
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/email_templates.xml',
+        'views/calendar_event.xml',
         'views/hr_job_view.xml',
         'views/resource_view.xml',
         'views/hiring_request_view.xml',

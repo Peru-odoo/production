@@ -9,12 +9,15 @@ class CalendarEvent(models.Model):
     stage_id = fields.Many2one('hr.recruitment.stage')
     survey_ids = fields.Many2many('survey.survey')
 
-    def action_sendmail(self):
-        email = self.env.user.email
-        if email:
-            for meeting in self:
-                if meeting.job_id:
-                    meeting.attendee_ids._send_mail_to_attendees('surgi_recruitment_management.email_template_data_applicant_meeting',force_send=True)
-                else:
-                    meeting.attendee_ids._send_mail_to_attendees('calendar.calendar_template_meeting_invitation')
-        return True
+
+
+    def action_send_meeting_mail(self):
+        self.ensure_one()
+        if self.job_id:
+            mail_to = ','.join([p.email for p in self.partner_ids])
+            ctx = dict(self.env.context)
+            if mail_to:
+                ctx.update({'mail_to': mail_to})
+                template = self.env.ref('surgi_recruitment_management.email_template_data_applicant_meeting')
+                template.sudo().with_context(**ctx).send_mail(self.id,force_send=True)
+

@@ -33,7 +33,7 @@ class HiringRequest(models.Model):
     date = fields.Date('Opening Date',tracking=True)
     close_date = fields.Date('Estimated Closing Date',tracking=True)
     active = fields.Boolean(string="Active", default=True)
-    job_id = fields.Many2one('hr.job',string='Job Position',tracking=True)
+    job_id = fields.Many2one('hr.job',string='Job Position',tracking=True,domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]")
     grade_id = fields.Many2one(
         'grade.grade', string='Grade')
     replacement_period = fields.Integer('Replacement Period')
