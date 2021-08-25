@@ -26,7 +26,7 @@
     'data': [
         'security/quality_security.xml',
         'views/view_quality_operations_coordinator.xml',
-
+        'views/stock_transfer.xml',
         'views/inventory_report.xml',
         'views/lot_serial_num.xml',
         'views/opration_quality.xml',
