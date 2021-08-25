@@ -88,7 +88,6 @@ class HRApplicant(models.Model):
                 'name': values['partner_name'],
                 'email': values['email_from'],
                 'phone': values['partner_phone'],
-                'mobile': values['partner_mobile'],
             })
         values['partner_id'] = new_partner_id.id
         return super().create(values)
