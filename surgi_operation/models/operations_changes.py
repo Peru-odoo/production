@@ -247,6 +247,8 @@ class operation_operation(models.Model):
                 'warehouse_id': self.warehouse_id.id,
                 'location_id':hanged_location_id,
                 'location_dest_id':self.hospital_id.property_stock_customer.id,
+                'delivery_type': self.operation_delivery_type,
+
                 'so_type': 'operation',
                 'operation_id': self.id,
             }
@@ -465,6 +467,8 @@ class operation_operation(models.Model):
                     'warehouse_id': self.warehouse_id.id,
                     'location_id': operation_location_id,
                     'location_dest_id': self.hospital_id.property_stock_customer.id,
+                    'delivery_type': self.operation_delivery_type,
+
                     'so_type': 'operation',
                     'operation_id': self.id,
                 }
