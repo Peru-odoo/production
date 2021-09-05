@@ -2,7 +2,10 @@
 from odoo import models
 from odoo import fields
 from odoo import api
+from odoo.exceptions import UserError
+import logging
 import math
+_logger = logging.getLogger(__name__)
 # class PrintInvoice(models.Model):
    # _name="account.move.printedinvoice"
   ##  _inherit=["account.move"]
@@ -237,14 +240,35 @@ class sale_advance_payment_inv1(models.TransientModel):
         invoices=super().create_invoices()
         sale_orders = self.env['sale.order'].browse(self._context.get('active_ids', []))
         print("")
+
+
         #invoice.printinvoicetoline = order.printquationtoline.id
+        _logger.debug(sale_orders)
+        #       #  invoid=invoices['domain'].split(",")
+
+        # raise UserError(sale_orders.invoice_ids)
         for invo in sale_orders.printquationtoline:
+            # raise UserError(invo.linestoprintinvoice)
+            data = {
+                'sequance': invo.sequance,
+                'description': invo.description,
+                'uquantity': invo.uquantity,
+                'uprice': invo.uprice,
+                'total': invo.total,
+                'linestoprintinvoice': sale_orders.invoice_ids[-1].id,
+                'linestoprintquation': sale_orders.id
+            }
+
+            #             }
+            # raise UserError(invo.linestoprintinvoice)
         #     print("----------------->")
         #     print(invo)
         #     print("################")
            # print(invo.sequence)
             #orderinvoice = self.env['account.move.printedinvoice.lines'].search([('linestoprintquation', '=', sale_orders.id)])
-            invo.write({'linestoprintinvoice':sale_orders.invoice_ids.id})
+            # invo.write({'linestoprintinvoice':sale_orders.invoice_ids[-1].id})
+            invo.create(data)
+            # invo.write({'linestoprintinvoice':sale_orders.invoice_ids.id})
             # self.env['account.move.printedinvoice.lines'].create({'sequance':invo.sequence,'description':invo.description,'uquantity':invo.uquantity,'uprice':invo.uprice,'linestoprintinvoice':invoice.id,'linestoprintquation':invo.id});
             # self.env.cr.commit()
         #     pass
