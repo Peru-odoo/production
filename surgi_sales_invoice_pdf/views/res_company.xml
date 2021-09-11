@@ -14,5 +14,22 @@
                 </xpath>
             </field>
         </record>
+
+                <record id="view_payment_partner_name_inherit" model="ir.ui.view">
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="after">
+
+                            <field name="partner_arabic_name" force_save="1"/>
+                            <field name="collection_receipt_number" force_save="1"/>
+                            <field name="collection_rep" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+
     </data>
 </odoo>
