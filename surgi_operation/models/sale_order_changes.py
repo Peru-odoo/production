@@ -25,6 +25,11 @@ class sale_order(models.Model):
                                 ('operation', 'Operation'),
                                 ('tender', 'Tender'),
                                 ('supply_order', 'Supply Order'),
+                                ('repair', 'Repair'),
+                                ('home_care', 'Home Care'),
+                                ('sudan', 'Sudan'),
+                                ('without_order', 'Without order'),
+                                ('cash', 'Cash'),
                                 ], string='Sale Order Type')
     # delivery_type = fields.Selection(string="Delivery Type ",
     #                                  selection=[('normal', 'Normal'),('loading','Loading')
