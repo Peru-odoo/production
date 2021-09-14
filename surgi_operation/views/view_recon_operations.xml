@@ -135,6 +135,16 @@
                                 <field name="moh_approved_operation" force_save ="1" invisible="0" readonly="1"/>
                                 <field name="side" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
                         </group>
+                            <group string="X Rays">
+
+                                <field name="attachment_pre"/>
+                                <field name="attachment_after"/>
+                                <field name="attachment_paitent" />
+
+
+                                    <field name="paitent_joint_pre_company"/>
+
+                            </group>
                             <group>
                                 <field name="patient_gender" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
 
