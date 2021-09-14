@@ -105,10 +105,10 @@ class HrContract(models.Model):
         for rec in self:
             rec.incentive_total = rec.advanced_incentive + rec.standalone_incentive + rec.incentive_2018 + rec.incentive_2017 + rec.incentive_2016 + rec.incentive_2015 + rec.incentive_2014
 
-    @api.depends('basic_salary', 'increase_total')
+    @api.depends('basic_salary', 'increase_total','variable_incentive','increase_2020')
     def _getsum_salary_total(self):
         for rec in self:
-            rec.total_salary_without_incentive = rec.basic_salary + rec.increase_total
+            rec.total_salary_without_incentive = rec.basic_salary + rec.increase_total +  rec.variable_incentive + rec.increase_2020
 
     @api.depends('total_salary_without_incentive', 'incentive_total' ,'basic_salary_precent')
     def _getsum_total_salary(self):
