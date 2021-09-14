@@ -199,7 +199,7 @@
                                 <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}" force_save="1"/>
                             </group>
                             <group string="X Rays">
-                              -->
+                             
                                 <field name="attachment_pre"/>
                                 <field name="attachment_after"/>
                                 <field name="attachment_paitent" />
