@@ -165,7 +165,12 @@
                         <group>
                             <group>
                                 <field name="start_datetime" string="Date Start" required="1" />
-                                <field name="operation_type" invisible="0" required="1" /><button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+                                <field name="operation_type" invisible="0" required="1" />
+
+                                <field name="operation_type_track" invisible="1"  />
+
+
+                                <button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
                                 <field name="consumed_items_file"/>
                             </group>
                             <group>
@@ -189,7 +194,19 @@
                                 <field name="patient_national_id" attrs="{'invisible': [('op_type', '=', 'tender')]}"/>
                             </group>
                             <group>
+
+
                                 <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}" force_save="1"/>
+                            </group>
+                            <group string="X Rays">
+                              -->
+                                <field name="attachment_pre"/>
+                                <field name="attachment_after"/>
+                                <field name="attachment_paitent" />
+
+
+                                    <field name="paitent_joint_pre_company"/>
+
                             </group>
                         </group>
 

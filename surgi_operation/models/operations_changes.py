@@ -302,6 +302,7 @@ class operation_operation(models.Model):
 
     # Create sale order regarding to operation data not hanged
     def create_delivery_sales_order(self):
+
         quants = self.env['stock.quant'].search([('location_id', '=', self.location_id.id)])
         if len(quants) > 0:
             operation_location_id = quants[0].location_id.id
@@ -609,6 +610,7 @@ class operation_operation(models.Model):
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
     operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)
+
     component_ids = fields.Many2many('product.product', string="Components")
     state = fields.Selection(selection=lambda self: [(x.state_name, x.name) for x in self.env['operation.stage'].search([('is_active', '=', True)])], string='Status', readonly=False, default="draft")
     #stage_id = fields.Many2one(comodel_name="operation.stage", string="Stage id", track_visibility='onchange', required=False, select=True,copy=False,
@@ -616,7 +618,9 @@ class operation_operation(models.Model):
 
     customers_operations_location = fields.Many2one('stock.location', string="Customers Operations Location",
                                                     default=get_default_stock_config)
-    operation_type = fields.Many2one('product.operation.type', string="Operation Type", track_visibility='onchange')
+    operation_type = fields.Many2one('product.operation.type', string="Operation Type", track_visibility='onchange',store=True)
+    operation_type_track = fields.Char(related="operation_type.name", string="operation type Name")
+
     responsible = fields.Many2one(comodel_name='res.users', string="Responsible", default=_get_currunt_loged_user, track_visibility='onchange')
     op_sales_area = fields.Many2one('crm.team', string='Sales Channel', oldname='section_id',
                                  default=lambda self: self.env['crm.team'].search(['|', ('user_id', '=', self.env.uid), ('member_ids', '=', self.env.uid)],limit=1))
@@ -661,6 +665,17 @@ class operation_operation(models.Model):
                                             , ('purchasereturn', 'Purchase Return')
                                             , ('gov', 'Government Form')],
                                         help="Used ot show picking type delivery type")
+
+    attachment_pre = fields.Binary( string="Pre Operation",store=True)
+    attachment_after = fields.Binary( string="After Operation",store=True)
+    attachment_paitent = fields.Binary( string="Patient Joint",store=True)
+    paitent_joint_pre_company=fields.Char(string='Joint Pre Company',store=True)
+
+
+
+
+
+
 
     def set_operation_location_freeze_from_operation(self):
         x=self.location_id.id
