@@ -5,7 +5,7 @@
 
 
         <record id="group_adv_location_config" model="res.groups">
-            <field name="name">Inventory Location Configuration</field>
+            <field name="name">Inventory Route Configuration</field>
         </record>
 
 
