@@ -21,9 +21,11 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='ref']" position="after">
 
-                            <field name="partner_arabic_name" force_save="1"/>
-                            <field name="collection_receipt_number" force_save="1"/>
-                            <field name="collection_rep" force_save="1"/>
+                            <field name="partner_arabic_name" force_save="1" optional="hide"/>
+                            <field name="collection_receipt_number" force_save="1" optional="hide"/>
+                            <field name="collection_rep" force_save="1" optional="hide"/>
+                            <field name="collection_rep_name" force_save="1" optional="hide"/>
+
                 </xpath>
             </field>
         </record>

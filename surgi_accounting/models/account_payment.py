@@ -13,7 +13,7 @@ class account_payment2(models.Model):
     date_due = fields.Date('Due Date(Payment)', readonly=False)
     collection_receipt_number = fields.Integer(string="Receipt Number(Payment)")
     collection_rep = fields.Many2one('res.users', 'Collection Rep(Payment)', track_visibility='onchange')
-    collection_rep_name = fields.Char(string="Collection Rep(Payment)", track_visibility='onchange')
+    collection_rep_name = fields.Char(string="Collection Rep", track_visibility='onchange')
 
 
     def action_draft(self):
