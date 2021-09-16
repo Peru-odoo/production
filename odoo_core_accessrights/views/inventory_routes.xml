@@ -89,8 +89,7 @@
               </p>
             </field>
         </record>
-
-        <menuitem id="menu_routes_config_surgi" action="action_routes_config_form" name="Routes Configuration"  sequence="3" groups="odoo_core_accessrights.group_adv_location_config"/>
+     <menuitem id="menu_routes_config_surgi" action="action_routes_config_form" name="Routes Configuration"  sequence="5" parent="sale.sale_menu_root" groups="odoo_core_accessrights.group_adv_location_config"/>
 
 
 
