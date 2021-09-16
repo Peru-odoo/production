@@ -33,6 +33,7 @@ class HrContract(models.Model):
     payment_method = fields.Selection([('cash', 'Cash'), ('bank', 'Bank')], string='Payment Method')
 
     wage = fields.Monetary('Wage', required=True, tracking=True, help="Employee's monthly gross wage.",compute='calculate_wage')
+    door_type = fields.Selection([('indoor', 'In Door'), ('outdoor', 'Out Door')], string='Door Type', copy=False)
 
     @api.depends('basic_salary','basic_salary_precent')
     def calculate_wage(self):

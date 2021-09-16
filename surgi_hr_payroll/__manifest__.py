@@ -21,6 +21,7 @@
         #"data/eg_hr_payroll_data.xml",
         'views/hr_grade_rank_view.xml',
         'views/views.xml',
+        'views/hr_grade_allow.xml',
     ],
 
     'license': 'OPL-1',
