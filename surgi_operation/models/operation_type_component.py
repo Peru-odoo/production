@@ -10,7 +10,7 @@ class surgitech_product_operation_type(models.Model):
     operation_type_category = fields.Char(string="Category", required=False, )
     operation_product_line = fields.Char(string="Product Line", required=False, )
     invoice_printing_description = fields.Text('Invoice Printing Description')
-
+    need_xrays_op_type =fields.Boolean(string="Need X-Ray",default=False)
 class surgitech_product(models.Model):
     _inherit = 'product.template'
 
@@ -19,6 +19,7 @@ class surgitech_product(models.Model):
     is_medical = fields.Boolean(string="Is Medical",default=False)
     is_tool = fields.Boolean(string="Is Tool",default=False)
     is_op_acc = fields.Boolean(string="Is Accessory",default=False)
+    need_xrays=fields.Boolean(string="Need X-Ray",default=False)
     operation_type = fields.Many2many(comodel_name="product.operation.type",
     relation="product_operation_type_product_template_rel",
                                       column1="product_template_id",

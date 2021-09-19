@@ -191,21 +191,23 @@
                         <group>
                             <group>
                                 <field name="patient_gender" required="0" />
-                                <field name="patient_national_id" attrs="{'invisible': [('op_type', '=', 'tender')]}"/>
+                                <field name="patient_national_id" attrs="{'invisible': [('op_type', '=', 'tender')],'required':[('operation_type_track','in',['Tender Revision T. Hip Cemented','Tender Revision T. Hip Cementless','Tender Revision Knee &quot;LCCK&quot;'])]}"/>
                             </group>
                             <group>
 
 
-                                <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}" force_save="1"/>
+                                <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')],'required':[('operation_type_track','in',['Tender Revision T. Hip Cemented','Tender Revision T. Hip Cementless','Tender Revision Knee &quot;LCCK&quot;'])]}" force_save="1"/>
                             </group>
                             <group string="X Rays">
-                             
-                                <field name="attachment_pre"/>
-                                <field name="attachment_after"/>
-                                <field name="attachment_paitent" />
+<!--'|',('operation_type_track','not in',['Tender Revision T. Hip Cemented','Tender Revision T. Hip Cementless','Tender Revision Knee &quot;LCCK&quot;']),-->
+<!--                                -->
+                                <field name="attachment_pre" invisible="0" />
+                                <field name="attachment_after" />
+                                <field name="attachment_paitent" invisible="0"
+                                      />
 
 
-                                    <field name="paitent_joint_pre_company"/>
+                                    <field name="paitent_joint_pre_company" />
 
                             </group>
                         </group>
@@ -213,7 +215,7 @@
                         <separator string="Location"/>
                         <group>
                             <group>
-                                <field name="hospital_id" required="1" domain="[('is_hospital','=',True)]" />
+                                <field name="hospital_id" required="1" domain="[('is_hospital','=',True)]" attrs="{'required':[('operation_type_track','in',['Tender Revision T. Hip Cemented','Tender Revision T. Hip Cementless','Tender Revision Knee &quot;LCCK&quot;'])]}"/>
                                 <field name="authority" readonly="1"/>
                             </group>
                             <group>

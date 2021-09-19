@@ -13,6 +13,11 @@
                         <field name="operation_component" />
                         <label for="operation_component" string="Operation Component" />
                     </div>
+                    <div>
+                       <field name="need_xrays"/>
+                        <label for="need_xrays" string="Need X-Ray"/>
+
+                    </div>
                  </div>
                 <!--add new page related to surgitech changes-->
                 <xpath expr="//notebook/page[@name='sales']" position="after">
@@ -109,6 +114,9 @@
                             <group>
                             <field name="operation_product_line" string="Product Line"/>
                         </group>
+                            <group>
+                                <field name="need_xrays_op_type" string="Need XRay"/>
+                            </group>
                         </group>
                         <notebook>
                             <page name="printing_description" string="Invoice Printing Description">

@@ -299,9 +299,25 @@ class operation_operation(models.Model):
             print ("Sale_order: " + str(sale_order))
         else:
             raise Warning('No Quants Available in Hanged Location!')
+    def check_need_x_rays(self):
+        for i in self.component_ids:
+            if i.product_tmpl_id.need_xrays ==True:
+                if not self.attachment_pre or not self.attachment_after or not self.attachment_paitent or not self.paitent_joint_pre_company:
+                    return True
+        pass
+    def check_need_x_rays_operation_type(self):
+        for i in self.operation_type:
+            if i.need_xrays_op_type ==True:
+                if not self.attachment_pre or not self.attachment_after or not self.attachment_paitent or not self.paitent_joint_pre_company:
+                    return True
 
+        pass
     # Create sale order regarding to operation data not hanged
     def create_delivery_sales_order(self):
+        if self.check_need_x_rays():
+            raise exceptions.ValidationError('Please fill pre-Operation & After Operation & Patient Joint')
+        elif self.check_need_x_rays_operation_type():
+            raise exceptions.ValidationError('Please fill pre-Operation & After Operation & Patient Joint')
 
         quants = self.env['stock.quant'].search([('location_id', '=', self.location_id.id)])
         if len(quants) > 0:
@@ -375,7 +391,7 @@ class operation_operation(models.Model):
             print ("Sale_order: " + str(sale_order))
             self.write({'state': 'so_created', })
         else:
-            raise Warning('No Quants Available in  Location!')
+            raise exceptions.ValidationError('No Quants Available in  Location!')
 
     # Create sale order regarding to operation data not hanged Tender
     def create_delivery_sales_order_tender(self):
@@ -445,7 +461,7 @@ class operation_operation(models.Model):
             print (sale_order)
             print ("Sale_order: " + str(sale_order))
         else:
-            raise Warning('No Quants Available in  Location!')
+            raise exceptions.ValidationError('No Quants Available in  Location!')
 
     # Create Draft sale order  before operation
     def create_draft_sales_order(self):
@@ -610,8 +626,10 @@ class operation_operation(models.Model):
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
     operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)
+    is_to_bool = fields.Boolean()
 
-    component_ids = fields.Many2many('product.product', string="Components")
+    component_ids = fields.Many2many('product.product', string="Components" )#,compute='_auto_gender_generate'
+    component_ids_name = fields.Char(related='component_ids.name',string='com name')
     state = fields.Selection(selection=lambda self: [(x.state_name, x.name) for x in self.env['operation.stage'].search([('is_active', '=', True)])], string='Status', readonly=False, default="draft")
     #stage_id = fields.Many2one(comodel_name="operation.stage", string="Stage id", track_visibility='onchange', required=False, select=True,copy=False,
     #                          default=lambda self: self.env.ref('surgi_operation.operation_confirm_stage', False), domain=[('is_active', '=', True)])
@@ -666,16 +684,28 @@ class operation_operation(models.Model):
                                             , ('gov', 'Government Form')],
                                         help="Used ot show picking type delivery type")
 
-    attachment_pre = fields.Binary( string="Pre Operation",store=True)
-    attachment_after = fields.Binary( string="After Operation",store=True)
-    attachment_paitent = fields.Binary( string="Patient Joint",store=True)
+    attachment_pre = fields.Binary( string="Pre Operative XRay",store=True)
+    attachment_after = fields.Binary( string="Post Operative XRay",store=True)
+    attachment_paitent = fields.Binary( string="Revised Implant",store=True)
     paitent_joint_pre_company=fields.Char(string='Joint Pre Company',store=True)
 
 
 
 
 
+    def _auto_gender_generate(self):
+        for rec in self:
+            if rec.component_ids.name in ["K09-FEMORAL COMPONENT LCCK RIGHT"]:
+                rec.is_to_bool = True
+            elif rec.component_ids.name in ["[K10] K10-FEMORAL COMPONENT LCCK LEFT"]:
+                rec.is_to_bool = True
+            elif rec.component_ids.name in ["K11-FEMORAL COMPONENT RHK RIGHT"]:
+                rec.is_to_bool = True
+            elif rec.component_ids.name in ["[K12] K12-FEMORAL COMPONENT RHK LEFT"]:
+                rec.is_to_bool = True
+        else:
 
+            rec.is_to_bool = False
 
     def set_operation_location_freeze_from_operation(self):
         x=self.location_id.id

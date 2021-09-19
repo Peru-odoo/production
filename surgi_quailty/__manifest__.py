@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','surgi_operation','stock'],
+    'depends': ['base','surgi_operation','stock','purchase'],
 
     # always loaded
     'data': [
@@ -30,6 +30,7 @@
         'views/inventory_report.xml',
         'views/lot_serial_num.xml',
         'views/opration_quality.xml',
+        'views/purches.xml',
 
     ],
     # only loaded in demonstration mode

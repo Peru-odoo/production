@@ -136,18 +136,20 @@
                                 <field name="patient_national_identification" invisible ="1"/>
                                 <field name="side" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
                         </group>
-                            <group string="X Rays">
-
-                                <field name="attachment_pre"/>
-                                <field name="attachment_after"/>
-                                <field name="attachment_paitent" />
-
-
-                                    <field name="paitent_joint_pre_company"/>
-
-                            </group>
                             <group>
                                 <field name="patient_gender" required="False" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
+                            </group>
+                                                        <group string="X Rays">
+<!--'|',('operation_type_track','not in',['Tender Revision T. Hip Cemented','Tender Revision T. Hip Cementless','Tender Revision Knee &quot;LCCK&quot;']),-->
+<!--                                -->
+                                <field name="attachment_pre" invisible="0" />
+                                <field name="attachment_after" />
+                                <field name="attachment_paitent" invisible="0"
+                                      />
+
+
+                                    <field name="paitent_joint_pre_company" />
+
                             </group>
                         </group>
                         <separator string="Surgeon"/>

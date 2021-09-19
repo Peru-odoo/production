@@ -30,7 +30,8 @@ class sale_order(models.Model):
                                 ('sudan', 'Sudan'),
                                 ('without_order', 'Without order'),
                                 ('cash', 'Cash'),
-                                ], string='Sale Order Type')
+
+    ], string='Sale Order Type')
     # delivery_type = fields.Selection(string="Delivery Type ",
     #                                  selection=[('normal', 'Normal'),('loading','Loading')
     #                                             ,('exchange','Exchange ')

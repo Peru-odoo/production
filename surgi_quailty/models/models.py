@@ -31,6 +31,9 @@ class stock_quant_quality(models.Model):
 class lot_id_quality(models.Model):
     _inherit = 'stock.production.lot'
 
+class purchase_quality(models.Model):
+    _inherit = 'purchase.order'
+
 
 
 class StockInherit(models.Model):
