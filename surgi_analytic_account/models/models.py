@@ -27,7 +27,7 @@ class AccountPaymentRegisterInherit(models.TransientModel):
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
 
-    cost_center_ids = fields.One2many(comodel_name="cost.center.lines", inverse_name="hospital_id", string="",
+    cost_center_ids = fields.One2many(comodel_name="cost.center.lines", inverse_name="partner_id", string="",
                                       required=False, )
 
 
@@ -38,7 +38,6 @@ class CostCenterLines(models.Model):
     product_line_id = fields.Many2one(comodel_name="product.lines", string="Product Line", )
     analytic_account_id = fields.Many2one(comodel_name="account.analytic.account", string="Account Analytic Account", )
     partner_id = fields.Many2one(comodel_name="res.partner", string="", required=False, )
-    hospital_id = fields.Many2one(comodel_name="res.partner", string="Hospital", )
 
 
 class AccountAnalyticAccount(models.Model):
@@ -150,9 +149,9 @@ class AccountMove(models.Model):
         part2=False
         for line in self.invoice_line_ids:
 
-            if self.hospital_id.cost_center_ids:
+            if self.partner_id.cost_center_ids:
 
-                for cost in self.hospital_id.cost_center_ids:
+                for cost in self.partner_id.cost_center_ids:
 
                     if line.product_id.product_id.id == cost.product_line_id.id:
 
@@ -216,9 +215,9 @@ class StockPicking(models.Model):
         analytic_account_obj = self.env['account.analytic.account'].search([])
         lines_list = []
         for line in self.move_ids_without_package:
-            if self.hospital_id.cost_center_ids:
+            if self.partner_id.cost_center_ids:
 
-                for cost in self.hospital_id.cost_center_ids:
+                for cost in self.partner_id.cost_center_ids:
 
                     if line.product_id.product_id.id == cost.product_line_id.id:
 
