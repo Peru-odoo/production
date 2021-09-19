@@ -302,13 +302,13 @@ class operation_operation(models.Model):
     def check_need_x_rays(self):
         for i in self.component_ids:
             if i.product_tmpl_id.need_xrays ==True:
-                if not self.attachment_pre or not self.attachment_after or not self.attachment_paitent or not self.paitent_joint_pre_company:
+                if not self.attachment_pre or not self.attachment_after :
                     return True
         pass
     def check_need_x_rays_operation_type(self):
         for i in self.operation_type:
             if i.need_xrays_op_type ==True:
-                if not self.attachment_pre or not self.attachment_after or not self.attachment_paitent or not self.paitent_joint_pre_company:
+                if not self.attachment_pre or not self.attachment_after :
                     return True
 
         pass
