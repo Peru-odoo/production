@@ -315,9 +315,9 @@ class operation_operation(models.Model):
     # Create sale order regarding to operation data not hanged
     def create_delivery_sales_order(self):
         if self.check_need_x_rays():
-            raise exceptions.ValidationError('Please fill pre-Operation & After Operation & Patient Joint')
+            raise exceptions.ValidationError('Please fill Pre Operative XRay & post Operative XRay')
         elif self.check_need_x_rays_operation_type():
-            raise exceptions.ValidationError('Please fill pre-Operation & After Operation & Patient Joint')
+            raise exceptions.ValidationError('Please fill Pre Operative XRay & post Operative XRay')
 
         quants = self.env['stock.quant'].search([('location_id', '=', self.location_id.id)])
         if len(quants) > 0:
