@@ -101,38 +101,48 @@ class HrVariableAllowanceRequest(models.Model):
         else:
             self.contract_id = False
 
+    # by nextera start
     @api.depends('contract_id', 'rule_id', 'amount_rate_multiplier', 'type')
     def _compute_amount(self):
         for rec in self:
-
-            # if rec.type:
-            #     if rec.type == 'var_internal_travel_exp_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_internal_travel_exp_allow
+            # if rec.employee_id and rec.contract_id and rec.rule_id and rec.rule_id.allowance_type == 'rule':
+            #     try:
+            #         rec.tmp_amount = rec.amount_rate_multiplier * eval(rec.rule_id.rule, {'contract': rec.contract_id, 'employee': rec.employee_id})
+            #         if rec.rule_id.allowance_or_deduction == 'deduction':
+            #             rec.tmp_amount = abs(rec.tmp_amount) * -1
             #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_external_travel_reward_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_external_travel_reward_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_accomod_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_accomod_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_overtime_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_overtime_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_collection_comm_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_collection_comm_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_sales_comm_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_sales_comm_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_manufacturing_comm_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_manufacturing_comm_allow
-            #         rec.amount = rec.tmp_amount
-            #     elif rec.type == 'var_night_shift_allow':
-            #         rec.tmp_amount = rec.contract_id.grade_id.var_night_shift_allow
-            #         rec.amount = rec.tmp_amount
+            #     except:
+            #         raise ValidationError("Wrong rule's syntax, please fix it and try again.")
             # else:
-            rec.tmp_amount = 0
-
+            #     rec.tmp_amount = 0
+            if rec.type:
+                if rec.type == 'var_internal_travel_exp_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_internal_travel_exp_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_external_travel_reward_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_external_travel_reward_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_accomod_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_accomod_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_overtime_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_overtime_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_collection_comm_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_collection_comm_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_sales_comm_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_sales_comm_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_manufacturing_comm_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_manufacturing_comm_allow
+                    rec.amount = rec.tmp_amount
+                elif rec.type == 'var_night_shift_allow':
+                    rec.tmp_amount = rec.contract_id.grade_id.var_night_shift_allow
+                    rec.amount = rec.tmp_amount
+            else:
+                rec.tmp_amount = 0
+    # by nextera end
     def write(self, vals):
         if self.rule_id.allowance_or_deduction == 'deduction':
             amount = vals.get('amount', None)

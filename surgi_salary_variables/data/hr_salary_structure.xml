@@ -12,7 +12,7 @@
 
         <record id="works_entry_type" model="hr.work.entry.type">
             <field name="name">Variable Allowance</field>
-            <field name="code">VARIABLEALLOWAN</field>
+            <field name="code">VARIABLEALLOWANCE</field>
             <field name="round_days">NO</field>
         </record>
 
