@@ -33,8 +33,13 @@
                     <field name="start_datetime" string="Starting Date"/>
                     <field name="patient_name"/>
                     <field name="patient_national_id"/>
+
+
                     <field name="patient_gender"/>
                     <field name="surgeon_id"/>
+                                        <field name="hospital_id"/>
+
+
                     <field name="side"/>
                     <field name="operation_type"/>
                     <field name="state" invisible="0"/>
