@@ -106,6 +106,8 @@ class PayslipOverTime(models.Model):
                                                        ('contract_id', '=', self.contract_id.id),
                                                        ('state', '=', 'f_approved'), ('payslip_paid', '=', False)])
         hours = 0
+        N_of_days = (hours / self._get_worked_day_lines_hours_per_day()) if self._get_worked_day_lines_hours_per_day() != 0 else 0
+
         for ovt in overtime_ids:
             if ovt.overtime_type_id.type == 'cash':
                 tz = timezone(self.employee_id.tz)
@@ -134,7 +136,7 @@ class PayslipOverTime(models.Model):
         self.worked_days_line_ids = [(0, 0, {
             'sequence': work_entry_type.sequence,
             'work_entry_type_id': work_entry_type.id,
-            'number_of_days': hours / self._get_worked_day_lines_hours_per_day(),
+            'number_of_days': N_of_days,
             'number_of_hours': hours,
         })]
 
