@@ -57,9 +57,10 @@
                     </group>
                     <notebook>
                         <page string="Attendances">
-                            <field name="line_ids"
-                                   attrs="{'readonly':[('state','!=','draft')]}">
-                                <tree create="0">
+<!--                            <field name="line_ids"-->
+<!--                                   attrs="{'readonly':[('state','!=','draft')]}">-->
+            <field name="line_ids" >
+                                <tree create="0" edit="1" editable="1">
                                     <field name="state" invisible="1"/>
                                     <field name="date"/>
                                     <field name="day" string="Day"/>

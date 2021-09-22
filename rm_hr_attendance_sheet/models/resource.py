@@ -21,11 +21,12 @@
 #    of the Software or modified copies of the Software.
 #
 ##############################################################################
-
+import datetime
 
 import pytz
 from operator import itemgetter
 from odoo import api, fields, models, _
+from odoo.osv import expression
 
 
 class ResourceCalendar(models.Model):
@@ -46,7 +47,32 @@ class ResourceCalendar(models.Model):
         clean_work_intervals = self.att_interval_clean(working_intervals)
 
         return clean_work_intervals
+    def _rondom_attendance_intervals(self,day_start,day_end,resource=None,tz=None):
+        # domain = expression.AND([domain, [
+        #     ('calendar_id', '=', self.id),
+        #     ('resource_id', 'in', resource_ids),
+        #     ('display_type', '=', False),
+        # ]])
+        x= self._attendance_intervals( day_start, day_end, resource,None,tz)
+        return x
 
+        pass
+    def get_rondom_shift_entervals(self, day_start, day_end,tz,resource=None):
+        day_start = day_start.replace(tzinfo=tz)
+        day_end = day_end.replace(tzinfo=tz)
+        attendance_intervals = self._rondom_attendance_intervals(day_start, day_end,resource,tz)
+        working_intervals = []
+        for interval in attendance_intervals:
+            working_interval_tz = (
+                interval[0].astimezone(pytz.UTC).replace(
+                    tzinfo=None),
+                interval[1].astimezone(pytz.UTC).replace(
+                    tzinfo=None))
+            working_intervals.append(working_interval_tz)
+        clean_work_intervals = self.att_interval_clean(working_intervals)
+
+        return clean_work_intervals
+        pass
     def att_interval_clean(self, intervals):
         intervals = sorted(intervals,
                            key=itemgetter(0))  # sort on first datetime

@@ -47,8 +47,8 @@ class AttendanceSheet(models.Model):
                               (datetime.now() + relativedelta(months=+1, day=1,
                                                               days=-1)).date()))# readonly=True,
     line_ids = fields.One2many(comodel_name='attendance.sheet.line',
-                               string='Attendances', readonly=True,
-                               inverse_name='att_sheet_id')
+                               string='Attendances',
+                               inverse_name='att_sheet_id')# readonly=True,
     state = fields.Selection([
         ('draft', 'Draft'),
         ('confirm', 'Confirmed'),
@@ -236,6 +236,7 @@ class AttendanceSheet(models.Model):
         return public_holiday
 
     def get_attendances(self):
+        raise ValidationError("Attendence 2")
         for att_sheet in self:
             att_sheet.line_ids.unlink()
             att_line = self.env["attendance.sheet.line"]
@@ -817,7 +818,7 @@ class AttendanceSheetLine(models.Model):
     ], 'Day of Week', required=True, index=True, )
     att_sheet_id = fields.Many2one(comodel_name='attendance.sheet',
                                    ondelete="cascade",
-                                   string='Attendance Sheet', readonly=True)
+                                   string='Attendance Sheet')
     employee_id = fields.Many2one(related='att_sheet_id.employee_id',
                                   string='Employee')
     pl_sign_in = fields.Float("Planned sign in", readonly=True)
