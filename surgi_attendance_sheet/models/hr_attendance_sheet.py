@@ -219,6 +219,9 @@ class AttendanceSheet(models.Model):
                 elif contract.random_shift:
                     print("Entered random Shifts")
                     work_intervals=None
+                    day_start = datetime(day.year, day.month, day.day,hour=00,minute=00,second=00)
+                    day_end = day_start.replace(hour=23, minute=59,
+                                                second=59)
                     attendance_intervalx = self.get_attendance_intervals(emp, day_start, day_end, tz)
                     shiftsdata=[]
                     if attendance_intervalx:
@@ -235,9 +238,13 @@ class AttendanceSheet(models.Model):
                             for calender in shift.resource_calendar_id:#get Calender
                                 for calenderday in calender.attendance_ids:#get Days
                                     if calenderday.dayofweek==curretday:#check this day in out time
+
                                         frac, whole = math.modf(calenderday.hour_from)
                                         hours, minx = divmod(frac * 60, 3600)  # split to hours and seconds
-
+                                        day_start = datetime(day.year, day.month, day.day, hour=int(whole),
+                                                             minute=int(minx), second=00)
+                                        hours_added = timedelta(hours=23,minutes=59,seconds=59)
+                                        day_end = day_start+hours_added
                                         sc_from = datetime(day_start.year, day_start.month, day_start.day, int(whole), int(minx), 0).time()#start day
                                         frac, whole = math.modf(calenderday.hour_to)
                                         hours, minx = divmod(frac * 60, 3600)  # split to hours and seconds
