@@ -14,7 +14,10 @@
                    <field name="operation_location_freeze" readonly="0" groups="surgi_inventory_changes.controll_freeze_location_group" />
                    <field name="internal_transit_location" readonly="0" groups="surgi_inventory_changes.controll_freeze_location_group" />
                    <field name="delivery_order_location" readonly="1"/>
+
                    <field name="sales_order_location" readonly="1"/>
+                                      <field name="exclude_from_stock_control_data" />
+
                </field>
 
                <field name="return_location" position="after">

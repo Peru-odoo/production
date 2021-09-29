@@ -11,6 +11,8 @@ class stock_location_inherit(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse")
     required_approval = fields.Boolean(string="Required Approval?" )
     partner_id = fields.Many2one('res.partner',string='Owner')
+    exclude_from_stock_control_data = fields.Boolean(string="Exclude From Stock Control Data",
+                                                     help="This field used to exclude some parent location from stock control report",)
 
     def freezconfirm(self):
         self.operation_location_freeze = True
