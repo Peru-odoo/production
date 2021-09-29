@@ -287,7 +287,8 @@ class AttendanceSheet(models.Model):
                                                             day_end, tz, resource=selectedshift)
                                                 else:#no delay check if this close to schadua
                                                     if tdelta < timespent:
-                                                        break;
+                                                        #break;
+                                                        print("less")
                                                     elif -cdelay > delay :
                                                             selectedshift=calenderday
                                                             calendar_id = shift.resource_calendar_id
@@ -297,7 +298,8 @@ class AttendanceSheet(models.Model):
                                                                 day_start,
                                                                 day_end, tz, resource=selectedshift)
                                                     else:
-                                                        break
+                                                        print("zz")
+                                                        #break
 
                                         else:#delayed
                                             accin=chek_in_time
@@ -323,7 +325,8 @@ class AttendanceSheet(models.Model):
                                                     day_end, tz, resource=selectedshift)
                                             else:#not frist time
                                                 if delay<0 and timespent >= tdelta :#no delay in previous shift
-                                                    break
+                                                    #break
+                                                    print("No Delay")
                                                 else:
                                                     if cdelay < abs(delay) and tdelta >= timespent:#less Delay
                                                         selectedshift=calenderday
@@ -334,7 +337,8 @@ class AttendanceSheet(models.Model):
                                                             day_start,
                                                             day_end, tz, resource=selectedshift)
                                                     else:#more delay
-                                                        break
+                                                        #break
+                                                        print("More Delay")
 
                                     #break#breake check day
 
