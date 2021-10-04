@@ -44,14 +44,6 @@ class HrPayslip(models.Model):
              ])
         data = {}
 
-
-
-        if self.input_line_ids:
-            for varrib in variable_allowance:
-                for inp in self.input_line_ids:
-                    if varrib.rule_id.payslip_input_type_id.id == inp.input_type_id.id:
-                        inp.unlink()
-
         for it in variable_allowance:
             tmp = data.get(it.rule_id.code, {})
             tmp = tmp.get('amount', 0) if tmp else 0
@@ -68,9 +60,5 @@ class HrPayslip(models.Model):
                 'amount': data[key].get('amount'),
                 'payslip_id': self.id
             })
-
-
-
-
         res = super(HrPayslip, self).compute_sheet()
         return res
