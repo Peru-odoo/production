@@ -161,41 +161,41 @@ class PrintInvoice(models.Model):
     letteraltotal = fields.Text(string="Total Quantity in Letters", compute='_total2word')
     printinvoicetoline = fields.One2many('account.move.printedinvoice.lines', 'linestoprintinvoice')
 
-    def write(self, vals):
-        moves=super().write(vals)
-        #self.write(vals)
-        saleorder=self.env['sale.order'].search([('invoice_count','>',0)])
-
-        for s in saleorder:
-            if self.id in s.invoice_ids.ids:
-                sale_id=s.id
-                break
-
-
-
-        for invo in self.printinvoicetoline:
-
-            invo.write({'linestoprintquation':sale_id,'linestoprintinvoice':self.id})
-        if vals  and 'printinvoicetoline' in vals:
-            for invo in vals['printinvoicetoline']:
-                if invo[2]:
-                    print("cccccccccccccc")
-                    # data={'sequance': invo[2]['sequance'],
-                    #       'description': invo[2]['description'],
-                    #       'uquantity': invo[2]['uquantity'],
-                    #       'uprice': invo[2]['uprice'],
-                    #       'linestoprintquation':sale_id,
-                    #       'linestoprintinvoice':self.id}
-                    # self.printinvoicetoline.create({'sequance': invo[2]['sequance'],
-                    #       'description': invo[2]['description'],
-                    #       'uquantity': invo[2]['uquantity'],
-                    #       'uprice': invo[2]['uprice'],
-                    #       'linestoprintquation':sale_id,
-                    #       'linestoprintinvoice':self.id})
-                    #self.env.cr.execute("insert into account_move_printedinvoice_lines (sequance,description,uquantity,uprice,linestoprintquation,linestoprintinvoice) values("+str(invo[2]['sequance'])+",'"+invo[2]['description']+"',"+str(invo[2]['uquantity'])+","+str(invo[2]['uprice'])+","+str(sale_id)+","+str(self.id)+")")
-                    print("kkkkkkkkkkkkkkkkkkk")
-
-        return True
+    # def write(self, vals):
+    #     moves=super().write(vals)
+    #     #self.write(vals)
+    #     saleorder=self.env['sale.order'].search([('invoice_count','>',0)])
+    #
+    #     for s in saleorder:
+    #         if self.id in s.invoice_ids.ids:
+    #             sale_id=s.id
+    #             break
+    #
+    #
+    #
+    #     for invo in self.printinvoicetoline:
+    #
+    #         invo.write({'linestoprintquation':sale_id,'linestoprintinvoice':self.id})
+    #     if vals  and 'printinvoicetoline' in vals:
+    #         for invo in vals['printinvoicetoline']:
+    #             if invo[2]:
+    #                 print("cccccccccccccc")
+    #                 # data={'sequance': invo[2]['sequance'],
+    #                 #       'description': invo[2]['description'],
+    #                 #       'uquantity': invo[2]['uquantity'],
+    #                 #       'uprice': invo[2]['uprice'],
+    #                 #       'linestoprintquation':sale_id,
+    #                 #       'linestoprintinvoice':self.id}
+    #                 # self.printinvoicetoline.create({'sequance': invo[2]['sequance'],
+    #                 #       'description': invo[2]['description'],
+    #                 #       'uquantity': invo[2]['uquantity'],
+    #                 #       'uprice': invo[2]['uprice'],
+    #                 #       'linestoprintquation':sale_id,
+    #                 #       'linestoprintinvoice':self.id})
+    #                 #self.env.cr.execute("insert into account_move_printedinvoice_lines (sequance,description,uquantity,uprice,linestoprintquation,linestoprintinvoice) values("+str(invo[2]['sequance'])+",'"+invo[2]['description']+"',"+str(invo[2]['uquantity'])+","+str(invo[2]['uprice'])+","+str(sale_id)+","+str(self.id)+")")
+    #                 print("kkkkkkkkkkkkkkkkkkk")
+    #
+    #     return True
     @api.depends('printinvoicetoline', 'letteraltotal')
     def _total2word(self):
         num = math.modf(sum([line.total for line in self.printinvoicetoline]))
