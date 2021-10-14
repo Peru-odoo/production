@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 
 class HRLeave(models.Model):
     _inherit = 'hr.leave'
+    holiday_status_id_name = fields.Char(related="holiday_status_id.name",string='type')
 
     def action_allocation_confirm(self):
         pass

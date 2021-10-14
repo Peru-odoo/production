@@ -1,6 +1,48 @@
 <odoo>
     <data>
 
+
+ <record id="hr_holidays_status_validators_users" model="ir.ui.view">
+        <field name="name">hr.holidays.double.validation.users</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+        <field name="arch" type="xml">
+                        <xpath expr="//field[@name='holiday_status_id']" position="after">
+
+                                       <field name="holiday_status_id_name" invisible="1" />
+
+
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+
+                    <attribute name="attrs">{'required': [('holiday_status_id_name','=','Mission')]}</attribute>
+
+                </xpath>
+
+        </field>
+    </record>
+
+ <record id="hr_holidays_status_ess_validators_users" model="ir.ui.view">
+        <field name="name">hr.holidays.double.ess.validation.users</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="surgi_ess.surgi_ess_employee_leaves_form_view"/>
+        <field name="arch" type="xml">
+                        <xpath expr="//field[@name='holiday_status_id']" position="after">
+
+                                       <field name="holiday_status_id_name" invisible="1" />
+
+
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+
+                    <attribute name="attrs">{'required': [('holiday_status_id_name','=','Mission')]}</attribute>
+
+                </xpath>
+
+        </field>
+    </record>
+
+
         <record id="surgi_ess_employee_missions_tree_view" model="ir.ui.view">
             <field name="name">surgi.ess.employee.missions.tree.view</field>
             <field name="model">hr.leave</field>
