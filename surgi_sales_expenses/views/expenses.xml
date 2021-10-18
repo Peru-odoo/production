@@ -87,8 +87,16 @@
                     <group>
                         <field name="account_reviewed"/>
                         <field name="treasury_manager"/>
+                        <field name="check_access_expense"/>
                     </group>
                 </xpath>
+
+
+                <xpath expr="//field[@name='expense_line_ids']" position="attributes">
+                    <attribute name="attrs">{'readonly':[('check_access_expense','=',False)]}</attribute>
+                </xpath>
+
+
 
                 <xpath expr="//button[@name='action_sheet_move_create']" position="before">
 

@@ -108,7 +108,25 @@ class HrExpenseSheetInherit(models.Model):
 
     account_reviewed= fields.Boolean(string="Account Reviewed",  )
     treasury_manager= fields.Boolean(string="Treasury Manager",  )
+    check_access_expense = fields.Boolean(compute="compute_check_access_expense")
 
+
+    @api.depends('state')
+    def compute_check_access_expense(self):
+        for rec in self:
+
+            if rec.state in ['draft','submit']:
+
+                rec.check_access_expense = True
+            elif not self.env.user.has_group('surgi_sales_expenses.expenses_add_line_group') and rec.state=='approve' :
+
+                rec.check_access_expense = False
+            elif self.env.user.has_group('surgi_sales_expenses.expenses_add_line_group') :
+
+                rec.check_access_expense = True
+            else:
+
+                rec.check_access_expense = False
 
     def button_account_reviewed(self):
         self.account_reviewed=True
