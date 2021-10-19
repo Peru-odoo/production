@@ -45,9 +45,9 @@ class ReportDeliverySlipExcel(models.AbstractModel):
                 })
 
             # worksheet.left_to_right()
-            worksheet.set_column('A:A', 35)
-            worksheet.set_column('B:B', 35)
-            worksheet.set_column('C:C', 30)
+            worksheet.set_column('A:A', 40)
+            worksheet.set_column('B:B', 40)
+            worksheet.set_column('C:C', 40)
             worksheet.set_column('D:D', 30)
             worksheet.set_column('E:E', 30)
             worksheet.set_column('G:G', 50)
@@ -89,7 +89,12 @@ class ReportDeliverySlipExcel(models.AbstractModel):
             col=0
             for line in par.move_line_nosuggest_ids:
                 if line.product_id:
-                    worksheet.write(row, col, str(line.product_id.name), header_format3)
+                    product=""
+                    if line.product_id.default_code:
+                        product="["+line.product_id.default_code+"] "+line.product_id.name
+                    else:
+                        product= line.product_id.name
+                    worksheet.write(row, col, str(product), header_format3)
                 if line.lot_id:
                     worksheet.write(row, col+1, str(line.lot_id.name), header_format3)
                 if line.qty_done:
