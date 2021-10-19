@@ -20,6 +20,8 @@ class operation_operation(models.Model):
     # ==================== Methods =========================
 
 
+    sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order")
+
     #get name
     @api.onchange('hospital_id')
     def _get_name(self):
@@ -275,6 +277,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print ("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id=sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -366,6 +369,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print ("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -494,6 +498,7 @@ class operation_operation(models.Model):
                 values['order_line'] = []
                 print("vals: " + str(values))
                 sale_order = self.env['sale.order'].create(values)
+                self.sale_order_id = sale_order.id
                 # sale_order.action_confirm()
 
 
@@ -625,7 +630,7 @@ class operation_operation(models.Model):
     notes = fields.Text(string="Notes")
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
-    operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)
+    operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)#
     is_to_bool = fields.Boolean()
 
     component_ids = fields.Many2many('product.product', string="Components" )#,compute='_auto_gender_generate'
