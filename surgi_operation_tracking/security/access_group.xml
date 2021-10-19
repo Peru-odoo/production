@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+
+
+        <record id="group_update_operation_data" model="res.groups">
+            <field name="name">Update Operation Data</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+    </data>
+</odoo>
