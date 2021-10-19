@@ -119,9 +119,7 @@
                     <field name="product_id" string="Product" filter_domain="[('product_id','ilike', self)]"/>
                     <field name="lot_id" string="Lot" filter_domain="[('lot_id','ilike', self)]"/>
                     <field name="is_wh_user" string="Is WH User" filter_domain="[('lot_id','ilike', self)]"/>
-                     <group expand="0" string="Group By">
-                    <filter string="Branch" name="location_id_branch"  context="{'group_by': 'location_id_branch'}"/>
-                     </group>
+
                 </search>
             </field>
         </record>
