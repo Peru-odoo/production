@@ -168,6 +168,17 @@ class operation_operation(models.Model):
                     rec.oper_loc_quant=0
             else:
                 rec.oper_loc_quant = 0
+    def get_sec_operation_location_quant(self):
+        print ('Operations')
+        for rec in self:
+            if rec.sec_location_id:
+                operations = self.env['stock.quant'].search([('location_id', '=', rec.sec_location_id.id),('quantity', '>', 0)])
+                if operations:
+                    rec.sec_oper_loc_quant = len(operations)
+                else:
+                    rec.sec_oper_loc_quant=0
+            else:
+                rec.sec_oper_loc_quant = 0
 
     def get_operation_location_hanged_quant(self):
         for rec in self:
@@ -202,6 +213,25 @@ class operation_operation(models.Model):
             else:
                 rec.oper_loc_quant=0
                 rec.has_oper_loc_quant=0
+    def get_sec_operation_location_quant(self):
+        for rec in self:
+            if rec.sec_location_id:
+                operations = self.env['stock.quant'].search([('location_id', '=', rec.sec_location_id.id)])
+                q=0
+                if operations:
+                    for l in operations:
+                        q+=l.available_quantity
+                    rec.sec_oper_loc_quant = int(q)
+                    rec.has_sec_oper_loc_quant = q > 0
+                else:
+                    rec.sec_oper_loc_quant = 0
+                    rec.has_sec_oper_loc_quant = 0
+
+
+            else:
+                rec.sec_oper_loc_quant=0
+                rec.has_sec_oper_loc_quant=0
+
 
 
     def get_operation_del(self):
@@ -517,6 +547,25 @@ class operation_operation(models.Model):
                 'target': 'current',
                 'domain': [('id', 'in', list)],
             }
+    def action_view_sec_operation_quant(self):
+        for rec in self:
+            compose_tree = self.env.ref('stock.view_stock_quant_tree', False)
+            operations = self.env['stock.quant'].search([('location_id', '=', rec.sec_location_id.id),('quantity', '>', 0)])
+            list = []
+            for op in operations:
+                list.append(op.id)
+            return {
+                'name': "Operations Quantities",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                # 'field_parent': 'child_ids',
+                'res_model': 'stock.quant',
+                'views': [(compose_tree.id, 'tree')],
+                'view_id': compose_tree.id,
+                'target': 'current',
+                'domain': [('id', 'in', list)],
+            }
 
 
     def action_view_operation_hanged_quant(self):
@@ -644,6 +693,7 @@ class operation_operation(models.Model):
                                  default=lambda self: self.env['crm.team'].search(['|', ('user_id', '=', self.env.uid), ('member_ids', '=', self.env.uid)],limit=1))
     op_area_manager = fields.Many2one(comodel_name='res.users', string="Area Manager", related='op_sales_area.user_id',readonly=True)
     location_id = fields.Many2one(comodel_name='stock.location', string='Location')
+    sec_location_id = fields.Many2one(comodel_name='stock.location', string='Secondary Location')
     is_operation_freeze = fields.Boolean(related="location_id.operation_location_freeze",
                                          string="Is Operation Location Freeze", store=True)
     product_lines=fields.One2many('product.operation.line','operation_id',string="products")
@@ -689,23 +739,12 @@ class operation_operation(models.Model):
     attachment_paitent = fields.Binary( string="Revised Implant",store=True)
     paitent_joint_pre_company=fields.Char(string='Joint Pre Company',store=True)
 
+    @api.depends("consumed_items_file")
+    def check_field_xlsx_value(self):
+        if not self.consumed_items_file :
+            self.write({'state': 'net', })
 
 
-
-
-    def _auto_gender_generate(self):
-        for rec in self:
-            if rec.component_ids.name in ["K09-FEMORAL COMPONENT LCCK RIGHT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["[K10] K10-FEMORAL COMPONENT LCCK LEFT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["K11-FEMORAL COMPONENT RHK RIGHT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["[K12] K12-FEMORAL COMPONENT RHK LEFT"]:
-                rec.is_to_bool = True
-        else:
-
-            rec.is_to_bool = False
 
     def set_operation_location_freeze_from_operation(self):
         x=self.location_id.id
@@ -720,7 +759,18 @@ class operation_operation(models.Model):
             'res_id':self.location_id.id,
             }
         print("ss")
-
+    def create_Secondary_Location(self):
+        values = {
+            'name': self.location_id.name+'_Sec',
+            'location_id': self.hospital_id.operations_location.id,
+            'usage': "transit",
+            'is_operation_location': True,
+            'warehouse_id': self.warehouse_id.id,
+            # 'company_id': False,
+        }
+        res_location = self.env['stock.location'].create(values)
+        self.write({'sec_location_id':res_location.id})
+        pass
     # @api.onchange('is_operation_freeze')
     # def _onchange_is_operation_freeze(self):
     #     self.write({
@@ -894,11 +944,16 @@ class operation_operation(models.Model):
     # =============== wizard fields ================
     reason = fields.Many2one(comodel_name='operation.cancel.reason', string="Reason")
     description = fields.Text(string="Description")
-    oper_loc_quant = fields.Char("Operation Location Quant", compute='get_operation_location_quant')#, compute=get_operation_location_quant
+    oper_loc_quant = fields.Char("Operation Location Quant", compute='get_operation_location_quant')
+    sec_oper_loc_quant = fields.Char("Operation Location Quant", compute='get_sec_operation_location_quant')#, compute=get_operation_location_quant
+    #, compute=get_operation_location_quant
     oper_loc_hanged_quant = fields.Char("Operation Hanged Quants", compute='get_operation_location_hanged_quant')#, compute=get_operation_location_hanged_quant
     has_oper_loc_hanged_quant = fields.Boolean(compute='get_operation_location_hanged_quant')#compute=get_operation_location_hanged_quant
     has_oper_loc_quant = fields.Boolean(
-        compute='get_operation_location_quant')  # compute=get_operation_location_hanged_quant
+        compute='get_operation_location_quant')
+    has_sec_oper_loc_quant = fields.Boolean(
+        compute='get_sec_operation_location_quant')
+    # compute=get_operation_location_hanged_quant
     oper_loc_del = fields.Char("Operation Delivery Orders", compute='get_operation_del')#, compute=get_operation_del
     oper_loc_so = fields.Char("Operation Delivery Orders", compute='get_operation_so')#, compute=get_operation_so
     so_created=fields.Boolean(default=False)
