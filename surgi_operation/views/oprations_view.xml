@@ -179,7 +179,7 @@
 
 
                                 <button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
-                                <field name="consumed_items_file"/>
+                                <field name="consumed_items_file"  clear="0"/>
                             </group>
                             <group>
                                 <field name="op_type"/>
