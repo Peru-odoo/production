@@ -5,10 +5,10 @@
         <field name="arch" type="xml">
             <form string="Job">
                 <header>
-<!--                    <button name="set_recruit" string="Start Recruitment" states="open" type="object"-->
-<!--                            class="oe_highlight" groups="base.group_user"/>-->
-<!--                    <button name="set_open" string="Stop Recruitment" states="recruit" type="object"-->
-<!--                            groups="base.group_user"/>-->
+                    <!--                    <button name="set_recruit" string="Start Recruitment" states="open" type="object"-->
+                    <!--                            class="oe_highlight" groups="base.group_user"/>-->
+                    <!--                    <button name="set_open" string="Stop Recruitment" states="recruit" type="object"-->
+                    <!--                            groups="base.group_user"/>-->
                     <button name="action_hr_approve" string="HR Approval"
                             attrs="{'invisible': [('job_state', '!=', 'draft')]}" type="object"
                             class="oe_highlight" groups="surgi_recruitment_management.group_hr_approve_job"/>
@@ -49,22 +49,34 @@
                                     <field name="department_id" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
                                 </group>
                             </group>
+                            <group string="Recruiters">
+                                <field name="recruiter_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="user_id"/>
+                                        <field name="required_application"/>
+                                    </tree>
+                                </field>
+                            </group>
+
                         </page>
                         <page name="info" string="Job Info">
                             <group>
                                 <group>
                                     <field name="grade_id" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
-                                    <field name="replacement_period" readonly="1"/>
-                                    <field name="resource_id"/>
+                                    <field name="replacement_period" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
+                                    <field name="open_date" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
+                                    <field name="close_date" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
+                                    <field name="resource_id" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
                                     <label for="deduction" string="Deduction"/>
                                     <div class="o_row">
                                         <field name="deduction" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
                                         Type:
                                         <field name="deduction_type" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
                                     </div>
-                                    <field name="max_cv" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
+                                    <field name="max_application"/>
                                 </group>
                                 <group>
+                                    <field name="ceiling_count" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
                                     <field name="no_of_employee"/>
                                     <field name="no_of_recruitment" string='Current Vacancies'
                                            attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
@@ -73,6 +85,24 @@
                                     <field name="current_pipeline"/>
                                 </group>
                             </group>
+                            <group string="Open Vacancies History">
+                                <field name="history_line_ids" readonly="1" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="open_date"/>
+                                        <field name="close_date"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="KPI">
+                            <field name="kpi_line_ids">
+                                <tree editable="bottom">
+                                    <field name="name" required="1"/>
+                                    <field name="measurement_id" required="1"/>
+                                    <field name="target"/>
+                                    <field name="unit"/>
+                                </tree>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
@@ -93,19 +123,11 @@
                        options="{'always_reload': True}" attrs="{'readonly': [('job_state', '=', 'gm')]}"/>
 
             </field>
-        </field>
-    </record>
-    <record id="hr_recruitment_survey.hr_job_survey_inherit" model="ir.ui.view">
-        <field name="name">hr.job.form.inherit</field>
-        <field name="model">hr.job</field>
-        <field name="inherit_id" ref="hr_recruitment.hr_job_survey"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='user_id']" position="attributes">
+            <xpath expr="//group/field[@name='user_id']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
         </field>
     </record>
-
     <record id="view_employee_grade_form" model="ir.ui.view">
         <field name="name">grade.grade.form</field>
         <field name="model">grade.grade</field>
@@ -113,7 +135,7 @@
         <field name="arch" type="xml">
             <field name="travel_allow_int_f" position="after">
                 <field name="replacement_period"/>
-
+                <field name="max_application"/>
             </field>
         </field>
     </record>

@@ -4,18 +4,38 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from werkzeug.urls import url_join
 
+
+class Partner(models.Model):
+    _inherit = 'res.partner'
+
+    partner_national_id = fields.Char('National ID')
+
+
 class HRcontract(models.Model):
     _inherit = 'hr.contract'
 
     job_id = fields.Many2one('hr.job', compute='_compute_employee_contract', store=True, readonly=False,
-        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]", string='Job Position')
+                             domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]",
+                             string='Job Position')
+    certificates_allowance = fields.Float(string="Certificates Allowances", compute='_calculate_certificate_allowances')
+
+    @api.depends('employee_id.certificate_ids')
+    def _calculate_certificate_allowances(self):
+        for rec in self:
+            if rec.employee_id.certificate_ids:
+                for cert in rec.employee_id.certificate_ids:
+                    rec.certificates_allowance += cert.salary_allowance
+            else:
+                rec.certificates_allowance = 0.0
 
 
 class HREmployee(models.Model):
     _inherit = 'hr.employee'
 
-    job_id = fields.Many2one('hr.job', "Job Position", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]")
-
+    job_id = fields.Many2one('hr.job', "Job Position",
+                             domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]")
+    kpi_line_ids = fields.One2many('hr.employee.kpi', 'employee_id')
+    certificate_ids = fields.Many2many('employees.certificate', string='Certificates')
 
     def action_create_request(self):
         for rec in self:
