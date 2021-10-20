@@ -12,15 +12,17 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
-                        <t t-foreach="o.evaluation_ids.filtered(lambda e: e.is_print and e.response_id)" t-as="line">
+                        <t t-foreach="o.evaluation_ids.filtered(lambda e: e.is_print and e.response_id and e.survey_id)" t-as="line">
                             <div class="page">
                                 <div class="wrap">
                                     <div class="o_survey_print container">
                                         <div class='py-5 mt32'>
                                             <h1>
+                                                <span t-field='line.partner_id'/>
+                                                <br/>
                                                 <span t-field='line.survey_id.title'/>
                                             </h1>
-                                            <t t-if="o.survey_id.description">
+                                            <t t-if="line.survey_id.description">
                                                 <div t-field='line.survey_id.description' class="oe_no_empty"/>
                                             </t>
                                         </div>

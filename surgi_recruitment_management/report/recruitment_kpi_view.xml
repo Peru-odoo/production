@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="show_job_analysis_tree_view" model="ir.ui.view">
+            <field name="name">answer.row.tree</field>
+            <field name="model">answer.row</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="question_id" readonly="1"/>
+                    <field name="hr_answer" readonly="1" string="HR Answer"/>
+                </tree>
+            </field>
+        </record>
 
         <record id="recruitment_kpi_tree" model="ir.ui.view">
             <field name="name">hr.job.tree</field>
@@ -11,7 +22,7 @@
                     <field name="name" string="Job Position"/>
                     <field name="address_id" widget="many2many_tags"/>
                     <field name="grade_id"/>
-                    <field name="user_id"/>
+                    <field name="recruiter_ids" widget="many2many_tags"/>
                     <field name="open_date" optional="hide"/>
                     <field name="close_date" string="Remaining days to close position (KPI2)" widget="remaining_days"/>
                     <field name="replacement_period" string="Standard hiring Period"/>
@@ -20,10 +31,11 @@
                     <field name="no_of_recruitment" string='Vacancies'/>
                     <field name="all_application_count" string="Applications"/>
                     <field name="remaining_applications" string="Remaining Applications (KPI1)"/>
-                    <field name="current_pipeline" optional="hide"/>
+                    <field name="current_pipeline" string="Accepted"/>
                     <field name="no_show_count" string="No Show (KPI3)"/>
                     <field name="shortlisted_count" string="Shortlisted"/>
                     <field name="offering_count" string="Offering"/>
+                    <field name="reject_count" string="Rejected"/>
                     <button name="show_job_analysis" type="object"
                             string="Job Specification" class="oe_highlight"
                     />

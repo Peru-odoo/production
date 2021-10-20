@@ -62,12 +62,22 @@ class HRJob(models.Model):
     history_line_ids = fields.One2many('hr.job.history', 'job_id')
     open_date = fields.Date('Opening Date')
     close_date = fields.Date('Closing Date')
+    reject_count = fields.Integer(compute='_compute_all_reject_count')
     offering_count = fields.Integer(compute='_compute_all_offering_count')
     no_show_count = fields.Integer(compute='_compute_all_no_show_count')
     shortlisted_count = fields.Integer(compute='_compute_all_shortlisted_count')
     remaining_days = fields.Integer(compute='_compute_remaining_days')
     remaining_applications = fields.Integer(compute='_compute_remaining_applications')
-    recruiter_ids = fields.One2many('hr.job.recruiter','job_id')
+    recruiter_ids = fields.One2many('hr.job.recruiter','job_id',string="Recruiters")
+    is_edit_group = fields.Boolean(compute='_compute_is_edit_group')
+
+
+    def _compute_is_edit_group(self):
+        for rec in self:
+            if self.env.user.has_group('surgi_recruitment_management.group_edit_job_position'):
+                rec.is_edit_group = True
+            else:
+                rec.is_edit_group = False
 
     @api.constrains('recruiter_ids')
     def _constrains_recruiters(self):
@@ -98,6 +108,12 @@ class HRJob(models.Model):
                 job.all_application_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
             else:
                 job.all_application_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id)])
+
+
+    def _compute_all_reject_count(self):
+        for job in self:
+            job.reject_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','rejected')])
+
 
     def _compute_all_shortlisted_count(self):
         for job in self:
@@ -186,6 +202,7 @@ class HRJob(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Job Analysis',
             'view_mode': 'tree',
+            'view_id':self.env.ref('surgi_recruitment_management.show_job_analysis_tree_view').id,
             'res_model': 'answer.row',
             'context':{'search_default_batch': 1,'search_default_position':1,'search_default_question':1,'create': 0},
             'domain': [('state', '=', 'hr'),('question_id.show_kpi', '=', True),('position_id', '=', self.id)],
@@ -216,9 +233,10 @@ class HRJob(models.Model):
 
 class Recruiter(models.Model):
     _name = 'hr.job.recruiter'
+    _rec_name = "user_id"
 
     user_id = fields.Many2one('res.users', string='Recruiter')
-    required_application = fields.Integer('Required Application')
+    required_application = fields.Integer('No Application')
     job_id = fields.Many2one('hr.job')
 
 class HRJobKPI(models.Model):
@@ -240,6 +258,7 @@ class KPIMeasurement(models.Model):
 
 class HRJobHistory(models.Model):
     _name = 'hr.job.history'
+
 
     job_id = fields.Many2one('hr.job')
     open_date = fields.Date('Opening Date')

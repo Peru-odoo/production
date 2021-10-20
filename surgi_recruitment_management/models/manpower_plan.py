@@ -44,12 +44,11 @@ class ManPowerPlan(models.Model):
     def post(self):
         for record in self:
             for line in record.line_ids:
-                no_of_recruitment = 1 if line.request_count == 0 else line.request_count
                 line.job_id.sudo().write(
                     {'state': 'recruit',
-                     'no_of_recruitment': no_of_recruitment,
-                     'open_date': record.date_from,
-                     'close_date': record.date_to})
+                     'no_of_recruitment': line.request_count,
+                     'open_date': line.open_date,
+                     'close_date': line.close_date})
                 line.job_id.recruiter_ids.unlink()
                 for recruiter in line.recruiter_ids:
                     line.job_id.recruiter_ids.create(
@@ -102,20 +101,28 @@ class ManPowerPlanLine(models.Model):
     name = fields.Char()
     job_id = fields.Many2one('hr.job', string='Job Position', tracking=True,
                              domain="['|', ('company_id', '=', False), ('company_id', '=', company_id),('job_state','=','gm')]")
+
     ceiling_count = fields.Integer(related='job_id.ceiling_count')
+    open_date = fields.Date('Opening Date')
+    close_date = fields.Date('Estimated Closing Date')
     no_of_employee = fields.Integer(related='job_id.no_of_employee')
-    grade_id = fields.Many2one(
-        'grade.grade', string='Grade')
-    department_id = fields.Many2one(comodel_name="hr.department", string="Department")
+    grade_id = fields.Many2one(related='job_id.grade_id')
+    department_id = fields.Many2one(related='job_id.department_id')
     address_id = fields.Many2many(
         'res.partner', string="Job Location",
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="Address where employees are working")
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
-    resource_id = fields.Many2one('request.resource', string='Request Resource')
+    resource_id = fields.Many2one(related='job_id.resource_id')
     request_count = fields.Integer('Count')
     plan_id = fields.Many2one('hr.manpower.plan')
     recruiter_ids = fields.One2many('manpower.plan.recruiter', 'plan_id')
+
+
+    @api.onchange('open_date', 'job_id')
+    def onchange_date(self):
+        if self.open_date and self.job_id.replacement_period:
+            self.close_date = self.open_date + relativedelta(days=self.job_id.replacement_period)
 
 
     @api.constrains('job_id', 'request_count')
@@ -130,10 +137,6 @@ class ManPowerPlanLine(models.Model):
     def onchange_job_id(self):
         if self.job_id:
             self.name = self.job_id.name
-            self.department_id = self.job_id.department_id.id
-            self.request_count = self.job_id.no_of_recruitment
-            self.grade_id = self.job_id.grade_id.id
-            self.resource_id = self.job_id.resource_id.id
             self.address_id = [(6, 0, self.job_id.address_id.ids)]
 
 
@@ -141,5 +144,5 @@ class Recruiter(models.Model):
     _name = 'manpower.plan.recruiter'
 
     user_id = fields.Many2one('res.users', string='Recruiter')
-    required_application = fields.Integer('Required Application')
+    required_application = fields.Integer('No Application')
     plan_id = fields.Many2one('manpower.plan.line')

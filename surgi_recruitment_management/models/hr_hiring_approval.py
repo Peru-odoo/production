@@ -66,7 +66,7 @@ class HiringApproval(models.Model):
         if self.job_id:
             self.department_id = self.job_id.department_id.id
             self.grade_id = self.job_id.grade_id.id
-            self.address_ids = [(6, 0, self.job_id.address_id.ids)]
+            self.address_ids = self.job_id.address_id.ids
 
     @api.depends('basic', 'car_allowance', 'transport_allowance')
     def _compute_gross_salary(self):
