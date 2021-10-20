@@ -172,6 +172,34 @@
                                         </span>
                                     </span>
                                 </li>
+                                <li t-if="o.is_car_allowance">
+                                    <span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Car Allowance:
+                                    </span>
+                                    <span style='font-size:12.0pt;font-family:"Times New Roman",serif'
+                                          t-field="o.car_allowance"/>
+                                    <span
+                                            style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+                                        <span>EGP/per
+                                            Month.
+                                        </span>
+                                    </span>
+                                </li>
+                                <t t-if="o.other_allowance_ids">
+                                    <t t-foreach="o.other_allowance_ids" t-as="allow">
+                                        <li>
+                                            <span style='font-size:12.0pt;font-family:"Times New Roman",serif'
+                                                  t-field="allow.name"/>:
+                                            <span style='font-size:12.0pt;font-family:"Times New Roman",serif'
+                                                  t-field="allow.allowance"/>
+                                            <span
+                                                    style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+                                                <span>EGP/per
+                                                    Month.
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </t>
+                                </t>
                                 <li>
                                     <span style='font-size:12.0pt;font-family:"Garamond",serif'>Medical Insurance:
                                         Covered.
@@ -185,9 +213,10 @@
                                 <li>
                                     <span style='font-size:12.0pt;font-family:"Garamond",serif'>Mobile Package:
                                     </span>
-
+                                    <span style='font-size:12.0pt;line-height:115%;font-family:"Times New Roman",serif'
+                                          t-field="o.mobile_package"/>
                                     <span
-                                            style='font-size:12.0pt;font-family:"Garamond",serif'>30 EGP.
+                                            style='font-size:12.0pt;font-family:"Garamond",serif'>EGP.
                                     </span>
                                 </li>
                                 <li>

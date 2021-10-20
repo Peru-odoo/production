@@ -46,6 +46,7 @@ class HRJobOffer(models.Model):
         ('outdoor', 'Out Door')])
     transport_allowance = fields.Float('Transportation Allowance', track_visibility='onchange',
                                        digits=dp.get_precision('Payroll'))
+    mobile_package = fields.Float()
     salary = fields.Float('Gross Salary', compute='_compute_gross_salary')
     social_insurance = fields.Float(compute='_compute_social_insurance')
     tax_amount = fields.Float(compute='_compute_tax_amount')
@@ -53,6 +54,7 @@ class HRJobOffer(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.user.company_id)
     user_id = fields.Many2one('res.users', string='Prepaid By', required=False, default=lambda self: self.env.user)
     prepaid_date = fields.Date(string='Prepaid Date', default=fields.Date.today())
+    other_allowance_ids = fields.One2many('offer.allowance','offer_id')
     state = fields.Selection([
         ('new', 'New'),
         ('progress', 'In Progress'),
@@ -106,16 +108,16 @@ class HRJobOffer(models.Model):
             self.partner_name = self.applicant_id.partner_name
             self.partner_mobile = self.applicant_id.partner_mobile or self.applicant_id.partner_phone
 
-    @api.onchange('job_id')
+    @api.onchange('applicant_id')
     def onchange_job_id(self):
-        if self.job_id:
-            self.department_id = self.job_id.department_id.id
-            self.grade_id = self.job_id.grade_id.id
-            self.address_ids = [(6, 0, self.job_id.address_id.ids)]
+        if self.applicant_id:
+            self.department_id = self.applicant_id.hiring_approval_id.department_id.id
+            self.grade_id = self.applicant_id.hiring_approval_id.grade_id.id
+            self.address_ids = self.applicant_id.hiring_approval_id.address_ids.ids
             self.rank_id = self.applicant_id.hiring_approval_id.rank_id.id
             self.rang_id = self.applicant_id.hiring_approval_id.rang_id.id
             self.attendance_type = self.applicant_id.hiring_approval_id.attendance_type
-            self.car_allowance = self.applicant_id.hiring_approval_id.car_allowance
+            self.is_car_allowance = self.applicant_id.hiring_approval_id.is_car_allowance
 
     @api.depends('basic', 'car_allowance', 'transport_allowance')
     def _compute_gross_salary(self):
@@ -185,3 +187,11 @@ class HRJobOffer(models.Model):
                 ctx.update({'mail_to': mail_to, 'mail_cc': mail_cc})
                 template = self.env.ref('hr_job_offer.email_template_job_offer')
                 template.sudo().with_context(**ctx).send_mail(self.id, force_send=True)
+
+
+class JobOfferAllowance(models.Model):
+    _name = 'offer.allowance'
+
+    name = fields.Char()
+    allowance = fields.Float('Allowance Amount')
+    offer_id = fields.Many2one('hr.job.offer')

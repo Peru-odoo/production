@@ -29,7 +29,8 @@
             <form string="Job Offer">
                 <header>
                     <button name="set_progress" type="object" string="To Progress" states="new" class="oe_highlight"/>
-                    <button name="set_new" type="object" string="Set To New" class="oe_highlight" states="progress,to_employee"/>
+                    <button name="set_new" type="object" string="Set To New" class="oe_highlight"
+                            states="progress,to_employee"/>
                     <button name="set_to_employee" type="object" string="To Employee" states="progress"
                             class="oe_highlight"/>
                     <button name="action_offer_send" type="object" string="Send By Mail" class="oe_highlight"/>
@@ -65,26 +66,42 @@
                             <field name="availability"/>
                             <field name="hr_hiring_date"/>
                             <field name="notice_period"/>
-                        </group>
-                        <group string="Salary Information">
-                            <field name="basic"/>
-                            <field name="variable_incentive"/>
-                            <field name="is_car_allowance"/>
-                            <field name="car_allowance" attrs="{'invisible': [('is_car_allowance','=',False)]}"/>
-                            <field name="attendance_type"/>
-                            <field name="transport_allowance" attrs="{'invisible': [('attendance_type','=',False)]}"/>
-                            <field name="salary"/>
-                            <field name="social_insurance" string="Social Insurance Employee Share 11%"/>
-                            <field name="tax_amount" string="Salaries Taxes"/>
-                            <field name="net_salary" string="Net Salary"/>
-                        </group>
-                        <group string="Offer Details">
                             <field name="prepaid_date"/>
                             <field name="date"/>
                             <field name="user_id" readonly="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Salary Information">
+                            <group>
+                                <group string="Salary Information">
+                                    <field name="basic"/>
+                                    <field name="variable_incentive"/>
+                                    <field name="is_car_allowance"/>
+                                    <field name="car_allowance"
+                                           attrs="{'invisible': [('is_car_allowance','=',False)]}"/>
+                                    <field name="attendance_type"/>
+                                    <field name="transport_allowance"
+                                           attrs="{'invisible': [('attendance_type','=',False)]}"/>
+                                    <field name="mobile_package"/>
+                                    <field name="salary"/>
+                                    <field name="social_insurance" string="Social Insurance Employee Share 11%"/>
+                                    <field name="tax_amount" string="Salaries Taxes"/>
+                                    <field name="net_salary" string="Net Salary"/>
+                                </group>
+                                <group string="Other allowances">
+                                    <field name="other_allowance_ids" nolabel="1"
+                                           force_save="1">
+                                        <tree editable="bottom">
+                                            <field name="name"/>
+                                            <field name="allowance"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
