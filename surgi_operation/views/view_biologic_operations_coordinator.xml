@@ -96,6 +96,8 @@
                     <button name="action_confirm_sales" string="Confirm" type="object"
                             attrs="{'invisible': [('state','!=','draft')]}"/>
                     <field name="state" widget="statusbar"/>
+                                        <button string="Freeze Location" name="set_operation_location_freeze_from_operation" type="object"
+                            attrs="{'invisible':['|',('is_operation_freeze', '!=', False),('location_id','=',False)]}"/>
                     <button string="Create Sc. Location" name="create_Secondary_Location" type="object"
                             groups="stock.group_stock_user"
                             attrs="{'invisible':['|','|',('state', '!=', 'net'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"
