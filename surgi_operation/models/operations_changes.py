@@ -21,6 +21,8 @@ class operation_operation(models.Model):
 
     # ==================== Methods =========================
 
+    sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order")
+
     # get name
     @api.onchange('hospital_id')
     def _get_name(self):
@@ -310,6 +312,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -404,6 +407,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -532,6 +536,7 @@ class operation_operation(models.Model):
         values['order_line'] = []
         print("vals: " + str(values))
         sale_order = self.env['sale.order'].create(values)
+        self.sale_order_id = sale_order.id
         # sale_order.action_confirm()
 
     # open tree view of operation quantities using location of operation
@@ -762,6 +767,13 @@ class operation_operation(models.Model):
     attachment_paitent = fields.Binary(string="Revised Implant", store=True)
     paitent_joint_pre_company = fields.Char(string='Joint Pre Company', store=True)
 
+    @api.onchange("is_operation_freeze")
+    def check_field_is_operation_freeze_value(self):
+        if self.is_operation_freeze:
+            self.state = "confirm"
+        else:
+            self.write({'state': 'confirm', })
+
     #     def create_mass(self):
     #         vals={
     #         "user_id":self.user_id.id,
@@ -774,11 +786,20 @@ class operation_operation(models.Model):
     def check_field_xlsx_value(self):
         if self.consumed_items_file:
             self.write({'state': 'net', })
+        elif not self.consumed_items_file:
+            self.write({'state': 'confirm', })
 
     def set_operation_location_freeze_from_operation(self):
         x = self.location_id.id
         # self.location_id.operation_location_freeze = True
         self.write({'state': 'freezed', })
+
+    @api.onchange("is_operation_freeze")
+    def set_operation_location_unfreeze_from_operation(self):
+        if self.is_operation_freeze:
+            self.write({'state': 'freezed', })
+        elif not self.is_operation_freeze:
+            self.write({'state': 'confirm', })
 
         return {
             'name': 'You Will freeze Location with  these Products',
@@ -1025,4 +1046,3 @@ class stock_items_inherit_wizard(models.Model):
     prod_replacement = fields.Boolean(string='Empties')
 
     operation_id = fields.Many2one('operation.operation', string="Operation")
-
