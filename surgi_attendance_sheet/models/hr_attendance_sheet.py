@@ -200,9 +200,13 @@ class AttendanceSheet(models.Model):
             late_cnt = []
             diff_cnt = []
             for day in all_dates:
+                work_intervals = None
+                attendance_intervals = None
+                calendar_id = emp.contract_id.resource_calendar_id
                 day_start = datetime(day.year, day.month, day.day)
                 day_end = day_start.replace(hour=23, minute=59,
                                             second=59)
+                attendance_intervals = None
                 day_str = str(day.weekday())
                 date = day.strftime('%Y-%m-%d')
                 if contract.multi_shift:
@@ -217,132 +221,84 @@ class AttendanceSheet(models.Model):
                     work_intervals = calendar_id.att_interval_clean(
                         work_intervals)
                 elif contract.random_shift:
-                    print("Entered random Shifts")
-                    work_intervals=None
-                    day_start = datetime(day.year, day.month, day.day,hour=00,minute=00,second=00)
-                    day_end = day_start.replace(hour=23, minute=59,
-                                                second=59)
+                    shiftselected = False
+                    attendance_intervalx = None
+                    checkin_date = None
+
+                    print("random shift")
+                    FMT = '%H:%M:%S'
+                    work_intervals = None
                     attendance_intervalx = self.get_attendance_intervals(emp, day_start, day_end, tz)
-                    shiftsdata=[]
                     if attendance_intervalx:
-                        curretday = day_str
-                        FMT = '%H:%M:%S'
-                        chek_in_time = pytz.utc.localize(attendance_intervalx[0][0]).astimezone(tz).time()#user Check in
-                        chek_out_time = pytz.utc.localize(attendance_intervalx[0][1]).astimezone(tz).time()#user Check out
-                        delay = 0  # delay in prevous seleted shift
-                        selectedshift = None
-                        timespent = 0
-                        work_intervals=None
-                        for shift in contract.shiftslist:#get random shifts from contract
-
-                            for calender in shift.resource_calendar_id:#get Calender
-                                for calenderday in calender.attendance_ids:#get Days
-                                    if calenderday.dayofweek==curretday:#check this day in out time
-
+                        checkin_date = attendance_intervalx[0][0].replace(tzinfo=None) + timedelta(hours=2)
+                        checkout_date = attendance_intervalx[0][1].replace(tzinfo=None)
+                        for shift in contract.shiftslist:  # get random shifts from contract
+                            for calender in shift.resource_calendar_id:  # get Calender
+                                # calendar_id=calender
+                                overlaptime = timedelta(hours=00)
+                                native_start_day = day_start
+                                native_end_day = day_end
+                                if calender.overlaptime != 0.0:
+                                    overlaptime = timedelta(hours=int(calender.overlaptime))
+                                else:
+                                    overlaptime = timedelta(hours=0)
+                                print("Entered OverLap")
+                                for calenderday in calender.attendance_ids:  # get Days
+                                    if calenderday.hour_from >= 13:
                                         frac, whole = math.modf(calenderday.hour_from)
                                         hours, minx = divmod(frac * 60, 3600)  # split to hours and seconds
-                                        day_start = datetime(day.year, day.month, day.day, hour=int(whole),
-                                                             minute=int(minx), second=00)
-                                        hours_added = timedelta(hours=23,minutes=59,seconds=59)
-                                        day_end = day_start+hours_added
-                                        sc_from = datetime(day_start.year, day_start.month, day_start.day, int(whole), int(minx), 0).time()#start day
-                                        frac, whole = math.modf(calenderday.hour_to)
-                                        hours, minx = divmod(frac * 60, 3600)  # split to hours and seconds
+                                    else:
+                                        frac, hours = math.modf(calenderday.hour_from)
+                                        whole = int(calenderday.hour_from)
+                                        minx = frac * 60
 
-                                        sc_to=datetime(day_end.year, day_end.month, day_end.day, int(whole), int(minx), 0).time()#end Day
-                                        #get delay
+                                    if shift.resource_calendar_id.maxcheckin:
+                                        maxcheckin = shift.resource_calendar_id.maxcheckin
+                                    else:
+                                        maxcheckin = 1
+                                    before30 = (datetime(year=native_start_day.year, month=native_start_day.month,
+                                                         day=native_start_day.day, hour=int(whole),
+                                                         minute=int(minx)) - timedelta(
+                                        hours=maxcheckin)) + overlaptime
 
+                                    if shift.resource_calendar_id.maxdelay:
+                                        maxdelay = shift.resource_calendar_id.maxdelay
+                                    else:
+                                        maxdelay = 1
+                                    after30 = (datetime(year=native_end_day.year, month=native_end_day.month,
+                                                        day=native_end_day.day, hour=int(whole),
+                                                        minute=int(minx)) + timedelta(
+                                        hours=maxdelay)) + overlaptime
+                                    contract_checkin_time = checkin_date + overlaptime
+                                    contract_checkout_time = checkout_date + overlaptime
+                                    dayoftheweek = calenderday.dayofweek
+                                    if (calenderday.dayofweek == day_str) and (
+                                            after30 > (checkin_date) > before30):  # check this day in out time
+                                        day_start = day_start + overlaptime
+                                        day_end = day_end + overlaptime
+                                        calendar_id = shift.resource_calendar_id
+                                        work_intervalx = calendar_id.att_get_work_intervals(day_start, day_end, tz)
+                                        # if contract.multi_shift:
+                                        #     work_intervalx = calendar_id.att_interval_clean(work_intervalx)
+                                        work_intervals = []
+                                        attendance_intervals = []
+                                        shiftselected = True
+                                        for x in attendance_intervalx:
+                                            attendance_intervals.append((x[0], x[1], x[2]))
 
-                                        if sc_from > chek_in_time:
-                                            print("no Delay")
-                                            accin=sc_from
-                                            elapsedTime =datetime.strptime(str(sc_from), FMT) - datetime.strptime(
-                                                    str(chek_in_time),
-                                                    FMT)
-                                            cdelay = elapsedTime.total_seconds()
-                                            if chek_out_time<sc_to:#exceeded check out time
-                                                accout=chek_out_time
-                                            else:#didnt excced
-                                                accout=sc_to
-                                            tdelta = datetime.strptime(str(accout), FMT) - datetime.strptime(
-                                                    str(accin),
-                                                    FMT)
+                                        for x in work_intervalx:
+                                            work_intervals.append((x[0] + overlaptime, x[1] + overlaptime))
 
-                                            if not selectedshift:#first time shift
-                                                    selectedshift=calenderday
-                                                    calendar_id = shift.resource_calendar_id
-                                                    delay=-cdelay
-                                                    timespent=tdelta
-                                                    work_intervals = calendar_id.get_rondom_shift_entervals(
-                                                        day_start,
-                                                        day_end, tz, resource=selectedshift)
-                                            else:# not first time shift
-                                                if delay > 0 and tdelta>=timespent: # there is delay
-                                                        selectedshift=calenderday
-                                                        delay=-cdelay
-                                                        calendar_id=shift.resource_calendar_id
-                                                        timespent=tdelta
-                                                        work_intervals = calendar_id.get_rondom_shift_entervals(
-                                                            day_start,
-                                                            day_end, tz, resource=selectedshift)
-                                                else:#no delay check if this close to schadua
-                                                    if tdelta < timespent:
-                                                        #break;
-                                                        print("less")
-                                                    elif -cdelay > delay :
-                                                            selectedshift=calenderday
-                                                            calendar_id = shift.resource_calendar_id
-                                                            delay=-cdelay
-                                                            timespent=tdelta
-                                                            work_intervals = calendar_id.get_rondom_shift_entervals(
-                                                                day_start,
-                                                                day_end, tz, resource=selectedshift)
-                                                    else:
-                                                        print("zz")
-                                                        #break
-
-                                        else:#delayed
-                                            accin=chek_in_time
-                                            if chek_out_time<sc_to:
-                                                accout=chek_out_time#exceeded chck out time
-                                            else:#didnt excced
-                                                accout=sc_to
-                                            tdelta = datetime.strptime(str(accout), FMT) - datetime.strptime(
-                                                    str(accin),
-                                                    FMT)
-                                            elapsedTime =datetime.strptime(str(chek_in_time), FMT) - datetime.strptime(
-                                                    str(sc_from),
-                                                    FMT)
-                                            cdelay = elapsedTime.total_seconds()
-
-                                            if not selectedshift:#frist time
-                                                selectedshift=calenderday
-                                                delay=cdelay
-                                                calendar_id = shift.resource_calendar_id
-                                                timespent=tdelta
-                                                work_intervals = calendar_id.get_rondom_shift_entervals(
-                                                    day_start,
-                                                    day_end, tz, resource=selectedshift)
-                                            else:#not frist time
-                                                if delay<0 and timespent >= tdelta :#no delay in previous shift
-                                                    #break
-                                                    print("No Delay")
-                                                else:
-                                                    if cdelay < abs(delay) and tdelta >= timespent:#less Delay
-                                                        selectedshift=calenderday
-                                                        delay=cdelay
-                                                        calendar_id = shift.resource_calendar_id
-                                                        timespent=tdelta
-                                                        work_intervals = calendar_id.get_rondom_shift_entervals(
-                                                            day_start,
-                                                            day_end, tz, resource=selectedshift)
-                                                    else:#more delay
-                                                        #break
-                                                        print("More Delay")
-
-                                    #break#breake check day
-
-
+                                        break
+                                    else:
+                                        if (calenderday.dayofweek == day_str):
+                                            break
+                                if shiftselected:
+                                    print("break")
+                                    # break
+                            if shiftselected:
+                                print("break")
+                                break
 
 
 
@@ -354,10 +310,13 @@ class AttendanceSheet(models.Model):
                     work_intervals = calendar_id.att_get_work_intervals(
                         day_start,
                         day_end, tz)
-                attendance_intervals = self.get_attendance_intervals(emp,
-                                                                     day_start,
-                                                                     day_end,
-                                                                     tz)
+                if not attendance_intervals:
+
+                    attendance_intervals = self.get_attendance_intervals(emp,
+                                                                         day_start,
+                                                                         day_end,
+                                                                         tz)
+
                 leaves = self._get_emp_leave_intervals(emp, day_start, day_end)
                 public_holiday = self.get_public_holiday(date, emp)
                 reserved_intervals = []
@@ -422,6 +381,8 @@ class AttendanceSheet(models.Model):
                             }
                             att_line.create(values)
                     else:
+
+
                         if any([att[2] != 'right' for att in
                                 attendance_intervals]):
                             act_float_miss_overtime = 0
@@ -430,6 +391,7 @@ class AttendanceSheet(models.Model):
                             act_float_miss_diff = 0
                             act_float_miss_late = 0
                             policy_miss_late = 0
+
 
                             all_miss_intervals = attendance_intervals
                             miss_cnt += 1
@@ -564,6 +526,7 @@ class AttendanceSheet(models.Model):
                                     act_float_miss_diff = float_miss_diff
                                     policy_miss_diff, diff_cnt = policy_id.get_diff(
                                         float_miss_diff, diff_cnt)
+                                #raise warnings("Entered1")
 
                                 values = {
                                     'date': date,
@@ -590,6 +553,7 @@ class AttendanceSheet(models.Model):
                             continue
 
                         for i, work_interval in enumerate(work_intervals):
+
                             float_worked_hours = 0
                             att_work_intervals = []
                             diff_intervals = []
@@ -637,6 +601,7 @@ class AttendanceSheet(models.Model):
                             status = ""
                             note = ""
                             if att_work_intervals:
+
                                 if shift_allowance:
                                     for attw_interval in attendance_intervals:
                                         shift_alw_amount += policy_id.get_shift_allowance(attw_interval[0],
@@ -702,6 +667,7 @@ class AttendanceSheet(models.Model):
                                                                             0][
                                                                             0]).total_seconds() / 3600)
                                 else:
+                                  #  raise warnings("22")
                                     late_in_interval = (
                                         work_interval[0],
                                         att_work_intervals[0][0])
@@ -710,6 +676,7 @@ class AttendanceSheet(models.Model):
                                         att_work_intervals[-1][1])
                                     if overtime_interval[1] < overtime_interval[
                                         0]:
+
                                         overtime = timedelta(hours=0, minutes=0,
                                                              seconds=0)
                                         diff_intervals.append((
@@ -751,17 +718,20 @@ class AttendanceSheet(models.Model):
                                     else:
                                         diff_time += diff_in[1] - diff_in[0]
                             if late_in_interval:
+
                                 if late_in_interval[1] < late_in_interval[0]:
                                     late_in = timedelta(hours=0, minutes=0,
                                                         seconds=0)
                                 else:
                                     if leaves:
+
                                         late_clean_intervals = calendar_id.att_interval_without_leaves(
                                             late_in_interval, leaves)
                                         for late_clean in late_clean_intervals:
                                             late_in += late_clean[1] - \
                                                        late_clean[0]
                                     else:
+                                        
                                         late_in = late_in_interval[1] - \
                                                   late_in_interval[0]
                             float_overtime = overtime.total_seconds() / 3600
@@ -789,6 +759,7 @@ class AttendanceSheet(models.Model):
                                 act_float_diff = float_diff
                                 float_diff, diff_cnt = policy_id.get_diff(
                                     float_diff, diff_cnt)
+                            #raise warnings("Entered2")
                             values = {
                                 'date': date,
                                 'day': day_str,
@@ -830,6 +801,7 @@ class AttendanceSheet(models.Model):
                                     act_float_overtime = float_overtime
                                     float_overtime = act_float_overtime * \
                                                      overtime_policy['wd_rate']
+                                #raise warnings("Entered3")
                                 values = {
                                     'date': date,
                                     'day': day_str,
@@ -870,6 +842,7 @@ class AttendanceSheet(models.Model):
                             worked_hours = attendance_interval[1] - \
                                            attendance_interval[0]
                             float_worked_hours = worked_hours.total_seconds() / 3600
+                            #raise warnings("Entered4")
                             values = {
                                 'date': date,
                                 'day': day_str,
@@ -887,6 +860,7 @@ class AttendanceSheet(models.Model):
                             }
                             att_line.create(values)
                     else:
+                        #raise warnings("Entered5")
                         values = {
                             'date': date,
                             'day': day_str,
@@ -896,6 +870,34 @@ class AttendanceSheet(models.Model):
                             'resource_calendar_id': calendar_id.id
                         }
                         att_line.create(values)
+
+    def get_random_attendence_intervals(self, employee, day_start, day_end, tz, overlaptime=0.0):
+        """
+
+                :param employee:
+                :param day_start:datetime the start of the day in datetime format
+                :param day_end: datetime the end of the day in datetime format
+                :return:
+                """
+        day_start_native = day_start.astimezone(
+            pytz.utc).replace(tzinfo=None)
+        day_end_native = day_end.astimezone(
+            pytz.utc).replace(tzinfo=None)
+        res = []
+        domain = [('employee_id.id', '=', employee.id),
+                  ('check_in', '>=', day_start_native),
+                  ('check_in', '<=', day_end_native), ]
+        if employee.attendance_approval:
+            domain += [('approval_state', '=', 'approved')]
+        attendances = self.env['hr.attendance'].sudo().search(domain,
+                                                              order="check_in")
+        for att in attendances:
+            check_in = pytz.utc.localize(att.check_in).astimezone(tz)  # .astimezone( pytz.utc)#.replace(tzinfo=tz)
+            check_out = pytz.utc.localize(att.check_out).astimezone(tz)  # .astimezone(    pytz.utc)#.replace(tzinfo=tz)
+            if not check_out:
+                continue
+            res.append((check_in + overlaptime, check_out + overlaptime, att.state))
+        return res
 
     def action_view_penalties(self):
         penalty_ids = self.mapped('penalty_ids')
@@ -916,656 +918,11 @@ class AttendanceSheetLine(models.Model):
     miss_pen = fields.Float("Miss punch Penalty", readonly=True)
     shift_allowance = fields.Float('Shift Allowance')
     resource_calendar_id = fields.Many2one('resource.calendar', 'Working Schedule', readonly=False)
-    def get_changed_schaduale(self,calenderid):
-        print("VVVVVVVVVVVVVVVVVVVVVVVVVVVV")
-        att_sheet = self.att_sheet_id
-        contract = att_sheet.contract_id
-        shift_allowance = contract.shift_allowance
-        emp = self.employee_id
-        #calendar_id = emp.contract_id.resource_calendar_id
-        calendar_id=calenderid
-        if not calendar_id:
-            raise ValidationError(_('Please add working hours to the %s `s contract ' % emp.name))
-        policy_id = att_sheet.att_policy_id
-        if not policy_id:
-            raise ValidationError(_('Please add Attendance Policy to the %s `s contract ' % emp.name))
-        tz = pytz.timezone(emp.tz)
-        day = self.date
-        from_date = self.date
-        to_date = self.date
-        today = datetime.today().date()
-        if to_date > today:
-            to_date = today
-        all_dates = [(from_date + timedelta(days=x)) for x in range((to_date - from_date).days + 1)]
-        abs_cnt = 0
-        miss_cnt = 0
-        late_cnt = []
-        diff_cnt = []
-        for day in all_dates:
-
-            day_start = datetime(day.year, day.month, day.day,hour=6,minute=00,second=00)
-            day_start = datetime(day.year, day.month, day.day)
-            day_end = day_start.replace(hour=5, minute=59, second=59)
-            day_end = day_start.replace(hour=23, minute=59, second=59)
-            day_str = str(day.weekday())
-            date = day.strftime('%Y-%m-%d')
-            curretday = day_str
-            for i in calendar_id.attendance_ids:
-                #for x in i.resource_calendar_id.attendance_ids:
-                    if i.dayofweek == curretday:
-                        res=i
-            work_intervals = calendar_id.get_rondom_shift_entervals(
-                day_start,
-                day_end, tz, resource=res)
-
-            attendance_intervals = att_sheet.get_attendance_intervals(emp,day_start,day_end,tz)
-            print("test 1")
-            leaves = att_sheet._get_emp_leave_intervals(emp, day_start, day_end)
-            public_holiday = att_sheet.get_public_holiday(date, emp)
-            reserved_intervals = []
-            overtime_policy = policy_id.get_overtime()
-            abs_flag = False
-            print("test3")
-            if work_intervals:
-                if public_holiday:
-                    if attendance_intervals:
-                        for attendance_interval in attendance_intervals:
-                            shift_alw_amount = 0
-                            if shift_allowance:
-                                shift_alw_amount = policy_id.get_shift_allowance(
-                                    attendance_interval[0],
-                                    attendance_interval[1], tz)
-                            overtime = attendance_interval[1] - \
-                                       attendance_interval[0]
-                            float_overtime = overtime.total_seconds() / 3600
-                            if float_overtime <= overtime_policy[
-                                'ph_after']:
-                                act_float_overtime = float_overtime = 0
-                            else:
-                                act_float_overtime = (float_overtime -
-                                                      overtime_policy[
-                                                          'ph_after'])
-                                float_overtime = (float_overtime -
-                                                  overtime_policy[
-                                                      'ph_after']) * \
-                                                 overtime_policy['ph_rate']
-                            ac_sign_in = pytz.utc.localize(
-                                attendance_interval[0]).astimezone(tz)
-                            float_ac_sign_in = self._get_float_from_time(
-                                ac_sign_in)
-                            ac_sign_out = pytz.utc.localize(
-                                attendance_interval[1]).astimezone(tz)
-                            worked_hours = attendance_interval[1] - \
-                                           attendance_interval[0]
-                            float_worked_hours = worked_hours.total_seconds() / 3600
-                            float_ac_sign_out = float_ac_sign_in + float_worked_hours
-                            values = {
-                                'date': date,
-                                'day': day_str,
-                                'ac_sign_in': float_ac_sign_in,
-                                'ac_sign_out': float_ac_sign_out,
-                                'worked_hours': float_worked_hours,
-                                'shift_allowance': shift_alw_amount,
-                                # 'o_worked_hours': float_worked_hours,
-                                'overtime': float_overtime,
-                                'act_overtime': act_float_overtime,
-                                'att_sheet_id': att_sheet.id,
-                                'status': 'ph',
-                                'note': _("working on Public Holiday"),
-                                'resource_calendar_id': calendar_id.id
-                            }
-                            self.ac_sign_in=float_ac_sign_in
-                            self.ac_sign_out=float_ac_sign_out
-                            self.worked_hours=float_worked_hours
-                            self.shift_allowance=shift_alw_amount
-                            self.overtime=float_overtime
-                            self.act_overtime=act_float_overtime
-                            self.status='ph'
-                            self.note=_("working on Public Holiday")
-                            self.resource_calendar_id=calendar_id.id
-                            #att_line.create(values)
-                    else:
-                        values = {
-                            'date': date,
-                            'day': day_str,
-                            'att_sheet_id': self.id,
-                            'status': 'ph',
-                            'resource_calendar_id': calendar_id.id,
-                        }
-                        self.status='ph'
-                        self.resource_calendar_id=calendar_id.id
-                        #att_line.create(values)
-                else:
-                    if any([att[2] != 'right' for att in
-                            attendance_intervals]):
-                        act_float_miss_overtime = 0
-                        float_miss_overtime = 0
-                        policy_miss_diff = 0
-                        act_float_miss_diff = 0
-                        act_float_miss_late = 0
-                        policy_miss_late = 0
-
-                        all_miss_intervals = attendance_intervals
-                        miss_cnt += 1
-                        shift_alw_amount = 0
-                        miss_amount = policy_id.get_miss(miss_cnt)
-                        for i, work_interval in enumerate(work_intervals):
-                            pl_sign_in = att_sheet._get_float_from_time(
-                                pytz.utc.localize(
-                                    work_interval[0]).astimezone(tz))
-                            pl_sign_out = att_sheet._get_float_from_time(
-                                pytz.utc.localize(
-                                    work_interval[1]).astimezone(tz))
-                            ac_sign_in = ac_sign_out = 0
-                            miss_att_intervals = []
-                            miss_type = 'right'
-                            note = ''
-                            for j, miss_att in enumerate(
-                                    all_miss_intervals):
-                                if miss_att[0] < work_interval[1] and \
-                                        miss_att[2] == 'fixout':
-                                    miss_att_intervals.append(
-                                        all_miss_intervals.pop(j))
-                                elif miss_att[1] >= work_interval[0] and \
-                                        miss_att[2] == 'fixin':
-                                    if i + 1 < len(work_intervals):
-                                        next_work_interval = work_intervals[
-                                            i + 1]
-                                        if miss_att[1] >= \
-                                                next_work_interval[0]:
-                                            continue
-                                    else:
-                                        miss_att_intervals.append(
-                                            all_miss_intervals.pop(j))
-                            if miss_att_intervals and miss_att_intervals[0][
-                                2] != 'fixin':
-                                miss_type = 'missout'
-                                if leaves:
-                                    for leave_interval in leaves:
-                                        if leave_interval[0] < \
-                                                work_interval[1] < \
-                                                leave_interval[1]:
-                                            miss_type = 'right'
-                                            miss_amount = 0
-                                            miss_cnt -= 1
-                                            note = 'Removing Mis-punch Out due to leave'
-
-                                ac_sign_in = att_sheet._get_float_from_time(
-                                    pytz.utc.localize(miss_att_intervals[0][
-                                                          0]).astimezone(
-                                        tz))
-                                ac_sign_out = 0
-                                miss_lat_in_interval = (
-                                    work_interval[0],
-                                    miss_att_intervals[0][0])
-                                miss_late_in = timedelta(0, 0, 0)
-                                if leaves:
-                                    miss_late_clean_intervals = calendar_id.att_interval_without_leaves(
-                                        miss_lat_in_interval, leaves)
-                                    for late_clean in miss_late_clean_intervals:
-                                        miss_late_in += late_clean[1] - \
-                                                        late_clean[0]
-                                else:
-                                    miss_late_in = (
-                                            miss_att_intervals[0][0] -
-                                            work_interval[0])
-                                float_miss_late = miss_late_in.total_seconds() / 3600
-                                act_float_miss_late = float_miss_late
-                                policy_miss_late, late_cnt = policy_id.get_late(
-                                    float_miss_late, late_cnt)
-
-                            elif miss_att_intervals and \
-                                    miss_att_intervals[-1][2] != 'fixout':
-                                miss_type = 'misin'
-                                if leaves:
-                                    for leave_interval in leaves:
-                                        if leave_interval[0] < \
-                                                work_interval[0] < \
-                                                leave_interval[1]:
-                                            miss_type = 'right'
-                                            miss_amount = 0
-                                            miss_cnt -= 1
-                                            note = 'Removing Mis-punch In due to leave'
-                                ac_sign_in = 0
-                                ac_sign_out = att_sheet._get_float_from_time(
-                                    pytz.utc.localize(
-                                        miss_att_intervals[-1][
-                                            1]).astimezone(tz))
-                                overtime_interval = (
-                                    work_interval[1],
-                                    miss_att_intervals[-1][1])
-                                miss_diff_interval = (
-                                    miss_att_intervals[-1][1],
-                                    work_interval[1]
-                                )
-                                if overtime_interval[1] < overtime_interval[
-                                    0]:
-                                    miss_overtime = timedelta(hours=0,
-                                                              minutes=0,
-                                                              seconds=0)
-
-                                else:
-                                    miss_overtime = overtime_interval[1] - \
-                                                    overtime_interval[0]
-
-                                float_miss_overtime = miss_overtime.total_seconds() / 3600
-                                if float_miss_overtime <= overtime_policy[
-                                    'wd_after']:
-                                    act_float_miss_overtime = float_miss_overtime = 0
-                                else:
-                                    act_float_miss_overtime = float_miss_overtime
-                                    float_miss_overtime = float_miss_overtime * \
-                                                          overtime_policy[
-                                                              'wd_rate']
-                                miss_diff_time = timedelta(hours=0,
-                                                           minutes=0,
-                                                           seconds=0)
-                                if miss_diff_interval[0] < \
-                                        miss_diff_interval[1]:
-                                    if leaves:
-                                        miss_diff_clean_intervals = calendar_id.att_interval_without_leaves(
-                                            miss_diff_interval, leaves)
-                                        for diff_clean in miss_diff_clean_intervals:
-                                            miss_diff_time += diff_clean[
-                                                                  1] - \
-                                                              diff_clean[0]
-                                    else:
-                                        miss_diff_time = (
-                                                miss_diff_interval[1] -
-                                                miss_diff_interval[0])
-
-                                float_miss_diff = miss_diff_time.total_seconds() / 3600
-                                act_float_miss_diff = float_miss_diff
-                                policy_miss_diff, diff_cnt = policy_id.get_diff(
-                                    float_miss_diff, diff_cnt)
-
-                            values = {
-                                'date': date,
-                                'day': day_str,
-                                'pl_sign_in': pl_sign_in,
-                                'pl_sign_out': pl_sign_out,
-                                'ac_sign_in': ac_sign_in,
-                                'ac_sign_out': ac_sign_out,
-                                'miss_type': miss_type,
-                                'late_in': policy_miss_late,
-                                'act_late_in': act_float_miss_late,
-                                'overtime': float_miss_overtime,
-                                'act_overtime': act_float_miss_overtime,
-                                'diff_time': policy_miss_diff,
-                                'act_diff_time': act_float_miss_diff,
-                                'miss_pen': miss_amount,
-                                'status': '',
-                                'note': note,
-                                'att_sheet_id': self.id,
-                                'resource_calendar_id': calendar_id.id,
-
-                            }
-                            self.pl_sign_in=pl_sign_in
-                            self.pl_sign_out= pl_sign_out
-                            self.ac_sign_in=ac_sign_in
-                            self.ac_sign_out=ac_sign_out
-                            self.miss_type=miss_type
-                            self.late_in=policy_miss_late
-                            self.overtime=float_miss_overtime
-                            self.act_overtime=act_float_miss_overtime
-                            self.diff_time=policy_miss_diff
-                            act_diff_time=act_float_miss_diff
-                            self.miss_pen=miss_amount
-                            self.note=note
-                            self.resource_calendar_id=calendar_id.id
-                            #att_line.create(values)
-                        continue
-
-                    for i, work_interval in enumerate(work_intervals):
-                        float_worked_hours = 0
-                        att_work_intervals = []
-                        diff_intervals = []
-                        late_in_interval = []
-                        shift_alw_amount = 0
-                        diff_time = timedelta(hours=00, minutes=00,
-                                              seconds=00)
-                        late_in = timedelta(hours=00, minutes=00,
-                                            seconds=00)
-                        overtime = timedelta(hours=00, minutes=00,
-                                             seconds=00)
-                        for j, att_interval in enumerate(
-                                attendance_intervals):
-                            if max(work_interval[0], att_interval[0]) < min(
-                                    work_interval[1], att_interval[1]):
-                                current_att_interval = att_interval
-                                if i + 1 < len(work_intervals):
-                                    next_work_interval = work_intervals[
-                                        i + 1]
-                                    if max(next_work_interval[0],
-                                           current_att_interval[0]) < min(
-                                        next_work_interval[1],
-                                        current_att_interval[1]):
-                                        split_att_interval = (
-                                            next_work_interval[0],
-                                            current_att_interval[1])
-                                        current_att_interval = (
-                                            current_att_interval[0],
-                                            next_work_interval[0])
-                                        attendance_intervals[
-                                            j] = current_att_interval
-                                        attendance_intervals.insert(j + 1,
-                                                                    split_att_interval)
-                                att_work_intervals.append(
-                                    current_att_interval)
-                        reserved_intervals += att_work_intervals
-                        pl_sign_in = att_sheet._get_float_from_time(
-                            pytz.utc.localize(work_interval[0]).astimezone(
-                                tz))
-                        pl_sign_out = att_sheet._get_float_from_time(
-                            pytz.utc.localize(work_interval[1]).astimezone(
-                                tz))
-                        ac_sign_in = 0
-                        ac_sign_out = 0
-                        status = ""
-                        note = ""
-                        if att_work_intervals:
-                            if shift_allowance:
-                                for attw_interval in attendance_intervals:
-                                    shift_alw_amount += policy_id.get_shift_allowance(attw_interval[0],
-                                                                                      attw_interval[1], tz)
-                            if len(att_work_intervals) > 1:
-                                # print("there is more than one interval for that work interval")
-                                late_in_interval = (
-                                    work_interval[0],
-                                    att_work_intervals[0][0])
-                                overtime_interval = (
-                                    work_interval[1],
-                                    att_work_intervals[-1][1])
-                                if overtime_interval[1] < overtime_interval[
-                                    0]:
-                                    overtime = timedelta(hours=0, minutes=0,
-                                                         seconds=0)
-                                else:
-                                    overtime = overtime_interval[1] - \
-                                               overtime_interval[0]
-                                remain_interval = (
-                                    att_work_intervals[0][1],
-                                    work_interval[1])
-                                # print'first remain intervals is',remain_interval
-                                for att_work_interval in att_work_intervals:
-                                    float_worked_hours += (
-                                                                  att_work_interval[
-                                                                      1] -
-                                                                  att_work_interval[
-                                                                      0]).total_seconds() / 3600
-                                    # print'float worked hors is', float_worked_hours
-                                    if att_work_interval[1] <= \
-                                            remain_interval[0]:
-                                        continue
-                                    if att_work_interval[0] >= \
-                                            remain_interval[1]:
-                                        break
-                                    if remain_interval[0] < \
-                                            att_work_interval[0] < \
-                                            remain_interval[1]:
-                                        diff_intervals.append((
-                                            remain_interval[
-                                                0],
-                                            att_work_interval[
-                                                0]))
-                                        remain_interval = (
-                                            att_work_interval[1],
-                                            remain_interval[1])
-                                if remain_interval and remain_interval[0] <= \
-                                        work_interval[1]:
-                                    diff_intervals.append((remain_interval[
-                                                               0],
-                                                           work_interval[
-                                                               1]))
-                                ac_sign_in = att_sheet._get_float_from_time(
-                                    pytz.utc.localize(att_work_intervals[0][
-                                                          0]).astimezone(
-                                        tz))
-                                ac_sign_out = ac_sign_in + ((
-                                                                    att_work_intervals[
-                                                                        -1][
-                                                                        1] -
-                                                                    att_work_intervals[
-                                                                        0][
-                                                                        0]).total_seconds() / 3600)
-                            else:
-                                late_in_interval = (
-                                    work_interval[0],
-                                    att_work_intervals[0][0])
-                                overtime_interval = (
-                                    work_interval[1],
-                                    att_work_intervals[-1][1])
-                                if overtime_interval[1] < overtime_interval[
-                                    0]:
-                                    overtime = timedelta(hours=0, minutes=0,
-                                                         seconds=0)
-                                    diff_intervals.append((
-                                        overtime_interval[
-                                            1],
-                                        overtime_interval[
-                                            0]))
-                                else:
-                                    overtime = overtime_interval[1] - \
-                                               overtime_interval[0]
-                                ac_sign_in = att_sheet._get_float_from_time(
-                                    pytz.utc.localize(att_work_intervals[0][
-                                                          0]).astimezone(
-                                        tz))
-                                ac_sign_out = att_sheet._get_float_from_time(
-                                    pytz.utc.localize(att_work_intervals[0][
-                                                          1]).astimezone(
-                                        tz))
-                                worked_hours = att_work_intervals[0][1] - \
-                                               att_work_intervals[0][0]
-                                print(worked_hours)
-                                float_worked_hours = worked_hours.total_seconds() / 3600
-                                # ac_sign_out = ac_sign_in + float_worked_hours
-                        else:
-                            late_in_interval = []
-                            diff_intervals.append(
-                                (work_interval[0], work_interval[1]))
-
-                            status = "ab"
-                        if diff_intervals:
-                            for diff_in in diff_intervals:
-                                if leaves:
-                                    status = "leave"
-                                    diff_clean_intervals = calendar_id.att_interval_without_leaves(
-                                        diff_in, leaves)
-                                    for diff_clean in diff_clean_intervals:
-                                        diff_time += diff_clean[1] - \
-                                                     diff_clean[0]
-                                else:
-                                    diff_time += diff_in[1] - diff_in[0]
-                        if late_in_interval:
-                            if late_in_interval[1] < late_in_interval[0]:
-                                late_in = timedelta(hours=0, minutes=0,
-                                                    seconds=0)
-                            else:
-                                if leaves:
-                                    late_clean_intervals = calendar_id.att_interval_without_leaves(
-                                        late_in_interval, leaves)
-                                    for late_clean in late_clean_intervals:
-                                        late_in += late_clean[1] - \
-                                                   late_clean[0]
-                                else:
-                                    late_in = late_in_interval[1] - \
-                                              late_in_interval[0]
-                        float_overtime = overtime.total_seconds() / 3600
-                        if float_overtime <= overtime_policy['wd_after']:
-                            act_float_overtime = float_overtime = 0
-                        else:
-                            act_float_overtime = float_overtime
-                            float_overtime = float_overtime * \
-                                             overtime_policy[
-                                                 'wd_rate']
-                        float_late = late_in.total_seconds() / 3600
-                        act_float_late = late_in.total_seconds() / 3600
-                        policy_late, late_cnt = policy_id.get_late(
-                            float_late, late_cnt)
-                        float_diff = diff_time.total_seconds() / 3600
-                        if status == 'ab':
-                            if not abs_flag:
-                                abs_cnt += 1
-                            abs_flag = True
-
-                            act_float_diff = float_diff
-                            float_diff = policy_id.get_absence(float_diff,
-                                                               abs_cnt)
-                        else:
-                            act_float_diff = float_diff
-                            float_diff, diff_cnt = policy_id.get_diff(
-                                float_diff, diff_cnt)
-                        values = {
-                            'date': date,
-                            'day': day_str,
-                            'pl_sign_in': pl_sign_in,
-                            'pl_sign_out': pl_sign_out,
-                            'ac_sign_in': ac_sign_in,
-                            'ac_sign_out': ac_sign_out,
-                            'late_in': policy_late,
-                            'shift_allowance': shift_alw_amount,
-                            'act_late_in': act_float_late,
-                            'worked_hours': float_worked_hours,
-                            'overtime': float_overtime,
-                            'act_overtime': act_float_overtime,
-                            'diff_time': float_diff,
-                            'act_diff_time': act_float_diff,
-                            'status': status,
-                            'att_sheet_id': self.id,
-                            'resource_calendar_id': calendar_id.id,
-                        }
-                        self.pl_sign_in = pl_sign_in
-                        self.pl_sign_out= pl_sign_out
-                        self.ac_sign_in=ac_sign_in
-                        self.ac_sign_out=ac_sign_out
-                        self.late_in = policy_late
-                        self.shift_allowance=shift_alw_amount
-                        self.act_late_in=act_float_late
-                        self.worked_hours=float_worked_hours
-                        self.overtime = float_overtime
-                        self.act_overtime = act_float_overtime
-                        self.diff_time = float_diff
-                        self.act_diff_time = act_float_diff
-                        self.status=status
-                        self.resource_calendar_id = calendar_id.id
-                        #att_line.create(values)
-                    out_work_intervals = [x for x in attendance_intervals if
-                                          x not in reserved_intervals]
-                    if out_work_intervals:
-                        for att_out in out_work_intervals:
-                            overtime = att_out[1] - att_out[0]
-                            ac_sign_in = att_sheet._get_float_from_time(
-                                pytz.utc.localize(att_out[0]).astimezone(
-                                    tz))
-                            ac_sign_out = att_sheet._get_float_from_time(
-                                pytz.utc.localize(att_out[1]).astimezone(
-                                    tz))
-                            float_worked_hours = overtime.total_seconds() / 3600
-                            ac_sign_out = ac_sign_in + float_worked_hours
-                            float_overtime = overtime.total_seconds() / 3600
-                            if float_overtime <= overtime_policy[
-                                'wd_after']:
-                                float_overtime = act_float_overtime = 0
-                            else:
-                                act_float_overtime = float_overtime
-                                float_overtime = act_float_overtime * \
-                                                 overtime_policy['wd_rate']
-                            values = {
-                                'date': date,
-                                'day': day_str,
-                                'pl_sign_in': 0,
-                                'pl_sign_out': 0,
-                                'ac_sign_in': ac_sign_in,
-                                'ac_sign_out': ac_sign_out,
-                                'overtime': float_overtime,
-                                'worked_hours': float_worked_hours,
-                                'act_overtime': act_float_overtime,
-                                'note': _("overtime out of work intervals"),
-                                'att_sheet_id': self.id,
-                                'resource_calendar_id': calendar_id.id
-                            }
-                            self.pl_sign_in=0
-                            self.pl_sign_out=0
-                            self.ac_sign_in=ac_sign_in
-                            self.ac_sign_out=ac_sign_out
-                            self.overtime=float_overtime
-                            self.worked_hours=float_worked_hours
-                            self.act_overtime=act_float_overtime
-                            self.note=_("overtime out of work intervals")
-                            self.resource_calendar_id=calendar_id.id
 
 
-                            #att_line.create(values)
-            else:
-                if attendance_intervals:
-                    # print "thats weekend be over time "
-                    for attendance_interval in attendance_intervals:
-                        overtime = attendance_interval[1] - \
-                                   attendance_interval[0]
-                        ac_sign_in = pytz.utc.localize(
-                            attendance_interval[0]).astimezone(tz)
-                        ac_sign_out = pytz.utc.localize(
-                            attendance_interval[1]).astimezone(tz)
-                        float_overtime = overtime.total_seconds() / 3600
-                        if float_overtime <= overtime_policy['we_after']:
-                            float_overtime = 0
-                            act_float_overtime = 0
-                        else:
-                            act_float_overtime = float_overtime
-                            float_overtime = act_float_overtime * \
-                                             overtime_policy['we_rate']
-                        ac_sign_in = pytz.utc.localize(
-                            attendance_interval[0]).astimezone(tz)
-                        ac_sign_out = pytz.utc.localize(
-                            attendance_interval[1]).astimezone(tz)
-                        worked_hours = attendance_interval[1] - \
-                                       attendance_interval[0]
-                        float_worked_hours = worked_hours.total_seconds() / 3600
-                        values = {
-                            'date': date,
-                            'day': day_str,
-                            'ac_sign_in': att_sheet._get_float_from_time(
-                                ac_sign_in),
-                            'ac_sign_out': att_sheet._get_float_from_time(
-                                ac_sign_out),
-                            'overtime': float_overtime,
-                            'act_overtime': act_float_overtime,
-                            'worked_hours': float_worked_hours,
-                            'att_sheet_id': att_sheet.id,
-                            'status': 'weekend',
-                            'note': _("working in weekend"),
-                            'resource_calendar_id': calendar_id.id
-                        }
-                        self.ac_sign_in=att_sheet._get_float_from_time(ac_sign_in)
-                        self.ac_sign_out=att_sheet._get_float_from_time(ac_sign_out)
-                        self.act_overtime=act_float_overtime
-                        self.overtime=float_overtime
-                        self.worked_hours=float_worked_hours
-                        self.status='weekend'
-                        self.note=_("working in weekend")
-                        self.resource_calendar_id=calendar_id.id
-                        #att_line.create(values)
-                else:
-                    values = {
-                        'date': date,
-                        'day': day_str,
-                        'att_sheet_id': att_sheet.id,
-                        'status': 'weekend',
-                        'note': "",
-                        'resource_calendar_id': calendar_id.id
-                    }
-                    self.status="weekend"
-                    self.note=""
-                    self.resource_calendar_id=calendar_id.id
-                    #att_line.create(values)
+class resource_inhert(models.Model):
+    _inherit = "resource.calendar"
+    overlaptime = fields.Float(string="Overlap Time", Default=0.0)
+    maxdelay = fields.Float(string="Max Delay", Default=0.0)
+    maxcheckin = fields.Float(string="Max CheckIn", Default=0.0)
 
-
-
-
-
-
-
-    @api.onchange('resource_calendar_id')
-    def change_line_id(self):
-        self.get_changed_schaduale(self.resource_calendar_id)
