@@ -10,12 +10,12 @@
     'category': 'Sales',
     'version': '14.0',
 
-    'depends': ['base','surgi_operation'],
+    'depends': ['base','surgi_operation','surgi_collection_rep'],
 
     'data': [
         'security/access_group.xml',
         'views/operation_tracking.xml',
-        'views/payment.xml',
+        # 'views/payment.xml',
     ],
 
 }

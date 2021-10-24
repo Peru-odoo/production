@@ -630,7 +630,7 @@ class operation_operation(models.Model):
     notes = fields.Text(string="Notes")
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
-    operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches' ,string='Branch',store=True)#
+    operation_stock_branches = fields.Many2one(string='Branch',store=True)#related='warehouse_id.stock_branches' ,
     is_to_bool = fields.Boolean()
 
     component_ids = fields.Many2many('product.product', string="Components" )#,compute='_auto_gender_generate'

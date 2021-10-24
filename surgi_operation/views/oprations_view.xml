@@ -302,6 +302,8 @@
                     <filter string="Confirmed" name="state" domain="[('state','=','confirm')]"/>
                     <filter string="Draft" name="state" domain="[('state','=','draft')]"/>
                     <filter string="Done" name="state" domain="[('state','=','done')]"/>
+                    <filter string="Payment Method Cash" name="payment_methods"
+                            domain="[('payment_methods','=','cash')]"/>
                 </search>
             </field>
         </record>
@@ -380,6 +382,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">operation.operation</field>
             <field name="view_mode">tree,form,pivot</field>
+            <field name="search_view_id" ref="surgi_operation_operation_search_view"/>
+            <field name="context">{'search_default_payment_methods' : 1}</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create a new Operation.
