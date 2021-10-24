@@ -26,7 +26,7 @@
                     </button>
 
                 </div>
-                <xpath expr="//field[@name='is_equal_total']" position="after">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="after_sales_check"/>
               </xpath>
             </field>
