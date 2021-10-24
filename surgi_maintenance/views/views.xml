@@ -1,21 +1,10 @@
 <odoo>
-  <data>
-           <menuitem id="surgi_menu_reports_root" name="Maintenance" sequence="-10"/>
+    <data>
+        <menuitem id="surgi_menu_reports_root" name="Maintenance" sequence="-10"/>
 
         <menuitem id="surgi_main_confj_main_menu" name="Configuration"
                   parent="surgi_menu_reports_root" sequence="10"/>
 
 
-
-
-
-
-
-
-
-
-
-
-
-  </data>
+    </data>
 </odoo>

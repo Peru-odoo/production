@@ -21,7 +21,6 @@
                     <sheet>
 
 
-
                         <group>
                             <field name="name"/>
                         </group>
@@ -47,7 +46,8 @@
 
 
         <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="menu_product_specializations_views" name="Product specialization"  parent="surgi_main_confj_main_menu"
+        <menuitem id="menu_product_specializations_views" name="Product specialization"
+                  parent="surgi_main_confj_main_menu"
                   action="action_product_specializations_pages" sequence="8"/>
 
 

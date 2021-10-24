@@ -5,9 +5,10 @@
             <field name="model">pickup.visit</field>
             <field name="arch" type="xml">
                 <tree string="Pickup visit">
+                    <field name="name"/>
 
 
-                    <field name="contact_rep_id"/>
+                    <field name="client_res"/>
 
                     <field name="contact_representative"/>
                     <field name="employee_id"/>
@@ -50,7 +51,7 @@
 
                             <div>
                                 <group string="Contact" name="con_id">
-                                    <field name="contact_rep_id"/>
+                                    <field name="client_res"/>
                                     <field name="contact_representative"/>
                                     <field name="representative_mobile"/>
 
@@ -76,6 +77,12 @@
                                 <group>
                                     <field name="pickup_date"/>
 
+                                </group>
+                            </div>
+                            <div>
+                                <group string="ٍSales Order">
+                                    <field name="order_id"/>
+                                    <field name="sale_date"/>
                                 </group>
                             </div>
                         </group>
@@ -139,22 +146,14 @@
 
                                         <field name="received"/>
                                         <field name="unreceived"/>
-
-
-
-                                    </group>
-
-
-                                </div>
-                                <div style="text-align:right">
-
-                                    <group>
                                         <field name="dry_or_not"/>
 
+
                                     </group>
 
 
                                 </div>
+
                                 <div style="text-align:justify">
                                     <group>
                                         <field name="comments2"/>
@@ -232,11 +231,44 @@
             </field>
         </record>
 
+        <record id="employee_pickup_visit_search" model="ir.ui.view">
+            <field name="name">pickup.visit.search</field>
+            <field name="model">pickup.visit</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                                                            <field name="name" string="الرقم المرجعي"/>
+
+                    <field name="contact_representative" string="المندوب"/>
+                    <field name="client_res" string="العميل"/>
+                    <field name="employee_id" string="الموظف"/>
+
+
+                    <!--                <filter string="Brith Date" name="bdate" date="from_date"/>-->
+                    <separator/>
+                    <group expand="0" string="Group By">
+
+                        <filter string="المندوب" name="contact_representative"
+                                context="{'group_by': 'contact_representative'}"/>
+                        <filter string="العميل" name="client_res" context="{'group_by': 'client_res'}"/>
+
+                        <filter string="الموظف" name="employee_id" context="{'group_by': 'employee_id'}"/>
+
+                        <!--                    <filter string="امر التوريد" name="order_id"-->
+                        <!--                            context="{'group_by': 'order_id'}"/>-->
+
+                    </group>
+                </search>
+            </field>
+
+        </record>
+
         <record id="action_pickup_visit_pages" model="ir.actions.act_window">
             <field name="name">نموذج زيارة وخدمة ما بعد البيع</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pickup.visit</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="employee_pickup_visit_search"/>
+
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     <!-- Add Text Here -->

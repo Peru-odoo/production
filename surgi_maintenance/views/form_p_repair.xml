@@ -5,12 +5,14 @@
             <field name="model">pickup.repair</field>
             <field name="arch" type="xml">
                 <tree string="نموذج إستلام/إصلاح">
-                    <field name="contact_rep_id"/>
+                    <field name="name"/>
+
+                    <field name="client_res"/>
                     <field name="contact_representative"/>
                     <field name="employee_id"/>
 
                     <field name="pick_up"/>
-                    <field name="repair" />
+                    <field name="repair"/>
 
                     <field name="pickup_date"/>
                     <field name="product_forms"/>
@@ -35,7 +37,7 @@
                         <group>
                             <div>
                                 <group string="Contact" name="con_id">
-                                    <field name="contact_rep_id"/>
+                                    <field name="client_res"/>
                                     <field name="contact_representative"/>
                                     <field name="representative_mobile"/>
 
@@ -50,7 +52,7 @@
                             <div>
                                 <group string="Location" name="loc_id">
                                     <field name="street1"/>
-<!--                                    <field name="street2"/>-->
+                                    <!--                                    <field name="street2"/>-->
                                     <field name="city"/>
                                     <field name="country_id"/>
 
@@ -60,7 +62,7 @@
                             <div>
                                 <group>
                                     <field name="pick_up"/>
-                                    <field name="repair" />
+                                    <field name="repair"/>
                                 </group>
                             </div>
                             <div>
@@ -69,67 +71,73 @@
 
                                 </group>
                             </div>
+                            <div>
+                                <group string="ٍSales Order">
+                                    <field name="order_id"/>
+                                    <field name="sale_date"/>
+                                </group>
+                            </div>
                         </group>
 
                         <notebook>
                             <page name="product" string="بيانات الاجهزة">
-                                                            <group>
+                                <group>
 
-                            </group>
-
-
-                                    <field name="product_forms">
-
-                                        <tree editable="bottom">
-                                            <control>
-                                                <create name="add_relation_control" string="Add a product"/>
-                                            </control>
-                                            <field name="product_form_id"/>
-                                            <field name="internal_ref"/>
-                                            <field name="specilaization" widget="many2many_tags"/>
-                                            <field name="notic"/>
+                                </group>
 
 
-                                        </tree>
-                                    </field>
+                                <field name="product_forms">
 
-                            </page>
-                              <page name="product" string="إجراءت الصيانة">
-                            <group>
-
-                            </group>
-
-                                    <field name="product_repair">
-
-                                        <tree editable="bottom">
-                                            <control>
-                                                <create name="add_relation_control" string="Add a product"/>
-                                            </control>
-                                            <field name="notic" string="الاجرءات"/>
-                                            <field name="product_form_id" string="قطع الغيار"/>
-                                            <field name="date" string="التاريخ"/>
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add a product"/>
+                                        </control>
+                                        <field name="product_form_id"/>
+                                        <field name="internal_ref"/>
+                                        <field name="specilaization" widget="many2many_tags"/>
+                                        <field name="notic"/>
 
 
-                                        </tree>
-                                    </field>
+                                    </tree>
+                                </field>
 
                             </page>
-                                                        <page name="status" string="حالة الجهاز">
-<group></group>
-                                    <field name="product_status">
+                            <page name="product" string="إجراءت الصيانة">
+                                <group>
 
-                                        <tree editable="bottom">
-                                            <control>
-                                                <create name="add_relation_control" string="Add"/>
-                                            </control>
-                                            <field name="product_status"/>
-                                            <field name="product_sug"/>
-                                            <field name="product_status_tec" />
+                                </group>
+
+                                <field name="product_repair">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add a product"/>
+                                        </control>
+                                                                                <field name="product_form_id" string="قطع الغيار"/>
+
+                                        <field name="notic" string="الاجرءات"/>
+                                        <field name="date" string="التاريخ"/>
 
 
+                                    </tree>
+                                </field>
 
-                                        </tree>
-                                    </field>
+                            </page>
+                            <page name="status" string="حالة الجهاز">
+                                <group></group>
+                                <field name="product_status">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+                                        <field name="product_status"/>
+                                        <field name="product_sug"/>
+                                        <field name="product_status_tec"/>
+
+
+                                    </tree>
+                                </field>
 
                             </page>
                             <page name="comments" string="ملاحظات">
@@ -149,11 +157,47 @@
             </field>
         </record>
 
+
+        <record id="employee_pickup_repair_search" model="ir.ui.view">
+            <field name="name">pickup.repair.search</field>
+            <field name="model">pickup.repair</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                                                            <field name="name" string="الرقم المرجعي"/>
+
+                    <field name="contact_representative" string="المندوب"/>
+                    <field name="client_res" string="العميل"/>
+                    <field name="employee_id" string="الموظف"/>
+
+
+                    <!--                <filter string="Brith Date" name="bdate" date="from_date"/>-->
+                    <separator/>
+                    <group expand="0" string="Group By">
+
+                        <filter string="المندوب" name="contact_representative"
+                                context="{'group_by': 'contact_representative'}"/>
+                        <filter string="العميل" name="client_res" context="{'group_by': 'client_res'}"/>
+
+                        <filter string="الموظف" name="employee_id" context="{'group_by': 'employee_id'}"/>
+
+                        <filter string="استلام" name="pick_up"
+                                context="{'group_by': 'pick_up'}"/>
+                        <filter string="اصلاح" name="repair"
+                                context="{'group_by': 'repair'}"/>
+                    </group>
+                </search>
+            </field>
+
+        </record>
+
+
         <record id="action_pickup_repair_pages" model="ir.actions.act_window">
             <field name="name">نموذج إستلام/إصلاح</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pickup.repair</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="employee_pickup_repair_search"/>
+
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     <!-- Add Text Here -->

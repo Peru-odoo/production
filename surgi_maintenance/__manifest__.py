@@ -25,6 +25,7 @@
     # always loaded
     'data': [
          'security/ir.model.access.csv',
+         'data/main_code_seq.xml',
         'views/product_temp.xml',
         'views/views.xml',
         'views/product_spl.xml',
@@ -33,8 +34,12 @@
         'views/form_p_install.xml',
         'views/form_final_install.xml',
         'views/form_visit.xml',
-
-
+        'reports/report.xml',
+        'reports/report_repair.xml',
+        'reports/install_report.xml',
+        'reports/final_install_report.xml',
+        'reports/Visit_report.xml',
+        'views/sale_order_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -5,8 +5,8 @@ from datetime import datetime,timedelta
 class pick_up_and_delivery_form(models.Model):
     _name = 'pickup.delivery'
 
-    contact_rep_id=fields.Many2one('res.partner',string='العميل',store=True,)
-    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', contact_rep_id)]",)
+    client_res=fields.Many2one('res.partner',string='العميل',store=True,)
+    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', client_res)]",)
     representative_mobile = fields.Char(string="التلفون",related='contact_representative.client_representative_mobile', store=True)
     pick_up = fields.Boolean('استلام')
     delivery=fields.Boolean('تسليم')
@@ -18,24 +18,56 @@ class pick_up_and_delivery_form(models.Model):
     product_status = fields.One2many('product.forms','product_contact')
 
     #################### location
-    street1 = fields.Char(related='contact_rep_id.street' ,string='الشارع')
-    street2 = fields.Char(related='contact_rep_id.street2'  ,string='الشارع')
-    city = fields.Char(related='contact_rep_id.city' ,string='المدينة')
-    country_id = fields.Char(related='contact_rep_id.country_id.name' ,string='البلد')
+    street1 = fields.Char(related='client_res.street' ,string='الشارع')
+    street2 = fields.Char(related='client_res.street2'  ,string='الشارع')
+    city = fields.Char(related='client_res.city' ,string='المدينة')
+    country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
+    order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
 
 
 
 
+    def _get_default_code(self):
+        return self.env["ir.sequence"].next_by_code("pickup.delivery.code")
 
-    @api.onchange('contact_rep_id')
+    name = fields.Char(
+        "الرقم المرجعي",readonly=True, index=True,store=True, default=_get_default_code
+    )
+
+
+
+    @api.onchange('client_res')
     def compute_display_name(self):
         self.contact_representative = ""
+    def print_delivery_report(self):
+       data = {
+       'from_date': self.from_date,
+       'to_date': self.to_date
+       }
+       # docids = self.env['sale.order'].search([]).ids
+       return self.env.ref('surgi_maintenance.report_maintenance_card').report_action(None, data=data)
 
+class maint_pic_up(models.AbstractModel):
+    _name = 'report.maintenance.report_maintenance_card'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['pickup.delivery'].browse(docids)
+        return {
+              'doc_ids': docids,
+              'doc_model': 'pickup.delivery',
+              'docs': docs,
+              'data': data,
+              'get_something': self.get_something,
+        }
+    def get_something(self):
+        return 5
 class pick_up_and_repair_form(models.Model):
     _name = 'pickup.repair'
 
-    contact_rep_id=fields.Many2one('res.partner',string='العميل',store=True,)
-    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', contact_rep_id)]",)
+    client_res=fields.Many2one('res.partner',string='العميل',store=True,)
+    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', client_res)]",)
     representative_mobile = fields.Char(string="التلفون",related='contact_representative.client_representative_mobile', store=True)
     pick_up = fields.Boolean('استلام')
     repair=fields.Boolean('إصلاح')
@@ -46,29 +78,62 @@ class pick_up_and_repair_form(models.Model):
     comments = fields.Text(string='ملاحظات')
     product_repair = fields.One2many('product.forms','product_repair')
     product_status = fields.One2many('product.forms','product_repair')
+    order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+
+
 
     #################### location
-    street1 = fields.Char(related='contact_rep_id.street' ,string='الشارع')
-    street2 = fields.Char(related='contact_rep_id.street2'  ,string='الشارع')
-    city = fields.Char(related='contact_rep_id.city' ,string='المدينة')
-    country_id = fields.Char(related='contact_rep_id.country_id.name' ,string='البلد')
+    street1 = fields.Char(related='client_res.street' ,string='الشارع')
+    street2 = fields.Char(related='client_res.street2'  ,string='الشارع')
+    city = fields.Char(related='client_res.city' ,string='المدينة')
+    country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
+
+
+
+    def print_report(self):
+       data = {
+       'from_date': self.from_date,
+       'to_date': self.to_date
+       }
+
+       return self.env.ref('surgi_maintenance.report_maintenance_repair_card').report_action(None, data=data)
+
+    def _get_default_code(self):
+        return self.env["ir.sequence"].next_by_code("pickup.repair.code")
+
+    name = fields.Char(
+        "الرقم المرجعي",readonly=True, index=True,store=True, default=_get_default_code
+    )
 
 
 
 
-
-
-
-    @api.onchange('contact_rep_id')
+    @api.onchange('client_res')
     def compute_display_name(self):
         self.contact_representative = ""
 
 
+class maint_repair(models.AbstractModel):
+    _name = 'report.maintenance.report_maintenance_repair_card'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['pickup.repair'].browse(docids)
+        return {
+              'doc_ids': docids,
+              'doc_model': 'pickup.repair',
+              'docs': docs,
+              'data': data,
+              'get_something': self.get_something,
+        }
+    def get_something(self):
+        return 5
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.installation'
 
-    contact_rep_id=fields.Many2one('res.partner',string='العميل',store=True,)
-    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', contact_rep_id)]",)
+    client_res=fields.Many2one('res.partner',string='العميل',store=True,)
+    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', client_res)]",)
     representative_mobile = fields.Char(string="التلفون",related='contact_representative.client_representative_mobile', store=True)
     pickup_date=fields.Date(string='تاريخ التركيب والتشغيل')
     product_forms = fields.One2many('product.forms','product_installation',store=True)
@@ -76,28 +141,60 @@ class pick_up_Installation_form(models.Model):
     comments = fields.Text(string='ملاحظات')
 
     #################### location
-    street1 = fields.Char(related='contact_rep_id.street' ,string='الشارع')
-    street2 = fields.Char(related='contact_rep_id.street2'  ,string='الشارع')
-    city = fields.Char(related='contact_rep_id.city' ,string='المدينة')
-    country_id = fields.Char(related='contact_rep_id.country_id.name' ,string='البلد')
+    street1 = fields.Char(related='client_res.street' ,string='الشارع')
+    street2 = fields.Char(related='client_res.street2'  ,string='الشارع')
+    city = fields.Char(related='client_res.city' ,string='المدينة')
+    country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
 
 
 
     order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
 
+    def _get_default_code(self):
+        return self.env["ir.sequence"].next_by_code("pickup.installation.code")
+
+    name = fields.Char(
+        "الرقم المرجعي",readonly=True, index=True,store=True, default=_get_default_code
+    )
 
 
-    @api.onchange('contact_rep_id')
+    @api.onchange('client_res')
     def compute_display_name(self):
         self.contact_representative = ""
+    def print_installation_report(self):
+       data = {
+       'from_date': self.from_date,
+       'to_date': self.to_date
+       }
+       # docids = self.env['sale.order'].search([]).ids
+       return self.env.ref('surgi_maintenance.report_maintenance_install_card').report_action(None, data=data)
+
+
+class maint_installation(models.AbstractModel):
+    _name = 'report.maintenance.report_maintenance_install_card'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['pickup.installation'].browse(docids)
+        return {
+              'doc_ids': docids,
+              'doc_model': 'pickup.installation',
+              'docs': docs,
+              'data': data,
+              'get_something': self.get_something,
+        }
+    def get_something(self):
+        return 5
+
+
 
 
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.final'
 
-    contact_rep_id=fields.Many2one('res.partner',string='العميل',store=True,)
-    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', contact_rep_id)]",)
+    client_res=fields.Many2one('res.partner',string='العميل',store=True,)
+    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', client_res)]",)
     representative_mobile = fields.Char(string="التلفون",related='contact_representative.client_representative_mobile', store=True)
     pickup_date=fields.Date(string='تاريخ التسليم')
     product_forms = fields.One2many('product.forms','product_final',store=True)
@@ -105,10 +202,10 @@ class pick_up_Installation_form(models.Model):
     comments = fields.Text(string='ملاحظات')
 
     #################### location
-    street1 = fields.Char(related='contact_rep_id.street' ,string='الشارع')
-    street2 = fields.Char(related='contact_rep_id.street2'  ,string='الشارع')
-    city = fields.Char(related='contact_rep_id.city' ,string='المدينة')
-    country_id = fields.Char(related='contact_rep_id.country_id.name' ,string='البلد')
+    street1 = fields.Char(related='client_res.street' ,string='الشارع')
+    street2 = fields.Char(related='client_res.street2'  ,string='الشارع')
+    city = fields.Char(related='client_res.city' ,string='المدينة')
+    country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
 
 
 
@@ -117,18 +214,53 @@ class pick_up_Installation_form(models.Model):
 
 
 
-    @api.onchange('contact_rep_id')
+    def _get_default_code(self):
+        return self.env["ir.sequence"].next_by_code("pickup.final.code")
+
+    name = fields.Char(
+        "الرقم المرجعي",readonly=True, index=True,store=True, default=_get_default_code
+    )
+
+
+    # @api.multi
+    # def print_report(self):
+    #     return self.env.ref('').report_action(self)
+
+    @api.onchange('client_res')
     def compute_display_name(self):
         self.contact_representative = ""
 
+    def print_final_installation_report(self):
+       data = {
+       'from_date': self.from_date,
+       'to_date': self.to_date
+       }
+       # docids = self.env['sale.order'].search([]).ids
+       return self.env.ref('surgi_maintenance.report_maintenance_final_install_card').report_action(None, data=data)
+
+class maint_final_install(models.AbstractModel):
+    _name = 'report.maintenance.report_maintenance_final_install_card'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['pickup.final'].browse(docids)
+        return {
+              'doc_ids': docids,
+              'doc_model': 'pickup.final',
+              'docs': docs,
+              'data': data,
+              'get_something': self.get_something,
+        }
+    def get_something(self):
+        return 5
 
 
 
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.visit'
 
-    contact_rep_id=fields.Many2one('res.partner',string='العميل',store=True,)
-    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', contact_rep_id)]",)
+    client_res=fields.Many2one('res.partner',string='العميل',store=True,)
+    contact_representative = fields.Many2one('contact.representative',string='المندوب',store=True ,domain="[('contact_id', '=', client_res)]",)
     representative_mobile = fields.Char(string="التلفون",related='contact_representative.client_representative_mobile', store=True)
     pickup_date=fields.Date(string='تاريخ التسليم')
     product_forms = fields.One2many('product.forms','product_visit',store=True)
@@ -138,12 +270,23 @@ class pick_up_Installation_form(models.Model):
     comments2 = fields.Text(store=True,string='ملاحظات')
     comments3= fields.Text(store=True,string='ملاحظات')
     comments4= fields.Text(store=True,string='ملاحظات')
+    order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+
+
 
     #################### location
-    street1 = fields.Char(related='contact_rep_id.street' ,string='الشارع')
-    street2 = fields.Char(related='contact_rep_id.street2'  ,string='الشارع')
-    city = fields.Char(related='contact_rep_id.city' ,string='المدينة')
-    country_id = fields.Char(related='contact_rep_id.country_id.name' ,string='البلد')
+    street1 = fields.Char(related='client_res.street' ,string='الشارع')
+    street2 = fields.Char(related='client_res.street2'  ,string='الشارع')
+    city = fields.Char(related='client_res.city' ,string='المدينة')
+    country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
+
+    def _get_default_code(self):
+        return self.env["ir.sequence"].next_by_code("pickup.visit.code")
+
+    name = fields.Char(
+        "الرقم المرجعي",readonly=True, index=True,store=True, default=_get_default_code
+    )
 
 
 
@@ -168,10 +311,34 @@ class pick_up_Installation_form(models.Model):
 
 
 
-    @api.onchange('contact_rep_id')
+    @api.onchange('client_res')
     def compute_display_name(self):
         self.contact_representative = ""
 
+
+    def print_visit_report(self):
+       data = {
+       'from_date': self.from_date,
+       'to_date': self.to_date
+       }
+       # docids = self.env['sale.order'].search([]).ids
+       return self.env.ref('surgi_maintenance.report_maintenance_visit_card').report_action(None, data=data)
+
+class maint_final_visit(models.AbstractModel):
+    _name = 'report.maintenance.report_maintenance_visit_card'
+
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['pickup.visit'].browse(docids)
+        return {
+              'doc_ids': docids,
+              'doc_model': 'pickup.visit',
+              'docs': docs,
+              'data': data,
+              'get_something': self.get_something,
+        }
+    def get_something(self):
+        return 5
 
 
 
@@ -197,6 +364,12 @@ class product_forms(models.Model):
     product_sug=fields.Char('اﻷجراءت المقترحة')
     product_status_tec=fields.Char('حالة الجهاز الفنية')
 
+
+
+
+
+
+
 class product_template_infos(models.Model):
     _inherit = 'product.template'
 
@@ -213,3 +386,11 @@ class forms_specialization(models.Model):
 
 class forms_res_partner_emp(models.Model):
     _inherit = 'contact.representative'
+
+
+
+
+
+class sale_order(models.Model):
+    _inherit = "sale.order"
+    maintenance_id = fields.Many2one(comodel_name='pickup.installation', string="Related maintenance")
