@@ -27,7 +27,7 @@
 
                 </div>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
-                    <field name="after_sales_check"/>
+                    <field name="after_sales_check"  groups="surgi_maintenance.maintenance_viewer_group"/>
               </xpath>
             </field>
         </record>
