@@ -21,8 +21,6 @@ class operation_operation(models.Model):
 
     # ==================== Methods =========================
 
-    sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order")
-
     # get name
     @api.onchange('hospital_id')
     def _get_name(self):
@@ -312,7 +310,6 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
-            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -407,7 +404,6 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
-            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -536,7 +532,6 @@ class operation_operation(models.Model):
         values['order_line'] = []
         print("vals: " + str(values))
         sale_order = self.env['sale.order'].create(values)
-        self.sale_order_id = sale_order.id
         # sale_order.action_confirm()
 
     # open tree view of operation quantities using location of operation
@@ -545,6 +540,27 @@ class operation_operation(models.Model):
             compose_tree = self.env.ref('stock.view_stock_quant_tree', False)
             operations = self.env['stock.quant'].search(
                 [('location_id', '=', rec.location_id.id), ('quantity', '>', 0)])
+            list = []
+            for op in operations:
+                list.append(op.id)
+            return {
+                'name': "Operations Quantities",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                # 'field_parent': 'child_ids',
+                'res_model': 'stock.quant',
+                'views': [(compose_tree.id, 'tree')],
+                'view_id': compose_tree.id,
+                'target': 'current',
+                'domain': [('id', 'in', list)],
+            }
+
+    def action_view_sec_operation_quant(self):
+        for rec in self:
+            compose_tree = self.env.ref('stock.view_stock_quant_tree', False)
+            operations = self.env['stock.quant'].search(
+                [('location_id', '=', rec.sec_location_id.id), ('quantity', '>', 0)])
             list = []
             for op in operations:
                 list.append(op.id)
@@ -668,7 +684,7 @@ class operation_operation(models.Model):
     notes = fields.Text(string="Notes")
     # picking_type = fields.Many2one('stock.picking.type',string="Picking Type")
     warehouse_id = fields.Many2one('stock.warehouse', string="Warehouse", track_visibility='onchange')
-    operation_stock_branches = fields.Many2one(string='Branch', store=True)  # related='warehouse_id.stock_branches' ,
+    operation_stock_branches = fields.Many2one(related='warehouse_id.stock_branches', string='Branch', store=True)
     is_to_bool = fields.Boolean()
 
     component_ids = fields.Many2many('product.product', string="Components")  # ,compute='_auto_gender_generate'
@@ -694,6 +710,7 @@ class operation_operation(models.Model):
     op_area_manager = fields.Many2one(comodel_name='res.users', string="Area Manager", related='op_sales_area.user_id',
                                       readonly=True)
     location_id = fields.Many2one(comodel_name='stock.location', string='Location')
+    sec_location_id = fields.Many2one(comodel_name='stock.location', string='Secondary Location')
     is_operation_freeze = fields.Boolean(related="location_id.operation_location_freeze",
                                          string="Is Operation Location Freeze", store=True)
     product_lines = fields.One2many('product.operation.line', 'operation_id', string="products")
@@ -727,7 +744,7 @@ class operation_operation(models.Model):
     surgeon_id_second_confirmation = fields.Many2one('res.partner', string="Surgeon", track_visibility='onchange')
     # returner_responsible = fields.Many2one(comodel_name='res.users', string="Returner", default=_get_currunt_loged_user,track_visibility='onchange')
     qunat = fields.One2many('hanged.stock.quant', 'operation_id', 'Quants')
-    consumed_items_file = fields.Binary(string='Consumed Items')
+    consumed_items_file = fields.Binary(string='Consumed Items', store=True, track_visibility='always', attachment=True)
     # delivery_type = fields.Selection(string="Delivery Type", selection=[('delivery_exchange', 'Delivery Exchange'), ('sale_delivery', 'Sales Delivery'),('load_delivery','Loaded Delivery') ], required=False, )
     operation_delivery_type = fields.Selection(string="Delivery Type ", tracking=True,
                                                selection=[('delivery2customer', 'Delivery To Customer')
@@ -745,23 +762,44 @@ class operation_operation(models.Model):
     attachment_paitent = fields.Binary(string="Revised Implant", store=True)
     paitent_joint_pre_company = fields.Char(string='Joint Pre Company', store=True)
 
-    def _auto_gender_generate(self):
-        for rec in self:
-            if rec.component_ids.name in ["K09-FEMORAL COMPONENT LCCK RIGHT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["[K10] K10-FEMORAL COMPONENT LCCK LEFT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["K11-FEMORAL COMPONENT RHK RIGHT"]:
-                rec.is_to_bool = True
-            elif rec.component_ids.name in ["[K12] K12-FEMORAL COMPONENT RHK LEFT"]:
-                rec.is_to_bool = True
-        else:
 
-            rec.is_to_bool = False
+    @api.onchange("is_operation_freeze")
+    def check_field_is_operation_freeze_value(self):
+        if self.is_operation_freeze:
+            self.state = "confirm"
+        else :
+            self.write({'state': 'confirm', })
+
+
+    #     def create_mass(self):
+    #         vals={
+    #         "user_id":self.user_id.id,
+    #         "consumed_items_file":self.consumed_items_file
+    #         }
+    #         self.consumed_items_file.message_post(body="file has been edit")
+    #         self.env('operation.operation').create(vals)
+
+    @api.onchange("consumed_items_file")
+    def check_field_xlsx_value(self):
+        if self.consumed_items_file:
+            self.write({'state': 'net', })
+        elif not self.consumed_items_file:
+            self.write({'state': 'confirm', })
+
 
     def set_operation_location_freeze_from_operation(self):
         x = self.location_id.id
         # self.location_id.operation_location_freeze = True
+        self.write({'state': 'freezed', })
+
+    @api.onchange("is_operation_freeze")
+    def set_operation_location_unfreeze_from_operation(self):
+        if self.is_operation_freeze:
+            self.write({'state': 'freezed', })
+        elif not self.is_operation_freeze:
+            self.write({'state': 'confirm', })
+
+
         return {
             'name': 'You Will freeze Location with  these Products',
             'view_mode': 'form',
@@ -772,6 +810,19 @@ class operation_operation(models.Model):
             'res_id': self.location_id.id,
         }
         print("ss")
+
+    def create_Secondary_Location(self):
+        values = {
+            'name': self.location_id.name + '_Sec',
+            'location_id': self.hospital_id.operations_location.id,
+            'usage': "transit",
+            'is_operation_location': True,
+            'warehouse_id': self.warehouse_id.id,
+            # 'company_id': False,
+        }
+        res_location = self.env['stock.location'].create(values)
+        self.write({'sec_location_id': res_location.id})
+        pass
 
     # @api.onchange('is_operation_freeze')
     # def _onchange_is_operation_freeze(self):
@@ -939,14 +990,19 @@ class operation_operation(models.Model):
     # =============== wizard fields ================
     reason = fields.Many2one(comodel_name='operation.cancel.reason', string="Reason")
     description = fields.Text(string="Description")
-    oper_loc_quant = fields.Char("Operation Location Quant",
-                                 compute='get_operation_location_quant')  # , compute=get_operation_location_quant
+    oper_loc_quant = fields.Char("Operation Location Quant", compute='get_operation_location_quant')
+    sec_oper_loc_quant = fields.Char("Operation Location Quant",
+                                     compute='get_sec_operation_location_quant')  # , compute=get_operation_location_quant
+    # , compute=get_operation_location_quant
     oper_loc_hanged_quant = fields.Char("Operation Hanged Quants",
                                         compute='get_operation_location_hanged_quant')  # , compute=get_operation_location_hanged_quant
     has_oper_loc_hanged_quant = fields.Boolean(
         compute='get_operation_location_hanged_quant')  # compute=get_operation_location_hanged_quant
     has_oper_loc_quant = fields.Boolean(
-        compute='get_operation_location_quant')  # compute=get_operation_location_hanged_quant
+        compute='get_operation_location_quant')
+    has_sec_oper_loc_quant = fields.Boolean(
+        compute='get_sec_operation_location_quant')
+    # compute=get_operation_location_hanged_quant
     oper_loc_del = fields.Char("Operation Delivery Orders", compute='get_operation_del')  # , compute=get_operation_del
     oper_loc_so = fields.Char("Operation Delivery Orders", compute='get_operation_so')  # , compute=get_operation_so
     so_created = fields.Boolean(default=False)
@@ -989,3 +1045,4 @@ class stock_items_inherit_wizard(models.Model):
     prod_replacement = fields.Boolean(string='Empties')
 
     operation_id = fields.Many2one('operation.operation', string="Operation")
+

@@ -47,8 +47,8 @@
             </field>
         </record>
 
-        ////////////////////////////////////////////////////////////////////
-        <!--Inherit Tree View-->
+   ////////////////////////////////////////////////////////////////////
+          <!--Inherit Tree View-->
         <record id="stock_quant_operation_tree_inherit" model="ir.ui.view">
             <field name="name">stock.quant.operation.tree.inherit</field>
             <field name="model">operation.operation</field>
@@ -57,24 +57,24 @@
 
                 <xpath expr="//notebook" position="inside">
                     <page string="Add Items">
-                        <group>
+						<group>
                         </group>
 
-                        <field name="product_qunat_tab" string="product"
-                               widget="section_and_note_one2many">
+                                <field name="product_qunat_tab" string="product"
+                                    widget="section_and_note_one2many">
 
-                            <tree editable="bottom">
-                                <control>
-                                    <create name="add_relation_control" string="Add"/>
-                                </control>
-                                <field name="product_id" create="false" open="false" edit="false"/>
+                                    <tree editable="bottom" >
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+                                             <field name="product_id"   create="false" open="false" edit="false"/>
 
-                                <field name="internal"/>
-                                <field name="external"/>
-                                <field name="prod_replacement"/>
+                                            <field name="internal" />
+                                            <field name="external" />
+                                            <field name="prod_replacement" />
 
-                            </tree>
-                        </field>
+                                    </tree>
+                                </field>
 
                     </page>
                 </xpath>
@@ -119,6 +119,7 @@
                     <field name="product_id" string="Product" filter_domain="[('product_id','ilike', self)]"/>
                     <field name="lot_id" string="Lot" filter_domain="[('lot_id','ilike', self)]"/>
                     <field name="is_wh_user" string="Is WH User" filter_domain="[('lot_id','ilike', self)]"/>
+
                 </search>
             </field>
         </record>
@@ -152,24 +153,24 @@
             <field name="domain">[('is_operation_related','=',1),('is_wh_user','=',1)]</field>
         </record>
 
-        <!--        <act_window-->
-        <!--                id="act_new_move_to_delivery_order_sub_menu_stock_quant_list"-->
-        <!--                name="Delivery Order"-->
-        <!--                binding_model="stock.quant"-->
+<!--        <act_window-->
+<!--                id="act_new_move_to_delivery_order_sub_menu_stock_quant_list"-->
+<!--                name="Delivery Order"-->
+<!--                binding_model="stock.quant"-->
 
-        <!--                res_model="wizard_stock_quant"-->
-        <!--                view_mode="form"-->
-        <!--                target="new"-->
-        <!--                binding_views="list"-->
-        <!--        />-->
-        <!--        <record id="act_new_move_to_delivery_order_sub_menu_stock_quant_list_record" model="ir.actions.act_window">-->
-        <!--            <field name="name">Delivery Order</field>-->
-        <!--            <field name="res_model">wizard_stock_quant</field>-->
-        <!--            <field name="view_mode">form</field>-->
-        <!--            <field name="view_id" ref="stock.view_stock_quant_tree"/>-->
-        <!--            <field name="context">{}</field>-->
+<!--                res_model="wizard_stock_quant"-->
+<!--                view_mode="form"-->
+<!--                target="new"-->
+<!--                binding_views="list"-->
+<!--        />-->
+<!--        <record id="act_new_move_to_delivery_order_sub_menu_stock_quant_list_record" model="ir.actions.act_window">-->
+<!--            <field name="name">Delivery Order</field>-->
+<!--            <field name="res_model">wizard_stock_quant</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="stock.view_stock_quant_tree"/>-->
+<!--            <field name="context">{}</field>-->
 
-        <!--        </record>-->
+<!--        </record>-->
         <!--<act_window-->
         <act_window
                 id="act_new_back_to_warehouse_sub_menu_stock_quant_list"
@@ -200,48 +201,48 @@
         <!--/>-->
         <!--========================-->
 
-        <!--        <record id="form_views_wizard_po_open_wizard" model="ir.ui.view">-->
-        <!--            <field name="name">form_views_wizard_po_open_wizard_name</field>-->
-        <!--            <field name="model">wizard.po.open</field>-->
-        <!--            <field name="arch" type="xml">-->
-        <!--                <form string="PO">-->
-        <!--                    <sheet>-->
-        <!--                        <group>-->
-        <!--                            <field name="company_id"/>-->
-        <!--                            <field name="partner_id"/>-->
-        <!--                        </group>-->
-        <!--&lt;!&ndash;                        <button name="create_po123" type="object" string="Create OP"/>&ndash;&gt;-->
-        <!--                    </sheet>-->
-        <!--                    <footer>-->
-        <!--                        <button name="create_po" type="object" class="btn-primary"-->
-        <!--                                string="Create PO"/>-->
-        <!--                        <button special="cancel" class="btn-primary" string="Cancel"/>-->
-        <!--                    </footer>-->
-        <!--                </form>-->
-        <!--            </field>-->
-        <!--        </record>-->
+<!--        <record id="form_views_wizard_po_open_wizard" model="ir.ui.view">-->
+<!--            <field name="name">form_views_wizard_po_open_wizard_name</field>-->
+<!--            <field name="model">wizard.po.open</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="PO">-->
+<!--                    <sheet>-->
+<!--                        <group>-->
+<!--                            <field name="company_id"/>-->
+<!--                            <field name="partner_id"/>-->
+<!--                        </group>-->
+<!--&lt;!&ndash;                        <button name="create_po123" type="object" string="Create OP"/>&ndash;&gt;-->
+<!--                    </sheet>-->
+<!--                    <footer>-->
+<!--                        <button name="create_po" type="object" class="btn-primary"-->
+<!--                                string="Create PO"/>-->
+<!--                        <button special="cancel" class="btn-primary" string="Cancel"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
 
 
-        <!--        <record id="action_po_wizard_to_create" model="ir.actions.act_window">-->
-        <!--            <field name="name">Crate PO</field>-->
-        <!--            <field name="type">ir.actions.act_window</field>-->
-        <!--            <field name="res_model">wizard.po.open</field>-->
-        <!--            <field name="view_mode">form</field>-->
-        <!--&lt;!&ndash;            <field name="view_id" ref="form_views_wizard_po_open_wizard"/>&ndash;&gt;-->
+<!--        <record id="action_po_wizard_to_create" model="ir.actions.act_window">-->
+<!--            <field name="name">Crate PO</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">wizard.po.open</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--&lt;!&ndash;            <field name="view_id" ref="form_views_wizard_po_open_wizard"/>&ndash;&gt;-->
 
-        <!--            <field name="target">new</field>-->
-        <!--        </record>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
 
-        <!--        <record id="create_purchase_order_from_shipments" model="ir.actions.act_window">-->
-        <!--            <field name="name">Create Purchase Order</field>-->
-        <!--            <field name="type">ir.actions.act_window</field>-->
-        <!--            <field name="res_model">wizard.po.open</field>-->
-        <!--            <field name="view_mode">form</field>-->
-        <!--            <field name="target">new</field>-->
-        <!--            &lt;!&ndash;<field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>&ndash;&gt;-->
-        <!--            <field name="binding_model_id" ref="stock.model_stock_quant"/>-->
-        <!--            <field name="binding_view_types">list</field>-->
-        <!--        </record>-->
+<!--        <record id="create_purchase_order_from_shipments" model="ir.actions.act_window">-->
+<!--            <field name="name">Create Purchase Order</field>-->
+<!--            <field name="type">ir.actions.act_window</field>-->
+<!--            <field name="res_model">wizard.po.open</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="target">new</field>-->
+<!--            &lt;!&ndash;<field name="groups_id" eval="[(4,ref('sales_team.group_sale_salesman'))]"/>&ndash;&gt;-->
+<!--            <field name="binding_model_id" ref="stock.model_stock_quant"/>-->
+<!--            <field name="binding_view_types">list</field>-->
+<!--        </record>-->
 
 
         <!--        =====================================-->
@@ -258,16 +259,16 @@
                 binding_views="list"
         />
 
-        <!--        <act_window-->
-        <!--                id="act_new_move_to_hanged_warehouse_sub_menu_stock_quant_list"-->
-        <!--                name="Move To Hanged Warehouse"-->
-        <!--                binding_model="stock.quant"-->
+<!--        <act_window-->
+<!--                id="act_new_move_to_hanged_warehouse_sub_menu_stock_quant_list"-->
+<!--                name="Move To Hanged Warehouse"-->
+<!--                binding_model="stock.quant"-->
 
-        <!--                res_model="wizard_move_to_hanged_warehouse"-->
-        <!--                view_mode="form"-->
-        <!--                target="new"-->
-        <!--                binding_views="list"-->
-        <!--        />-->
+<!--                res_model="wizard_move_to_hanged_warehouse"-->
+<!--                view_mode="form"-->
+<!--                target="new"-->
+<!--                binding_views="list"-->
+<!--        />-->
 
 
         <menuitem id="custom_menu_quants" name="Operation Quantities" parent="stock.menu_stock_warehouse_mgmt"
