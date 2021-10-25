@@ -10,35 +10,34 @@
             <field name="arch" type="xml">
                 <div name="options" position="inside">
                     <div>
-                        <field name="operation_component"/>
-                        <label for="operation_component" string="Operation Component"/>
+                        <field name="operation_component" />
+                        <label for="operation_component" string="Operation Component" />
                     </div>
                     <div>
-                        <field name="need_xrays"/>
+                       <field name="need_xrays"/>
                         <label for="need_xrays" string="Need X-Ray"/>
 
                     </div>
-                </div>
+                 </div>
                 <!--add new page related to surgitech changes-->
                 <xpath expr="//notebook/page[@name='sales']" position="after">
                     <page string="Operation Component" attrs="{'invisible': [('operation_component', '=', False)]}">
                         <group>
-                            <group>
-                                <field name="is_op_acc"/>
-                            </group>
-                            <group>
-                                <field name="operation_type"
+                                <group>
+                                    <field name="is_op_acc"/>
+                                        </group>
+                        <group>
+                            <field name="operation_type"
                                        attrs="{'invisible': [('operation_component', '=', False)]}"/>
-                            </group>
-                            <group>
-                                <field name="tool_line_ids"
-                                       attrs="{'invisible': [('operation_component', '=', False)],}">
+                        </group>
+                        <group>
+                            <field name="tool_line_ids" attrs="{'invisible': [('operation_component', '=', False)],}">
                                     <tree editable="bottom">
                                         <field name="product_id" domain="[('is_tool','=',True)]"/>
                                         <field name="quantity"/>
                                     </tree>
                                 </field>
-                            </group>
+                        </group>
                         </group>
                     </page>
                 </xpath>
@@ -59,31 +58,31 @@
                         <label for="operation_component" string="Operation Component" />
                     </div>
                  </div>-->
-        <!--add new page related to surgitech changes-->
-        <!--<xpath expr="//notebook/page[@name='sales']" position="after">
-            <page string="Operation Component" attrs="{'invisible': [('operation_component', '=', False)]}">
-                <group>
+                <!--add new page related to surgitech changes-->
+                <!--<xpath expr="//notebook/page[@name='sales']" position="after">
+                    <page string="Operation Component" attrs="{'invisible': [('operation_component', '=', False)]}">
                         <group>
-                            <field name="is_op_acc"/>
-                                </group>
-                <group>
-                    <field name="operation_type"
-                               attrs="{'invisible': [('operation_component', '=', False)]}"/>
-                </group>
-                <group>
-                    <field name="tool_line_ids" attrs="{'invisible': [('operation_component', '=', False)],}">
-                            <tree editable="bottom">
-                                <field name="product_id" domain="[('is_tool','=',True)]"/>
-                                <field name="quantity"/>
-                            </tree>
-                        </field>
-                </group>
-                </group>
-            </page>
-        </xpath>
+                                <group>
+                                    <field name="is_op_acc"/>
+                                        </group>
+                        <group>
+                            <field name="operation_type"
+                                       attrs="{'invisible': [('operation_component', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="tool_line_ids" attrs="{'invisible': [('operation_component', '=', False)],}">
+                                    <tree editable="bottom">
+                                        <field name="product_id" domain="[('is_tool','=',True)]"/>
+                                        <field name="quantity"/>
+                                    </tree>
+                                </field>
+                        </group>
+                        </group>
+                    </page>
+                </xpath>
 
-    </field>
-</record>-->
+            </field>
+        </record>-->
 
         <!--search view of product.template-->
         <record model='ir.ui.view' id='view_surgitech_product_template_filter'>
@@ -107,14 +106,14 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="name" string="Operation Type"/>
-                            </group>
+                            <field name="name" string="Operation Type"/>
+                                </group>
                             <group>
-                                <field name="operation_type_category" string="Category"/>
-                            </group>
+                            <field name="operation_type_category" string="Category"/>
+                                </group>
                             <group>
-                                <field name="operation_product_line" string="Product Line"/>
-                            </group>
+                            <field name="operation_product_line" string="Product Line"/>
+                        </group>
                             <group>
                                 <field name="need_xrays_op_type" string="Need XRay"/>
                             </group>
