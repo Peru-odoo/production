@@ -38,19 +38,20 @@ class HRApplicant(models.Model):
     employee_date = fields.Datetime(related='emp_id.create_date', store=True)
 
 
-    @api.constrains('job_id')
+    @api.constrains('job_id','user_id')
     def _constrains_max_applications(self):
         for rec in self:
-            applications = self.search_count([('job_id', '=', rec.job_id.id),
-                                              ('user_id', '=', rec.user_id.id),
-                                              ('open_date', '=', rec.job_id.open_date),
-                                              ('close_date', '=', rec.job_id.close_date)])
-            if rec.job_id.recruiter_ids and applications:
-                max = rec.job_id.recruiter_ids.filtered(lambda m: m.user_id == rec.user_id).mapped(
-                    'required_application')[0]
-                if max and applications > max:
-                    raise ValidationError(_(
-                        'You cannot create an applicant You have reached the maximum number of requests, please contact the Human Resources Manager.'))
+            if rec.job_id.open_date and rec.job_id.close_date and rec.job_id and rec.user_id:
+                applications = self.search_count([('job_id', '=', rec.job_id.id),
+                                                  ('user_id', '=', rec.user_id.id),
+                                                  ('open_date', '=', rec.job_id.open_date),
+                                                  ('close_date', '=', rec.job_id.close_date)])
+                if rec.job_id.recruiter_ids and applications > 0:
+                    max = rec.job_id.recruiter_ids.filtered(lambda m: m.user_id == rec.user_id).mapped(
+                        'required_application')
+                    if max and applications > max[0]:
+                        raise ValidationError(_(
+                            'You cannot create an applicant You have reached the maximum number of requests, please contact the Human Resources Manager.'))
 
     def action_show_hiring_approval(self):
         self.ensure_one()

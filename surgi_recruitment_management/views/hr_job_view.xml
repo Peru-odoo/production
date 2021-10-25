@@ -32,26 +32,26 @@
                         <label for="name" class="oe_edit_only"/>
                         <h1>
                             <field name="name" placeholder="e.g. Sales Manager"
-                                   attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '!=', True)]}" force_save="1"/>
+                                   attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '!=', True)]}" force_save="1"/>
                         </h1>
                     </div>
                     <notebook>
                         <page string="Job Description">
                             <div attrs="{'invisible': [('state', '!=', 'recruit')]}">
                                 <label for="description"/>
-                                <field name="description" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                <field name="description" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
                             </div>
                         </page>
                         <page string="Recruitment">
                             <group>
                                 <group name="recruitment">
                                     <field name="company_id" options="{'no_create': True}"
-                                           groups="base.group_multi_company" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
-                                    <field name="department_id" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                           groups="base.group_multi_company" attrs="{'readonly': ['|',('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="department_id" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
                                 </group>
                             </group>
                             <group string="Recruiters">
-                                <field name="recruiter_ids" nolabel="1" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1">
+                                <field name="recruiter_ids" nolabel="1" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1">
                                     <tree editable="bottom">
                                         <field name="user_id"/>
                                         <field name="required_application"/>
@@ -63,24 +63,24 @@
                         <page name="info" string="Job Info">
                             <group>
                                 <group>
-                                    <field name="grade_id" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
-                                    <field name="replacement_period" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
-                                    <field name="open_date" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
-                                    <field name="close_date" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
-                                    <field name="resource_id" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="grade_id" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="replacement_period" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="open_date" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="close_date" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="resource_id" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
                                     <label for="deduction" string="Deduction"/>
                                     <div class="o_row">
-                                        <field name="deduction" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                        <field name="deduction" attrs="{'readonly': [('job_state', '=', 'gm'),('is_edit_group', '=', False)]}" force_save="1"/>
                                         Type:
-                                        <field name="deduction_type" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                        <field name="deduction_type" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
                                     </div>
                                     <field name="max_application"/>
                                 </group>
                                 <group>
-                                    <field name="ceiling_count" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                    <field name="ceiling_count" attrs="{'readonly': [('job_state', '=', 'gm'),('is_edit_group', '=', False)]}" force_save="1"/>
                                     <field name="no_of_employee"/>
                                     <field name="no_of_recruitment" string='Current Vacancies'
-                                           attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
+                                           attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1"/>
                                     <field name="expected_employees"/>
                                     <field name="all_application_count" string="Current Applications"/>
                                     <field name="current_pipeline"/>
@@ -96,7 +96,7 @@
                             </group>
                         </page>
                         <page string="KPI">
-                            <field name="kpi_line_ids" attrs="{'readonly': [('state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1">
+                            <field name="kpi_line_ids" attrs="{'readonly': [('job_state', '=', 'gm'), ('is_edit_group', '=', False)]}" force_save="1">
                                 <tree editable="bottom">
                                     <field name="name" required="1"/>
                                     <field name="measurement_id" required="1"/>
