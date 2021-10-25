@@ -763,6 +763,7 @@ class operation_operation(models.Model):
     paitent_joint_pre_company = fields.Char(string='Joint Pre Company', store=True)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     @api.onchange("is_operation_freeze")
     def check_field_is_operation_freeze_value(self):
@@ -772,6 +773,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
     #     def create_mass(self):
@@ -786,13 +789,17 @@ class operation_operation(models.Model):
     def check_field_xlsx_value(self):
         if self.consumed_items_file:
             self.write({'state': 'net', })
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 
     def set_operation_location_freeze_from_operation(self):
         x = self.location_id.id
         # self.location_id.operation_location_freeze = True
         self.write({'state': 'freezed', })
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     @api.onchange("is_operation_freeze")
     def set_operation_location_unfreeze_from_operation(self):
@@ -802,6 +809,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
         return {
