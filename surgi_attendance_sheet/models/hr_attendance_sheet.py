@@ -299,6 +299,10 @@ class AttendanceSheet(models.Model):
                             if shiftselected:
                                 print("break")
                                 break
+                    if not shiftselected:
+                        work_intervals = calendar_id.att_get_work_intervals(
+                            day_start,
+                            day_end, tz)
 
 
 
@@ -311,7 +315,6 @@ class AttendanceSheet(models.Model):
                         day_start,
                         day_end, tz)
                 if not attendance_intervals:
-
                     attendance_intervals = self.get_attendance_intervals(emp,
                                                                          day_start,
                                                                          day_end,
@@ -667,7 +670,7 @@ class AttendanceSheet(models.Model):
                                                                             0][
                                                                             0]).total_seconds() / 3600)
                                 else:
-                                  #  raise warnings("22")
+
                                     late_in_interval = (
                                         work_interval[0],
                                         att_work_intervals[0][0])
@@ -731,7 +734,7 @@ class AttendanceSheet(models.Model):
                                             late_in += late_clean[1] - \
                                                        late_clean[0]
                                     else:
-                                        
+
                                         late_in = late_in_interval[1] - \
                                                   late_in_interval[0]
                             float_overtime = overtime.total_seconds() / 3600
