@@ -78,7 +78,6 @@
                     <!--<button name="action_confirm_sales" string="Confirm" type="object" attrs="{'invisible': [('state','!=','draft')]}"/>-->
                     <field name="has_oper_loc_hanged_quant" invisible="1"/>
                     <field name="has_oper_loc_quant" invisible="1"/>
-
                     <field name="so_created" invisible="1"/>
                     <button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object"
                             attrs="{'invisible': ['|','|',('has_oper_loc_hanged_quant','=',False ),('so_created','=',True),('state','=','draft')]}"/>
@@ -94,7 +93,6 @@
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <field name="invoice_id" invisible="1"/>
-
                         <button name="action_view_operation_invoice" icon="fa-file-text" type="object"
                                 class="oe_stat_button" attrs="{'invisible': [('invoice_id','=',False)]}">View Invoice
                         </button>
