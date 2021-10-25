@@ -763,12 +763,12 @@ class operation_operation(models.Model):
     paitent_joint_pre_company = fields.Char(string='Joint Pre Company', store=True)
 
 
-    @api.onchange("is_operation_freeze")
-    def check_field_is_operation_freeze_value(self):
-        if self.is_operation_freeze:
-            self.state = "confirm"
-        else :
-            self.write({'state': 'confirm', })
+    # @api.onchange("is_operation_freeze")
+    # def check_field_is_operation_freeze_value(self):
+    #     if self.is_operation_freeze:
+    #         self.state = "confirm"
+    #     else :
+    #         self.write({'state': 'confirm', })
 
 
     #     def create_mass(self):
@@ -783,8 +783,8 @@ class operation_operation(models.Model):
     def check_field_xlsx_value(self):
         if self.consumed_items_file:
             self.write({'state': 'net', })
-        elif not self.consumed_items_file:
-            self.write({'state': 'confirm', })
+        # elif not self.consumed_items_file:
+        #     self.write({'state': 'confirm', })
 
 
     def set_operation_location_freeze_from_operation(self):
@@ -792,12 +792,12 @@ class operation_operation(models.Model):
         # self.location_id.operation_location_freeze = True
         self.write({'state': 'freezed', })
 
-    @api.onchange("is_operation_freeze")
-    def set_operation_location_unfreeze_from_operation(self):
-        if self.is_operation_freeze:
-            self.write({'state': 'freezed', })
-        elif not self.is_operation_freeze:
-            self.write({'state': 'confirm', })
+    # @api.onchange("is_operation_freeze")
+    # def set_operation_location_unfreeze_from_operation(self):
+    #     if self.is_operation_freeze:
+    #         self.write({'state': 'freezed', })
+    #     elif not self.is_operation_freeze:
+    #         self.write({'state': 'confirm', })
 
 
         return {
