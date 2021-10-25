@@ -299,6 +299,10 @@ class AttendanceSheet(models.Model):
                             if shiftselected:
                                 print("break")
                                 break
+                    if not shiftselected:
+                        work_intervals = calendar_id.att_get_work_intervals(
+                            day_start,
+                            day_end, tz)
 
 
 
@@ -311,7 +315,6 @@ class AttendanceSheet(models.Model):
                         day_start,
                         day_end, tz)
                 if not attendance_intervals:
-
                     attendance_intervals = self.get_attendance_intervals(emp,
                                                                          day_start,
                                                                          day_end,
