@@ -177,10 +177,14 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <page string="Components">
                                 <button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
                                                                 <field name="consumed_items_file"  clear="0"/>
 
+=======
+                            <page string="Components"><button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
                             <page string="Components"><button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
 >>>>>>> parent of 4371562 (surgi_operation)

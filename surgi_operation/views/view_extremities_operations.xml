@@ -77,6 +77,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+                                                                                                <field name="has_sec_oper_loc_quant" invisible="1"/>
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
                                                                                                 <field name="has_sec_oper_loc_quant" invisible="1"/>
 >>>>>>> parent of 4371562 (surgi_operation)
@@ -92,6 +96,7 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <field name="invoice_id" invisible="1"/>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 =======
@@ -118,10 +123,44 @@
                                 <field name="sequence" readonly="1"/>
                             </h1>
                         </div>
+=======
+                                                                                                               <button  name="action_view_sec_operation_quant" type="object" class="oe_stat_button" icon="fa-th">
+                                <field string="Second Quants" name="sec_oper_loc_quant" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+                            <button name="action_view_operation_invoice" icon="fa-file-text" type="object" class="oe_stat_button" attrs="{'invisible': [('invoice_id','=',False)]}">View Invoice</button>
+                            <button name="action_view_operation_hanged_quant" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field string="Operation Hanged Quants" name="oper_loc_hanged_quant" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+                            <button name="action_view_operation_quant" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field string="Operation Quant" name="oper_loc_quant" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+                            <button name="action_view_operation_del" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field string="Stock Pickings" name="oper_loc_del" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+                            <button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('so_created','=',False )]}">
+                                <field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sequence" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <field name="name" string="Name" invisible="1"/>
+                        </group>
+
+                        <group>
+                            <group>
+                                <field name="start_datetime" string="Date Start" required="True" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                                <field name="operation_type" invisible="False" required="1" domain="[('operation_product_line','=ilike','Extremities')]" attrs="{'readonly':[('state', 'not in', ['draft'])]}" options="{'no_create': True, 'no_open': True}"/>
+>>>>>>> parent of 4371562 (surgi_operation)
 
 =======
                                                                                                 <field name="has_sec_oper_loc_quant" invisible="1"/>
 
+<<<<<<< HEAD
                         <field name="so_created" invisible="1"/>
                         <button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object" attrs="{'invisible': ['|','|',('has_oper_loc_hanged_quant','=',False ),('so_created','=',True),('state','=','draft')]}"/>
                         <button name="create_delivery_sales_order" type="object" string="Create SO-OL" icon="fa-cart-plus" attrs="{'invisible': ['|','|','|','|',('is_operation_freeze', '=', False),('operation_delivery_type','=',False),('has_oper_loc_quant','=',False),('so_created','=',True),('state','=','draft')]}"/>
@@ -232,10 +271,30 @@
                         </group>
                         <separator string="Patient"/>
                         <group>
+=======
+                            </group>
+                            <group>
+                                <field name="op_type" required="1"/>
+                                <field name="operation_delivery_type" attrs="{'invisible': [('so_created', '=',True)]}"/>
+                                <field name="tender_so" widget="selection" attrs="{'invisible': [('op_type', '!=', 'tender')]}" />
+                                <field name="supply_so" widget="selection" attrs="{'invisible': [('op_type', '!=', 'supply_order')],'required': [('op_type', '=', 'supply_order')]}" />
+                                <field name="patient_national_id" attrs="{'invisible': [('op_type', '!=', 'tender')],'required': [('op_type', '=', 'tender')]}" options="{'no_create': True, 'no_open': True}"/>
+                            </group>
+                            <group>
+                                <field name="responsible" invisible="False" readonly="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="op_sales_area" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="op_area_manager" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <!--<field name="sales_team_operation" widget="many2many_checkboxes" invisible="False" readonly="1" domain="[('member_ids','like',uid)]" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> -->
+                            </group>
+                        </group>
+                        <separator string="Patient"/>
+                        <group>
+>>>>>>> parent of 4371562 (surgi_operation)
                             <group>
                                 <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}"/>
                                 <field name="patient_national_identification" invisible ="1"/>
                                 <field name="side" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+<<<<<<< HEAD
                         </group>
                             <group>
                                 <field name="patient_gender" required="False" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
@@ -249,6 +308,13 @@
                                 <field name="patient_name" attrs="{'readonly': [('op_type', '=', 'tender')]}"/>
                                 <field name="patient_national_identification" invisible ="1"/>
                                 <field name="side" required="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/>
+                        </group>
+                            <group>
+                                <field name="patient_gender" required="False" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
+                            </group>
+                        </group>
+>>>>>>> parent of 4371562 (surgi_operation)
+=======
                         </group>
                             <group>
                                 <field name="patient_gender" required="False" attrs="{'readonly':[('state', 'not in', ['draft'])]}"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->

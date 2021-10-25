@@ -765,6 +765,7 @@ class operation_operation(models.Model):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     @api.onchange("is_operation_freeze")
     def check_field_is_operation_freeze_value(self):
@@ -774,6 +775,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======
@@ -794,7 +797,10 @@ class operation_operation(models.Model):
             self.write({'state': 'net', })
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======
@@ -808,6 +814,7 @@ class operation_operation(models.Model):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     @api.onchange("is_operation_freeze")
     def set_operation_location_unfreeze_from_operation(self):
         if self.is_operation_freeze:
@@ -816,6 +823,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======

@@ -140,9 +140,13 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                            groups="stock.group_stock_user"  attrs="{'invisible':['|','|',('state', '!=', 'net'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"
 
                         />
+=======
+                            attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
                             attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
 >>>>>>> parent of 4371562 (surgi_operation)
@@ -176,7 +180,10 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======

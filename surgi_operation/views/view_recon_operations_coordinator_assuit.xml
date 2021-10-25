@@ -81,8 +81,11 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 <field name="has_sec_oper_loc_quant" invisible="1"/>
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======
@@ -98,6 +101,7 @@
                         <button name="action_confirm_sales" string="Confirm" type="object" attrs="{'invisible': [('state','!=','draft')]}"/>
                         <field name="state" widget="statusbar" attrs="{'invisible': [('state', 'not in', ['draft','done','cancel'])]}"/>
                         <!--<field name="stage_id" widget="statusbar" attrs="{'invisible': [('state', 'in', ['draft','done','cancel'])]}" clickable="True"/>-->
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                                             <button string="Create Sc. Location" name="create_Secondary_Location" type="object"
@@ -204,6 +208,32 @@
                         </group>
 
                         <group>
+=======
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_operation_quant" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field string="Operation Quant" name="oper_loc_quant" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+                            <button name="action_view_operation_del" type="object" class="oe_stat_button" icon="fa-building-o">
+                                <field string="Stock Pickings" name="oper_loc_del" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+<!--                            <button name="action_view_operation_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('so_created','=',False )]}">-->
+<!--                                <field name="oper_loc_so" string="Sale Order" modifiers="{'readonly': true}" widget="statinfo"/>-->
+<!--                            </button>-->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="sequence" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <field name="name" string="Name" invisible="1"/>
+                        </group>
+
+                        <group>
+>>>>>>> parent of 4371562 (surgi_operation)
                             <group>
                                 <field name="start_datetime" string="Date Start" required="True" readonly="1"/>
                                 <field name="operation_type" invisible="False" required="1" domain="[('operation_type_category','like','surgitech recon')]" readonly="1" options="{'no_create': True, 'no_open': True}"/>
@@ -232,6 +262,7 @@
                         </group>
                             <group>
                                 <field name="patient_gender" required="False" readonly="1"/> <!--attrs="{'required': [('is_patient','=',False)],'readonly': [('is_patient','=',True)]}"-->
+<<<<<<< HEAD
 
 =======
                     </header>
@@ -290,6 +321,11 @@
 >>>>>>> parent of 4371562 (surgi_operation)
                             </group>
                         </group>
+=======
+
+                            </group>
+                        </group>
+>>>>>>> parent of 4371562 (surgi_operation)
                         <separator string="Surgeon"/>
                         <group>
                             <group>
@@ -299,6 +335,7 @@
                                 <field name="hospital_sales_man" />
                             </group>
                             <group>
+<<<<<<< HEAD
 
                                 <!--<field name="surgeon_id" required="1" domain="[('is_surgeon','=',True)]"/>-->
                                 <field name="surgeon_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
@@ -403,6 +440,21 @@
                             </group>
                             <group>
 >>>>>>> parent of 4371562 (surgi_operation)
+=======
+
+                                <!--<field name="surgeon_id" required="1" domain="[('is_surgeon','=',True)]"/>-->
+                                <field name="surgeon_id" readonly="1" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="payment_methods" readonly="1"/>
+                                <field name="operation_price" invisible="1"/>
+                            </group>
+                        </group>
+                        <separator string="Supply"/>
+                        <group>
+                            <group>
+                                <field name="warehouse_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state','not in', ['draft'])]}"/>
+                            </group>
+                            <group>
+>>>>>>> parent of 4371562 (surgi_operation)
                                 <field name="location_id" invisible="1" readonly="1" attrs="{'invisible':[('location_id','=',False)]}"/>
                             </group>
                             <group>
@@ -412,6 +464,9 @@
                         <separator string="Tags"/>
                         <group>
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 4371562 (surgi_operation)
+=======
 >>>>>>> parent of 4371562 (surgi_operation)
 =======
 >>>>>>> parent of 4371562 (surgi_operation)
@@ -422,10 +477,14 @@
                         <notebook>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <page string="Components">
                                 <button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
                                                                 <field name="consumed_items_file"  clear="0"/>
 
+=======
+                            <page string="Components"><button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
+>>>>>>> parent of 4371562 (surgi_operation)
 =======
                             <page string="Components"><button name="update_operation_type" string="Update Components" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>
 >>>>>>> parent of 4371562 (surgi_operation)
@@ -453,6 +512,7 @@
                                     <field name="component_ids" string="Accessories" widget="many2many_checkboxes" domain="[('operation_component','=',False),('is_op_acc','=',True)]"/> #('tag_ids','ilike','accessories')
                                 </group>
                             </page>-->
+<<<<<<< HEAD
 
                             <page string="More Items">
 
@@ -499,12 +559,17 @@
                                     <field name="component_ids" string="Accessories" widget="many2many_checkboxes" domain="[('operation_component','=',False),('is_op_acc','=',True)]"/> #('tag_ids','ilike','accessories')
                                 </group>
                             </page>-->
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
 
                             <page string="More Items">
 
                             </page>
                             <page string="Other Info.">
 
+<<<<<<< HEAD
+>>>>>>> parent of 4371562 (surgi_operation)
+=======
 >>>>>>> parent of 4371562 (surgi_operation)
                             </page>
                             <page string="Cancel Reason" attrs="{'invisible':[('state','!=','cancel')]}">
