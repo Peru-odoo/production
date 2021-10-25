@@ -137,25 +137,9 @@
                             attrs="{'invisible':['|',('is_operation_freeze', '!=', False),('location_id','=',False)]}"/>
                         <field name="invoice_id" invisible="1"/>
                         <button string="Create Sc. Location" name="create_Secondary_Location" type="object"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                            groups="stock.group_stock_user"  attrs="{'invisible':['|','|',('state', '!=', 'net'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"
 
                         />
-=======
-                            attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
->>>>>>> parent of 4371562 (surgi_operation)
-=======
-                            attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
->>>>>>> parent of 4371562 (surgi_operation)
-=======
-                            attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
->>>>>>> parent of 4371562 (surgi_operation)
-=======
-                            attrs="{'invisible':['|','|',('state', '!=', 'confirm'),('consumed_items_file','in',[False,'null']),('sec_location_id','!=',False)]}"/>    
->>>>>>> parent of 4371562 (surgi_operation)
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box" >
@@ -177,19 +161,7 @@
                             </button>
                             <field name="invoice_id" invisible="1"/>
                             <button name="action_view_operation_invoice" icon="fa-file-text" type="object" class="oe_stat_button" attrs="{'invisible': [('invoice_id','=',False)]}">View Invoice</button>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of 4371562 (surgi_operation)
-=======
->>>>>>> parent of 4371562 (surgi_operation)
-=======
->>>>>>> parent of 4371562 (surgi_operation)
-=======
->>>>>>> parent of 4371562 (surgi_operation)
                         </div>
                         <div class="oe_title">
                             <h1>
