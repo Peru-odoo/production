@@ -74,6 +74,10 @@
                         <!--<button name="action_done_sales" string="Done" type="object" attrs="{'invisible': [('state','!=','confirm')]}"/>-->
                         <field name="has_oper_loc_hanged_quant" invisible="1"/>
                         <field name="has_oper_loc_quant" invisible="1"/>
+<<<<<<< HEAD
+=======
+                                                                        <field name="has_sec_oper_loc_quant" invisible="1"/>
+>>>>>>> parent of 4371562 (surgi_operation)
 
                         <field name="so_created" invisible="1"/>
                         <button name="create_sales_order" string="Create SO" icon="fa-cart-plus" type="object" attrs="{'invisible': ['|','|',('has_oper_loc_hanged_quant','=',False ),('so_created','=',True),('state','=','draft')]}"/>
@@ -84,7 +88,13 @@
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <field name="invoice_id" invisible="1"/>
+<<<<<<< HEAD
 
+=======
+                                                                                                               <button  name="action_view_sec_operation_quant" type="object" class="oe_stat_button" icon="fa-th">
+                                <field string="Second Quants" name="sec_oper_loc_quant" widget="statinfo" modifiers="{'readonly': true}"/>
+                            </button>
+>>>>>>> parent of 4371562 (surgi_operation)
                             <button name="action_view_operation_invoice" icon="fa-file-text" type="object" class="oe_stat_button" attrs="{'invisible': [('invoice_id','=',False)]}">View Invoice</button>
                             <button name="action_view_operation_hanged_quant" type="object" class="oe_stat_button" icon="fa-building-o">
                                 <field string="Operation Hanged Quants" name="oper_loc_hanged_quant" widget="statinfo" modifiers="{'readonly': true}"/>

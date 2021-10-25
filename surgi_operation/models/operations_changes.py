@@ -762,6 +762,7 @@ class operation_operation(models.Model):
     attachment_paitent = fields.Binary(string="Revised Implant", store=True)
     paitent_joint_pre_company = fields.Char(string='Joint Pre Company', store=True)
 
+<<<<<<< HEAD
 
     @api.onchange("is_operation_freeze")
     def check_field_is_operation_freeze_value(self):
@@ -771,6 +772,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
     #     def create_mass(self):
     #         vals={
     #         "user_id":self.user_id.id,
@@ -783,8 +786,6 @@ class operation_operation(models.Model):
     def check_field_xlsx_value(self):
         if self.consumed_items_file:
             self.write({'state': 'net', })
-        elif not self.consumed_items_file:
-            self.write({'state': 'confirm', })
 
 
     def set_operation_location_freeze_from_operation(self):
@@ -792,6 +793,7 @@ class operation_operation(models.Model):
         # self.location_id.operation_location_freeze = True
         self.write({'state': 'freezed', })
 
+<<<<<<< HEAD
     @api.onchange("is_operation_freeze")
     def set_operation_location_unfreeze_from_operation(self):
         if self.is_operation_freeze:
@@ -800,6 +802,8 @@ class operation_operation(models.Model):
             self.write({'state': 'confirm', })
 
 
+=======
+>>>>>>> parent of 4371562 (surgi_operation)
         return {
             'name': 'You Will freeze Location with  these Products',
             'view_mode': 'form',
