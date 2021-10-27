@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_surgi_regularity_surgi_regularity,surgi_regularity.surgi_regularity,model_surgi_regularity_surgi_regularity,base.group_user,1,1,1,1
+access_acual_munfacter_id,access_acual_munfacter,model_acual_munfacter,,1,1,1,1

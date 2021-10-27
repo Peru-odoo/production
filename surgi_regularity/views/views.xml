@@ -22,7 +22,7 @@
                   <field name="desc_regul"/>
     <field name="Product_class"/>
     <field name="leagal_munfacter"/>
-    <field name="acual_munfacter"/>
+    <field name="acual_munfacter" widget="many2many_tags"/>
 
 </group>
 
