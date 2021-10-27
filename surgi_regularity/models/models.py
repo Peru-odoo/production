@@ -42,6 +42,10 @@ class product_template_changes(models.Model):
     country_of_orgin = fields.Many2many("res.country","name",string="Country of Orgin")
 
 
+class country_template_changes(models.Model):
+    _name = 'res.country'
+
+
 class product_template_changes(models.Model):
     _name = 'acual.munfacter'
 
