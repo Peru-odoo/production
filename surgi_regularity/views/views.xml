@@ -6,6 +6,7 @@
                 id="regularity_menuitem"
                 name="Regularity"
                 sequence="-1"
+                groups="surgi_regularity.reg_viewer_group"
                 />
       <!-- Product view modification -->
       <record model="ir.ui.view" id="product_template_only_form_view_reglau">
@@ -18,7 +19,7 @@
                   <page string="IS Medical"  attrs="{'invisible': [('is_medical', '=', False)]}">
 <group>
 
-                  <field name="strlize_field"/>
+    <field name="strlize_field"/>
     <field name="item_num_ref"/>
     <field name="label_ref_num"/>
     <field name="country_of_orgin"/>

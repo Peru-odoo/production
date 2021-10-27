@@ -10,7 +10,7 @@
 
                 <div name="options" position="inside">
                     <div>
-                        <field name="is_medical"/>
+                        <field name="is_medical" groups="surgi_regularity.reg_viewer_group"/>
                         <label for="is_medical" string="Medical Product"/>
                     </div>
                     <div>

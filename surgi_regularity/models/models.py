@@ -62,6 +62,6 @@ class StockInherit(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'product.template',
             'type': 'ir.actions.act_window',
-            'context': {'edit':0, 'create': 0}
+            'context': {'edit':1, 'create': 0}
         }
         return value
