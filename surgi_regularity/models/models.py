@@ -59,7 +59,7 @@ class StockInherit(models.Model):
         value = {
             'name': 'Product',
             'view_type': 'form',
-            'view_mode': 'tree,form',
+            'view_mode': 'kanban,tree,form',
             'res_model': 'product.template',
             'type': 'ir.actions.act_window',
             'context': {'edit':1, 'create': 0}
