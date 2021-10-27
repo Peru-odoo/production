@@ -8,7 +8,7 @@
           <field name="arch" type="xml">
 
               <notebook position="inside">
-                  <page string="IS Medical">
+                  <page string="IS Medical"  attrs="{'invisible': [('is_medical', '=', False)]}">
 <group>
 
                   <field name="strlize_field"/>
