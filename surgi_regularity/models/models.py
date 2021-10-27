@@ -45,4 +45,22 @@ class product_template_changes(models.Model):
 class product_template_changes(models.Model):
     _name = 'acual.munfacter'
 
-    name= fields.Cher()
+
+
+class StockInherit(models.Model):
+    _inherit = 'product.template'
+
+    @api.model
+    def button_stock_action(self):
+        # ctx = dict(
+        #     create=False,
+        # )
+        value = {
+            'name': 'Product',
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'product.template',
+            'type': 'ir.actions.act_window',
+            'context': {'edit':0, 'create': 0}
+        }
+        return value
