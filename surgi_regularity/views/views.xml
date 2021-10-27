@@ -19,15 +19,18 @@
 
               <notebook position="inside">
                   <page string="IS Medical"  attrs="{'invisible': [('is_medical', '=', False)]}">
+                      <div>
 <group>
 
     <field name="strlize_field"/>
     <field name="item_num_ref"/>
     <field name="label_ref_num"/>
-    <field name="country_of_orgin"/>
+    <field name="country_of_orgin" widget="many2many_tags"/>
 
 </group>
-<group>
+                      </div>
+<div>
+                      <group>
 
                   <field name="desc_regul"/>
     <field name="Product_class"/>
@@ -36,7 +39,7 @@
 
 </group>
 
-
+</div>
                   </page>
               </notebook>
           </field>
