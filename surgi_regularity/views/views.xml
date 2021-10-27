@@ -1,0 +1,38 @@
+<odoo>
+  <data>
+      <!-- Product view modification -->
+      <record model="ir.ui.view" id="product_template_only_form_view_reglau">
+          <field name="name">product.template.reglau.form</field>
+          <field name="model">product.template</field>
+          <field name="inherit_id" ref="product.product_template_only_form_view"/>
+          <field name="arch" type="xml">
+
+              <notebook position="inside">
+                  <page string="IS Medical">
+<group>
+
+                  <field name="strlize_field"/>
+    <field name="item_num_ref"/>
+    <field name="label_ref_num"/>
+    <field name="country_of_orgin"/>
+
+</group>
+<group>
+
+                  <field name="desc_regul"/>
+    <field name="Product_class"/>
+    <field name="leagal_munfacter"/>
+    <field name="acual_munfacter"/>
+
+</group>
+
+
+                  </page>
+              </notebook>
+          </field>
+      </record>
+
+
+
+  </data>
+</odoo>
