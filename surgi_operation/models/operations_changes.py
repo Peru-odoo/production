@@ -538,7 +538,7 @@ class operation_operation(models.Model):
         values['order_line'] = []
         print("vals: " + str(values))
         sale_order = self.env['sale.order'].create(values)
-                self.sale_order_id = sale_order.id
+        self.sale_order_id = sale_order.id
         # sale_order.action_confirm()
 
     # open tree view of operation quantities using location of operation
