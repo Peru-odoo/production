@@ -19,7 +19,7 @@
 
               <notebook position="inside">
                   <page string="IS Medical"  attrs="{'invisible': [('is_medical', '=', False)]}">
-                      <div>
+                      <div class="oe_left">
 <group>
 
     <field name="strlize_field"/>
@@ -29,7 +29,7 @@
 
 </group>
                       </div>
-<div>
+<div class="oe_right">
                       <group>
 
                   <field name="desc_regul"/>
