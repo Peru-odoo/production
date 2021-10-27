@@ -101,7 +101,7 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                                                        <button  name="action_view_sec_operation_quant" type="object" class="oe_stat_button" icon="fa-th">
+                            <button  name="action_view_sec_operation_quant" type="object" class="oe_stat_button" icon="fa-th">
                                 <field string="Second Quants" name="sec_oper_loc_quant" widget="statinfo" modifiers="{'readonly': true}"/>
                             </button>
                             <button name="action_view_operation_quant" type="object" class="oe_stat_button" icon="fa-building-o">
@@ -179,7 +179,7 @@
                             <group>
 
                                 <field name="location_id" invisible="1" readonly="1" attrs="{'invisible':[('location_id','=',False)]}"/>
-                                <field name="sec_location_id" attrs="{'invisible':[('sec_location_id','=',False)]}"/>
+                                <field name="sec_location_id" invisible="1"/>
                                 <field name="is_operation_freeze" attrs="{'invisible':[('location_id','=',False)]}"/>
 
                             </group>
