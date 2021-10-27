@@ -35,8 +35,8 @@ class product_template_changes(models.Model):
     label_ref_num = fields.Char("Label Reference")
     desc_regul = fields.Char(related="name",readonly=False,string="Descrption")
     Product_class=fields.Selection([
-        ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),string="Product_class"
-    ])
+        ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
+    ],string="Product_class")
     leagal_munfacter=fields.Char("legal Manufacturer")
     acual_munfacter = fields.Many2one("Actual Manufacturer")
     country_of_orgin = fields.Many2one("res.country",string="Country of Orgin")
