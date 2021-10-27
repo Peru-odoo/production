@@ -21,7 +21,10 @@ class operation_operation(models.Model):
 
     # ==================== Methods =========================
 
-    # get name
+
+    sale_order_id = fields.Many2one(comodel_name="sale.order", string="Sale Order")
+
+    #get name
     @api.onchange('hospital_id')
     def _get_name(self):
         for rec in self:
@@ -149,6 +152,7 @@ class operation_operation(models.Model):
             'location_id': res_location.id,
             'name': self.sequence
         })
+
 
     #        operations = self.env['operation.operation'].search(['|', ('state', '=', 'confirm'), ('state', '=', 'done')])
     #        for operation in operations:
@@ -310,6 +314,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id=sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -404,6 +409,7 @@ class operation_operation(models.Model):
             values['order_line'] = order_lines
             print("vals: " + str(values))
             sale_order = self.env['sale.order'].create(values)
+            self.sale_order_id = sale_order.id
             self.so_created = True
             sale_order.action_confirm()
             sale_order.changed_line_ids()
@@ -532,6 +538,7 @@ class operation_operation(models.Model):
         values['order_line'] = []
         print("vals: " + str(values))
         sale_order = self.env['sale.order'].create(values)
+                self.sale_order_id = sale_order.id
         # sale_order.action_confirm()
 
     # open tree view of operation quantities using location of operation
