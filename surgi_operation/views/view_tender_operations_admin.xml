@@ -130,6 +130,7 @@
                             <group>
                                 <field name="start_datetime" string="Date Start" required="True"/>
                                 <field name="operation_type" invisible="False" required="1"/>
+                                <field name="consumed_items_file"  clear="0"/>
 
 
                             </group>
