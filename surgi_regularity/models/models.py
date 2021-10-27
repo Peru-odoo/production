@@ -36,7 +36,7 @@ class product_template_changes(models.Model):
     desc_regul = fields.Char(related="name",readonly=False,string="Descrption")
     Product_class=fields.Selection([
         ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
-    ],string="Product_class")
+    ],string="Product Class")
     leagal_munfacter=fields.Char("legal Manufacturer")
     acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
