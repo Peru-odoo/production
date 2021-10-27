@@ -6,6 +6,8 @@
                 id="regularity_menuitem"
                 name="Regularity"
                 sequence="-1"
+                                web_icon="surgi_regularity,static/src/img/icon.jpg"
+
                 groups="surgi_regularity.reg_viewer_group"
                 />
       <!-- Product view modification -->
