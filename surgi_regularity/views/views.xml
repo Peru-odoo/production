@@ -1,5 +1,12 @@
 <odoo>
   <data>
+
+
+                  <menuitem
+                id="regularity_menuitem"
+                name="Regularity"
+                sequence="-1"
+                />
       <!-- Product view modification -->
       <record model="ir.ui.view" id="product_template_only_form_view_reglau">
           <field name="name">product.template.reglau.form</field>
@@ -32,7 +39,16 @@
           </field>
       </record>
 
+        <record id="action_view_stock_reg" model="ir.actions.server">
+            <field name="sequence" eval="1"/>
+            <field name="state">code</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_product_template"/>
+            <field name="code">action=model.button_stock_action()</field>
+            <field name="name">Regularity</field>
+        </record>
 
+        <menuitem id="menu_stock_transfer" name="Product" parent="regularity_menuitem" action="action_view_stock_reg" sequence="5"/>
 
   </data>
 </odoo>

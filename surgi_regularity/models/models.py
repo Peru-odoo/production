@@ -45,7 +45,7 @@ class product_template_changes(models.Model):
 class product_template_changes(models.Model):
     _name = 'acual.munfacter'
 
-    name= fields.Char()
+    name = fields.Char()
 
 
 class StockInherit(models.Model):
