@@ -6,19 +6,18 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
 
 
-# class surgi_regularity(models.Model):
-#     _name = 'surgi_regularity.surgi_regularity'
-#     _description = 'surgi_regularity.surgi_regularity'
+class regularity_registration_line(models.Model):
+    _name = 'registration.line'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
+    product_registration_number = fields.Char("registration Number")
+    strlize_method = fields.Char(string="Sterilization method")
+    leagal_munfacter=fields.Char("legal Manufacturer")
+    acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
+    releas_date = fields.Date(String="Release Date")
+    expiry_date = fields.Date(string="Expiry date")
+    attachment_product = fields.Binary( string="Attachment")
+    product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
 
 
 class product_template_changes(models.Model):
@@ -68,19 +67,6 @@ class StockInherit(models.Model):
         }
         return value
 
-
-class regularity_registration_line(models.Model):
-    _name = 'registration.line'
-
-    country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
-    product_registration_number = fields.Char("registration Number")
-    strlize_method = fields.Char(string="Sterilization method")
-    leagal_munfacter=fields.Char("legal Manufacturer")
-    acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
-    releas_date = fields.Date(String="Release Date")
-    expiry_date = fields.Date(string="Expiry date")
-    attachment_product = fields.Binary( string="Attachment")
-    product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
 
 
 
