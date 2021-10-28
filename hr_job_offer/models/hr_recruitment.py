@@ -1,7 +1,29 @@
-from odoo import models, fields, api, _
+from odoo import api, fields, models, tools, SUPERUSER_ID
+from odoo.tools.translate import _
+from odoo.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
+
+
+class Contract(models.Model):
+    _inherit = 'hr.contract'
+
+    @api.onchange('employee_id')
+    def onchange_employee_offer(self):
+        if self.employee_id and self.employee_id.applicant_id:
+            for applicant in self.employee_id.applicant_id:
+                if applicant.job_offer_id:
+                    self.basic_salary = applicant.job_offer_id.basic
+                    self.variable_incentive = applicant.job_offer_id.variable_incentive
+                    self.car_allow = applicant.job_offer_id.car_allowance
+                    self.door_type = applicant.job_offer_id.attendance_type
+                    self.mobi = applicant.job_offer_id.mobile_package
+                    self.grade_id = applicant.job_offer_id.grade_id.id
+                    self.rank_id = applicant.job_offer_id.rank_id.id
+                    self.rang_id = applicant.job_offer_id.rang_id.id
+
+
 
 
 class HRRecruitment(models.Model):
@@ -35,3 +57,4 @@ class HRRecruitment(models.Model):
             'res_id': offer.id,
         }
         return action
+

@@ -54,7 +54,7 @@ class HRJobOffer(models.Model):
     company_id = fields.Many2one('res.company', 'Company', default=lambda self: self.env.user.company_id)
     user_id = fields.Many2one('res.users', string='Prepaid By', required=False, default=lambda self: self.env.user)
     prepaid_date = fields.Date(string='Prepaid Date', default=fields.Date.today())
-    other_allowance_ids = fields.One2many('offer.allowance','offer_id')
+    other_allowance_ids = fields.One2many('offer.allowance', 'offer_id')
     state = fields.Selection([
         ('new', 'New'),
         ('progress', 'In Progress'),
@@ -63,7 +63,10 @@ class HRJobOffer(models.Model):
 
     def _compute_social_insurance(self):
         for rec in self:
-            rec.social_insurance = rec.basic * (11 / 100)
+            if rec.salary < 8000:
+                rec.social_insurance = rec.salary * (11 / 100)
+            else:
+                rec.social_insurance = 8000 * (11 / 100)
 
     def _compute_net_salary(self):
         for rec in self:
@@ -72,33 +75,34 @@ class HRJobOffer(models.Model):
     def _compute_tax_amount(self):
         for rec in self:
             result = 0.0
-            if ((rec.salary * 12) - 9000) <= 15000:
+            gross = rec.salary - rec.social_insurance
+            if ((gross * 12) - 9000) <= 15000:
                 result = 0.0
-            elif 15000 < ((rec.salary * 12) - 9000) <= 30000:
+            elif 15000 < ((gross * 12) - 9000) <= 30000:
                 result = round(
-                    (((((rec.salary * 12) - 9000) - 15000) * 0.025)) / 12, 2)
-            elif 30000 < ((rec.salary * 12) - 9000) <= 45000:
-                result = round((375 + ((((rec.salary * 12) - 9000) - 30000) * 0.1)) / 12, 2)
-            elif 45000 < ((rec.salary * 12) - 9000) <= 60000:
-                result = round(((375 + 1500 + (((rec.salary * 12) - 9000) - 45000) * 0.15)) / 12, 2)
-            elif 60000 < ((rec.salary * 12) - 9000) <= 200000:
-                result = round(((375 + 1500 + 2250 + (((rec.salary * 12) - 9000) - 60000) * 0.2)) / 12, 2)
-            elif 200000 < ((rec.salary * 12) - 9000) <= 400000:
-                result = round(((375 + 1500 + 2250 + 28000 + (((rec.salary * 12) - 9000) - 200000) * 0.225)) / 12, 2)
-            elif 400000 < ((rec.salary * 12) - 9000) <= 600000:
+                    (((((gross * 12) - 9000) - 15000) * 0.025)) / 12, 2)
+            elif 30000 < ((gross * 12) - 9000) <= 45000:
+                result = round((375 + ((((gross * 12) - 9000) - 30000) * 0.1)) / 12, 2)
+            elif 45000 < ((gross * 12) - 9000) <= 60000:
+                result = round(((375 + 1500 + (((gross * 12) - 9000) - 45000) * 0.15)) / 12, 2)
+            elif 60000 < ((gross * 12) - 9000) <= 200000:
+                result = round(((375 + 1500 + 2250 + (((gross * 12) - 9000) - 60000) * 0.2)) / 12, 2)
+            elif 200000 < ((gross * 12) - 9000) <= 400000:
+                result = round(((375 + 1500 + 2250 + 28000 + (((gross * 12) - 9000) - 200000) * 0.225)) / 12, 2)
+            elif 400000 < ((gross * 12) - 9000) <= 600000:
                 result = round(
-                    ((375 + 1500 + 2250 + 28000 + 45000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
-            elif 600000 < ((rec.salary * 12) - 9000) <= 700000:
+                    ((375 + 1500 + 2250 + 28000 + 45000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+            elif 600000 < ((gross * 12) - 9000) <= 700000:
                 result = round(
-                    ((750 + 1500 + 2250 + 28000 + 45000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
-            elif 700000 < ((rec.salary * 12) - 9000) <= 800000:
-                result = round(((4500 + 2250 + 28000 + 45000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
-            elif 800000 < ((rec.salary * 12) - 9000) <= 900000:
-                result = round(((9000 + 28000 + 45000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
-            elif 900000 < ((rec.salary * 12) - 9000) <= 1000000:
-                result = round(((40000 + 45000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
-            elif 1000000 < ((rec.salary * 12) - 9000) <= 10000000:
-                result = round(((90000 + (((rec.salary * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+                    ((750 + 1500 + 2250 + 28000 + 45000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+            elif 700000 < ((gross * 12) - 9000) <= 800000:
+                result = round(((4500 + 2250 + 28000 + 45000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+            elif 800000 < ((gross * 12) - 9000) <= 900000:
+                result = round(((9000 + 28000 + 45000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+            elif 900000 < ((gross * 12) - 9000) <= 1000000:
+                result = round(((40000 + 45000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
+            elif 1000000 < ((gross * 12) - 9000) <= 10000000:
+                result = round(((90000 + (((gross * 12) - 9000) - 400000) * 0.25)) / 12, 2)
             rec.tax_amount = result
 
     @api.onchange('applicant_id')
@@ -119,10 +123,11 @@ class HRJobOffer(models.Model):
             self.attendance_type = self.applicant_id.hiring_approval_id.attendance_type
             self.is_car_allowance = self.applicant_id.hiring_approval_id.is_car_allowance
 
-    @api.depends('basic', 'car_allowance', 'transport_allowance')
+    @api.depends('basic', 'car_allowance', 'transport_allowance','other_allowance_ids')
     def _compute_gross_salary(self):
         for rec in self:
-            rec.salary = rec.basic + rec.car_allowance + rec.transport_allowance
+            other_allow = sum(rec.other_allowance_ids.mapped('allowance'))
+            rec.salary = rec.basic + rec.car_allowance + rec.transport_allowance + other_allow
 
     @api.onchange('rang_id')
     def onchange_rang_id(self):

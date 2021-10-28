@@ -57,6 +57,7 @@
                 <button
                         name="%(action_hr_job_offer_wizard)d"
                         attrs="{'invisible': ['|',('job_offer_id','!=',False),('is_hiring_approved','=',False)]}"
+                        groups="hr_recruitment.group_hr_recruitment_user"
                         context="{'default_job_id':job_id,'default_applicant_id':id}"
                         string="Create Job Offer" type="action" class="oe_highlight"/>
                 <field name="job_offer_id" invisible="1"/>
