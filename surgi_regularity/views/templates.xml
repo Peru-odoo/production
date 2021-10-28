@@ -5,6 +5,8 @@
             <field name="model">registration.line</field>
             <field name="arch" type="xml">
                 <tree string="Registration Line">
+                    <field name="product_id"/>
+
                     <field name="product_registration_number"/>
 
                     <field name="leagal_munfacter"/>
@@ -40,8 +42,10 @@
                         <group>
                             <div>
                                 <group >
+                                    <field name="product_id"/>
+
                                     <field name="product_registration_number"/>
-                                                                        <field name="strlize_method"/>
+                                    <field name="strlize_method"/>
 
                                     <field name="leagal_munfacter"/>
                                     <field name="acual_munfacter"/>

@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError, UserError
 
 class regularity_registration_line(models.Model):
     _name = 'registration.line'
+    product_id = fields.Many2one('product.template' ,string='Product')
 
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
     product_registration_number = fields.Char("registration Number")
