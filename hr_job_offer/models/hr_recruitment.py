@@ -17,6 +17,7 @@ class Contract(models.Model):
                     self.basic_salary = applicant.job_offer_id.basic
                     self.variable_incentive = applicant.job_offer_id.variable_incentive
                     self.car_allow = applicant.job_offer_id.car_allowance
+                    self.fuel_allow = applicant.job_offer_id.transport_allowance
                     self.door_type = applicant.job_offer_id.attendance_type
                     self.mobi = applicant.job_offer_id.mobile_package
                     self.grade_id = applicant.job_offer_id.grade_id.id

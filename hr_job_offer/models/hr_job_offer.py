@@ -127,7 +127,7 @@ class HRJobOffer(models.Model):
     def _compute_gross_salary(self):
         for rec in self:
             other_allow = sum(rec.other_allowance_ids.mapped('allowance'))
-            rec.salary = rec.basic + rec.car_allowance + rec.transport_allowance + other_allow
+            rec.salary = rec.basic +rec.variable_incentive+ rec.car_allowance + rec.transport_allowance + other_allow
 
     @api.onchange('rang_id')
     def onchange_rang_id(self):
