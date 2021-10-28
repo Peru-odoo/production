@@ -57,7 +57,6 @@ class HrEmployee(models.Model):
     def onchange_grade(self):
         res = {}
         if self.grade_id:
-            self.rank_id = False
             res['domain'] = \
                 {'rank_id': [
                     ('id', 'in', self.grade_id.rank_ids.ids)]}
@@ -67,7 +66,6 @@ class HrEmployee(models.Model):
     def onchange_rank(self):
         res = {}
         if self.rank_id:
-            self.rang_id = False
             res['domain'] = \
                 {'rang_id': [
                     ('id', 'in', self.rank_id.rang_ids.ids)]}
