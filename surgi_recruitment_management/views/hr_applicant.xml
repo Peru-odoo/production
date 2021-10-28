@@ -146,6 +146,17 @@
                     </div>
                 </button>
             </xpath>
+            <xpath expr="//button[@name='action_makeMeeting']" position="before">
+                <button name="action_show_employee"
+                        class="oe_stat_button"
+                        icon="fa-user"
+                        type="object"
+                        attrs="{'invisible':[('emp_id','=',False)]}">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Employee</span>
+                    </div>
+                </button>
+            </xpath>
         </field>
     </record>
 

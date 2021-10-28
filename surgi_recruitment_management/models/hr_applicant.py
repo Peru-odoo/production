@@ -70,6 +70,19 @@ class HRApplicant(models.Model):
         }
         return action
 
+    def action_show_employee(self):
+        self.ensure_one()
+        emp = self.emp_id
+        action = {
+            'name': _('Employee'),
+            'view_mode': 'form,tree',
+            'res_model': 'hr.employee',
+            'type': 'ir.actions.act_window',
+            'context': {'form_view_initial_mode': 'readonly'},
+            'res_id': emp.id,
+        }
+        return action
+
     def print_evaluations(self):
         return self.env.ref('surgi_recruitment_management.action_evaluations_report').report_action(self, config=False)
 
@@ -231,7 +244,7 @@ class ApplicantProcessLine(models.Model):
     reviewer_ids = fields.Many2many('res.users', string='Reviewers')
 
     def update_lines(self):
-        self.env['applicant.survey.line'].search([('stage_id', '=', self.stage_id.id)]).unlink()
+        self.env['applicant.survey.line'].search([('stage_id', '=', self.stage_id.id)]).sudo().unlink()
         for line in self:
             users = [x.id for x in line.reviewer_ids]
             users.append(line.user_id.id)
@@ -264,14 +277,14 @@ class ApplicantProcessLine(models.Model):
         for line in self:
             survey_history = self.env['applicant.survey.line'].search([('stage_id', '=', line.stage_id.id)])
             if survey_history:
-                survey_history.unlink()
+                survey_history.sudo().unlink()
         return super(ApplicantProcessLine, self).unlink()
 
 
 class ApplicantSurveyLine(models.Model):
     _name = 'applicant.survey.line'
 
-    applicant_id = fields.Many2one('hr.applicant', ondelete='cascade')
+    applicant_id = fields.Many2one('hr.applicant')
     is_print = fields.Boolean()
     process_line_id = fields.Many2one('applicant.process.line')
     stage_id = fields.Many2one('hr.recruitment.stage')
