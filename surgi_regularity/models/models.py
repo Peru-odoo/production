@@ -6,22 +6,22 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
 
 
-class regularity_registration_line(models.Model):
-    _name = 'registration.line'
-
-
-
-
-    country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
-    product_registration_number = fields.Char("registration Number")
-    strlize_method = fields.Char(string="Sterilization method")
-    leagal_munfacter=fields.Char("legal Manufacturer")
-    acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
-    releas_date = fields.Date(String="Release Date")
-    expiry_date = fields.Date(string="Expiry date")
-    attachment_product = fields.Binary( string="Attachment")
-    product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
-
+# class regularity_registration_line(models.Model):
+#     _name = 'registration.line'
+#
+#
+#
+#
+#     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
+#     product_registration_number = fields.Char("registration Number")
+#     strlize_method = fields.Char(string="Sterilization method")
+#     leagal_munfacter=fields.Char("legal Manufacturer")
+#     acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
+#     releas_date = fields.Date(String="Release Date")
+#     expiry_date = fields.Date(string="Expiry date")
+#     attachment_product = fields.Binary( string="Attachment")
+#     product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
+#
 
 
 
@@ -46,7 +46,7 @@ class product_template_changes(models.Model):
     acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
 
-    registration_line = fields.Many2one("registration.line")
+    # registration_line = fields.Many2one("registration.line")
 
 
 
