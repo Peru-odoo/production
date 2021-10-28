@@ -48,27 +48,19 @@
                                      <field name="registration_name"/>
 
                                     <field name="product_registration_number"/>
-
-
-                                </group>
-                            </div>
-                            <div>
-                                <group>
-
                                     <field name="strlize_method"/>
 
-                                    <field name="leagal_munfacter"/>
-                                    <field name="acual_munfacter"/>
 
                                 </group>
                             </div>
+
                             <div>
                                 <group>
 
-                                    <field name="country_of_orgin"/>
+                                    <field name="country_of_orgin" widget="many2many_tags"/>
 
                                     <field name="leagal_munfacter"/>
-                                    <field name="acual_munfacter"/>
+                                  <field name="acual_munfacter"/>
 
                                 </group>
                             </div>
@@ -97,7 +89,7 @@
                                 </group>
 
 
-                                <field name="product_forms">
+<!--                                 <field name="product_forms">
 
                                     <tree editable="bottom">
                                         <control>
@@ -109,7 +101,7 @@
                                         <field name="desc_regul"/>
 
                                     </tree>
-                                </field>
+                                </field> -->
 
                             </page>
 

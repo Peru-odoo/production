@@ -28,6 +28,9 @@
         'security/reg_security.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/acual_mnu.xml',
+
+
     ],
     # only loaded in demonstration mode
     'demo': [

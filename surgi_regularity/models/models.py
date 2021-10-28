@@ -21,42 +21,42 @@ class regularity_registration_line(models.Model):
     releas_date = fields.Date(String="Release Date")
     expiry_date = fields.Date(string="Expiry date")
     attachment_product = fields.Binary( string="Attachment")
-    product_forms = fields.One2many('product.template','registration_line')
+#     product_forms = fields.One2many('product.template','registration_line',ondelete='cascade',)
 
 
 
 
 
-class product_template_changes(models.Model):
-    _inherit = 'product.template'
+# class product_template_changes(models.Model):
+#     _inherit = 'product.template'
 
-    product_type_regular = fields.Selection([
-        ('instrument', 'Instrument'),
-        ('impluent', 'Impluent'),
+#     product_type_regular = fields.Selection([
+#         ('instrument', 'Instrument'),
+#         ('impluent', 'Impluent'),
 
-    ], string="Product Type")
+#     ], string="Product Type")
 
-    strlize_field=fields.Boolean(string="Sterile")
-    item_num_ref = fields.Char("Internal Reference")
-    label_ref_num = fields.Char("Label Reference")
-    desc_regul =fields.Char("Description")
-    Product_class=fields.Selection([
-        ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
-    ],string="Product Class")
+#     strlize_field=fields.Boolean(string="Sterile")
+#     item_num_ref = fields.Char("Internal Reference")
+#     label_ref_num = fields.Char("Label Reference")
+#     desc_regul =fields.Char("Description")
+#     Product_class=fields.Selection([
+#         ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
+#     ],string="Product Class")
 
-    # country_of_orgin = fields.Many2many(related="registration_line.country_of_orginy",string="Country of Orgin")
-    leagal_munfacter=fields.Char(reated="registration_line.leagal_munfacter",string="legal Manufacturer")
-    # acual_munfacter = fields.Many2many(reated="registration_line.acual_munfacter",string="Actual Manufacturer")
-    releas_date = fields.Date(reated="registration_line.releas_date",String="Release Date")
-    expiry_date = fields.Date(reated="registration_line.expiry_date",string="Expiry date")
-    registration_line = fields.Many2one("registration.line","registration line")
+# #     country_of_orgin = fields.Many2many(related="registration_line.country_of_orginy",string="Country of Orgin")
+#     leagal_munfacter=fields.Char(reated="registration_line.leagal_munfacter",string="legal Manufacturer")
+#     acual_munfacter = fields.Many2many(reated="registration_line.acual_munfacter",string="Actual Manufacturer")
+#     releas_date = fields.Date(reated="registration_line.releas_date",String="Release Date")
+#     expiry_date = fields.Date(reated="registration_line.expiry_date",string="Expiry date")
+#     registration_line = fields.Many2one("registration.line","registration line",ondelete='cascade')
 
 
 
 class product_acual_changes(models.Model):
     _name = 'acual.munfacter'
 
-    name = fields.Char()
+    name = fields.Char(store=True)
 
 
 class StockInherit(models.Model):

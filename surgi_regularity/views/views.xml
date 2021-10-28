@@ -13,7 +13,7 @@
 
 
         <!-- Product view modification -->
-        <record model="ir.ui.view" id="product_template_only_form_view_reglau">
+<!--         <record model="ir.ui.view" id="product_template_only_form_view_reglau">
             <field name="name">product.template.reglau.form</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
@@ -46,7 +46,7 @@
                     </page>
                 </notebook>
             </field>
-        </record>
+        </record> -->
 
         <record id="action_view_stock_reg" model="ir.actions.server">
             <field name="sequence" eval="1"/>
