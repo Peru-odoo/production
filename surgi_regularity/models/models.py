@@ -18,7 +18,7 @@ class regularity_registration_line(models.Model):
     releas_date = fields.Date(String="Release Date")
     expiry_date = fields.Date(string="Expiry date")
     attachment_product = fields.Binary( string="Attachment")
-    product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
+    # product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
 
 
 class product_template_changes(models.Model):

@@ -87,19 +87,19 @@
                                 </group>
 
 
-                                <field name="product_forms">
+<!--                                <field name="product_forms">-->
 
-                                    <tree editable="bottom">
-                                        <control>
-                                            <create name="add_relation_control" string="Add"/>
-                                        </control>
-                                        <field name="name"/>
-                                        <field name="item_num_ref"/>
-                                        <field name="desc_regul"/>
+<!--                                    <tree editable="bottom">-->
+<!--                                        <control>-->
+<!--                                            <create name="add_relation_control" string="Add"/>-->
+<!--                                        </control>-->
+<!--                                        <field name="name"/>-->
+<!--                                        <field name="item_num_ref"/>-->
+<!--                                        <field name="desc_regul"/>-->
 
 
-                                    </tree>
-                                </field>
+<!--                                    </tree>-->
+<!--                                </field>-->
 
                             </page>
 
