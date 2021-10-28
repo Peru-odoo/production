@@ -44,9 +44,9 @@ class product_template_changes(models.Model):
         ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
     ],string="Product Class")
 
-    country_of_orgin = fields.Many2many(related="registration_line.country_of_orginy",string="Country of Orgin")
+    # country_of_orgin = fields.Many2many(related="registration_line.country_of_orginy",string="Country of Orgin")
     leagal_munfacter=fields.Char(reated="registration_line.leagal_munfacter",string="legal Manufacturer")
-    acual_munfacter = fields.Many2many(reated="registration_line.acual_munfacter",string="Actual Manufacturer")
+    # acual_munfacter = fields.Many2many(reated="registration_line.acual_munfacter",string="Actual Manufacturer")
     releas_date = fields.Date(reated="registration_line.releas_date",String="Release Date")
     expiry_date = fields.Date(reated="registration_line.expiry_date",string="Expiry date")
     registration_line = fields.Many2one("registration.line","registration line")
