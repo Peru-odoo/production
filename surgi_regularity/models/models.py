@@ -39,7 +39,7 @@ class product_template_changes(models.Model):
     leagal_munfacter=fields.Char("legal Manufacturer")
     acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
-    registration_line = fields.Many2many(comodel_name="registration.line")
+    registration_line = fields.Many2many("registration.line")
 
 
 
