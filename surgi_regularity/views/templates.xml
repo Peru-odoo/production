@@ -60,7 +60,7 @@
                                     <field name="country_of_orgin" widget="many2many_tags"/>
 
                                     <field name="leagal_munfacter"/>
-                                  <field name="acual_munfacter"/>
+                                  <field name="acual_munfacter" widget="many2many_tags"/>
 
                                 </group>
                             </div>
@@ -89,7 +89,7 @@
                                 </group>
 
 
-<!--                                 <field name="product_forms">
+                                <field name="product_forms">
 
                                     <tree editable="bottom">
                                         <control>
@@ -101,7 +101,7 @@
                                         <field name="desc_regul"/>
 
                                     </tree>
-                                </field> -->
+                                </field>
 
                             </page>
 
