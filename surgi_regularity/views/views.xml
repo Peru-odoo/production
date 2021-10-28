@@ -1,49 +1,52 @@
 <odoo>
-  <data>
+    <data>
 
 
-                  <menuitem
+        <menuitem
                 id="regularity_menuitem"
                 name="Regularity"
                 sequence="-1"
-                                web_icon="surgi_regularity,static/src/img/icon.jpg"
+                web_icon="surgi_regularity,static/src/img/icon.jpg"
 
                 groups="surgi_regularity.reg_viewer_group"
-                />
-      <!-- Product view modification -->
-      <record model="ir.ui.view" id="product_template_only_form_view_reglau">
-          <field name="name">product.template.reglau.form</field>
-          <field name="model">product.template</field>
-          <field name="inherit_id" ref="product.product_template_only_form_view"/>
-          <field name="arch" type="xml">
+        />
 
-              <notebook position="inside">
-                  <page string="Regularity"  attrs="{'invisible': [('is_medical', '=', False)]}">
-                      <div class="oe_left">
-<group>
 
-    <field name="strlize_field"/>
-    <field name="item_num_ref"/>
-    <field name="label_ref_num"/>
-    <field name="country_of_orgin" widget="many2many_tags"/>
+        <!-- Product view modification -->
+        <record model="ir.ui.view" id="product_template_only_form_view_reglau">
+            <field name="name">product.template.reglau.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
 
-</group>
-                      </div>
-<div class="oe_right">
-                      <group>
+                <notebook position="inside">
+                    <page string="Regularity" attrs="{'invisible': [('is_medical', '=', False)]}">
+                        <div class="oe_left">
+                            <group>
 
-                  <field name="desc_regul"/>
-    <field name="Product_class"/>
-    <field name="leagal_munfacter"/>
-    <field name="acual_munfacter" widget="many2many_tags"/>
+                                <field name="strlize_field"/>
+                                <field name="item_num_ref"/>
+                                <field name="label_ref_num"/>
+                                <field name="Product_class"/>
 
-</group>
+                            </group>
+                        </div>
+                        <div class="oe_right">
+                            <group>
+                                <field name="registration_line"/>
+                                <field name="desc_regul"/>
+                                <field name="leagal_munfacter"/>
+                                <field name="acual_munfacter" widget="many2many_tags"/>
+                                <field name="country_of_orgin" widget="many2many_tags"/>
+                                <field name="releas_date"/>
+                                <field name="expiry_date"/>
+                            </group>
 
-</div>
-                  </page>
-              </notebook>
-          </field>
-      </record>
+                        </div>
+                    </page>
+                </notebook>
+            </field>
+        </record>
 
         <record id="action_view_stock_reg" model="ir.actions.server">
             <field name="sequence" eval="1"/>
@@ -54,7 +57,8 @@
             <field name="name">Regularity</field>
         </record>
 
-        <menuitem id="menu_stock_transfer" name="Product" parent="regularity_menuitem" action="action_view_stock_reg" sequence="5"/>
+        <menuitem id="menu_stock_transfer" name="Product" parent="regularity_menuitem" action="action_view_stock_reg"
+                  sequence="5"/>
 
-  </data>
+    </data>
 </odoo>

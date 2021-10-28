@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
                 <tree string="Registration Line">
                     <field name="name"/>
+                    <field name="registration_name"/>
 
                     <field name="product_registration_number"/>
 
@@ -44,6 +45,7 @@
                             <div>
                                 <group>
                                      <field name="name"/>
+                                     <field name="registration_name"/>
 
                                     <field name="product_registration_number"/>
 
@@ -103,7 +105,7 @@
                                         </control>
 
                                         <field name="name"/>
-                                        <field name="item_num_ref"/>
+                                        <field name="default_code"/>
                                         <field name="desc_regul"/>
 
                                     </tree>

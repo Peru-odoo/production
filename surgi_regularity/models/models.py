@@ -11,7 +11,8 @@ class regularity_registration_line(models.Model):
 
 
 
-    name = fields.Char("Registration Name")
+    name = fields.Char("Registration Code")
+    registration_name = fields.Char("Registration Name")
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
     product_registration_number = fields.Char("registration Number")
     strlize_method = fields.Char(string="Sterilization method")
@@ -35,21 +36,19 @@ class product_template_changes(models.Model):
 
     ], string="Product Type")
 
-
-
-
-
     strlize_field=fields.Boolean(string="Sterile")
     item_num_ref = fields.Char("Internal Reference")
     label_ref_num = fields.Char("Label Reference")
-    desc_regul = fields.Char(related="name",readonly=False,string="Descrption")
+    desc_regul =fields.Char("Description")
     Product_class=fields.Selection([
         ("i","I"),("ii","IIA"),("iib","IIB"),("iii","III"),
     ],string="Product Class")
-    leagal_munfacter=fields.Char("legal Manufacturer")
-    acual_munfacter = fields.Many2many('acual.munfacter',"name",string="Actual Manufacturer")
-    country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
 
+    country_of_orgin = fields.Many2many(related="registration_line.country_of_orginy",string="Country of Orgin")
+    leagal_munfacter=fields.Char(reated="registration_line.leagal_munfacter",string="legal Manufacturer")
+    acual_munfacter = fields.Many2many(reated="registration_line.acual_munfacter",string="Actual Manufacturer")
+    releas_date = fields.Date(reated="registration_line.releas_date",String="Release Date")
+    expiry_date = fields.Date(reated="registration_line.expiry_date",string="Expiry date")
     registration_line = fields.Many2one("registration.line","registration line")
 
 
