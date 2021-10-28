@@ -24,11 +24,11 @@
         </record>
 
 
-        <record id="form_view_pickup_final" model="ir.ui.view">
+        <record id="form_view_registration_final" model="ir.ui.view">
             <field name="name">Registration Line</field>
             <field name="model">registration.line</field>
             <field name="arch" type="xml">
-                <form string="Pickup final">
+                <form string="Registration Line">
 
                     <sheet>
                         <div style="text-align:center">
