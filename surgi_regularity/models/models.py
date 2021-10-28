@@ -8,7 +8,9 @@ from odoo.exceptions import ValidationError, UserError
 
 class regularity_registration_line(models.Model):
     _name = 'registration.line'
-    product_id = fields.Many2one('product.template' ,string='Product')
+
+
+
 
     country_of_orgin = fields.Many2many(comodel_name="res.country",string="Country of Orgin")
     product_registration_number = fields.Char("registration Number")
@@ -18,7 +20,10 @@ class regularity_registration_line(models.Model):
     releas_date = fields.Date(String="Release Date")
     expiry_date = fields.Date(string="Expiry date")
     attachment_product = fields.Binary( string="Attachment")
-    # product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
+    product_forms = fields.One2many('product.template','registration_line' ,string='المنتج')
+
+
+
 
 
 class product_template_changes(models.Model):
