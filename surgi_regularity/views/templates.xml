@@ -94,7 +94,7 @@
                                             <create name="add_relation_control" string="Add"/>
                                         </control>
 
-                                        <field name="product_id"/>
+                                        <field name="name"/>
                                         <field name="item_num_ref"/>
                                         <field name="desc_regul"/>
 
