@@ -8,8 +8,15 @@
                 <button
                         name="%(action_hr_hiring_approval_wizard)d"
                         attrs="{'invisible': [('hiring_approval_id','!=',False)]}"
+                        groups="hr_recruitment.group_hr_recruitment_user"
                         context="{'default_partner_name':partner_name,'default_applicant_id':id,'default_job_id':job_id,'default_department_id':department_id}"
                         string="Create Hiring Approval" type="action" class="oe_highlight"/>
+            </xpath>
+            <xpath expr="//header/button[@name='create_employee_from_applicant']" position="attributes">
+                <attribute name="groups">hr_recruitment.group_hr_recruitment_user</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='archive_applicant']" position="attributes">
+                <attribute name="groups">hr_recruitment.group_hr_recruitment_user</attribute>
             </xpath>
             <xpath expr="//label[@for='name']" position="before">
                 <h1>

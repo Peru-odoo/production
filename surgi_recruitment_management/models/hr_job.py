@@ -112,30 +112,49 @@ class HRJob(models.Model):
 
     def _compute_all_reject_count(self):
         for job in self:
-            job.reject_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','rejected')])
+            if job.open_date and job.close_date:
+                job.reject_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','rejected'),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
+            else:
+                job.reject_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id),('applicant_state', '=','rejected')])
 
 
     def _compute_all_shortlisted_count(self):
         for job in self:
-            job.shortlisted_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','shortlisted')])
-
+            if job.open_date and job.close_date:
+                job.shortlisted_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','shortlisted'),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
+            else:
+                job.shortlisted_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id),('applicant_state', '=','shortlisted')])
 
     def _compute_all_no_show_count(self):
         for job in self:
-            job.no_show_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','no_show')])
+            if job.open_date and job.close_date:
+                job.no_show_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','no_show'),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
+            else:
+                job.no_show_count = self.env['hr.applicant'].sudo().search_count(
+                    [('job_id', '=', job.id), ('applicant_state', '=', 'no_show')])
 
     def _compute_all_offering_count(self):
         for job in self:
-            job.offering_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','offering')])
+            if job.open_date and job.close_date:
+                job.offering_count = self.env['hr.applicant'].sudo().search_count([('job_id', '=', job.id), ('applicant_state', '=','offering'),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
+            else:
+                job.offering_count = self.env['hr.applicant'].sudo().search_count(
+                    [('job_id', '=', job.id), ('applicant_state', '=', 'offering')])
+
 
     def _compute_all_request_count(self):
         for job in self:
             job.all_request_count = self.env['hiring.request'].sudo().search_count([('job_id', '=', job.id)])
 
     def _compute_current_pipeline(self):
-        for rec in self:
-            rec.current_pipeline = self.env['hr.applicant'].search_count(
-                [('job_id', '=', rec.id), ('applicant_state', '=','accepted')])
+        for job in self:
+            if job.open_date and job.close_date:
+                job.current_pipeline = self.env['hr.applicant'].search_count(
+                    [('job_id', '=', job.id), ('applicant_state', '=','accepted'),('create_date', '>=', job.open_date),('create_date', '<=', job.close_date)])
+            else:
+                job.current_pipeline = self.env['hr.applicant'].sudo().search_count(
+                    [('job_id', '=', job.id), ('applicant_state', '=', 'accepted')])
+
 
     def _send_notification(self, state, partners):
         message = _('Job Position: %s is %s, Please approve') % (str(self.name), state)

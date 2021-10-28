@@ -38,6 +38,10 @@ class HRApplicant(models.Model):
     employee_date = fields.Datetime(related='emp_id.create_date', store=True)
 
 
+    def _check_referral_fields_access(self, fields):
+        pass
+
+
     @api.constrains('job_id','user_id')
     def _constrains_max_applications(self):
         for rec in self:
@@ -85,8 +89,16 @@ class HRApplicant(models.Model):
                     'title': _("Warning"),
                     'message': ('This applicant has an old applicantion')}}
 
-    def show_application_history(self):
-        pass
+
+    def _compute_reviewer_ids(self):
+        for rec in self:
+            users = []
+            if rec.line_ids:
+                for line in rec.line_ids:
+                    users = [x.id for x in line.reviewer_ids]
+                    users.append(line.user_id.id)
+            rec.update({'reviewer_ids': users})
+
 
 
     @api.onchange('stage_id')
@@ -130,14 +142,6 @@ class HRApplicant(models.Model):
                     rec.line_ids = sequences
                     rec.evaluation_ids = evaluation
 
-    def _compute_reviewer_ids(self):
-        for rec in self:
-            users = []
-            if rec.line_ids:
-                for line in rec.line_ids:
-                    users = [x.id for x in line.reviewer_ids]
-                    users.append(line.user_id.id)
-            rec.update({'reviewer_ids': users})
 
     @api.model
     def create(self, values):
