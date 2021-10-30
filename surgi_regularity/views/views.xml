@@ -31,18 +31,32 @@
 
                             </group>
                         </div>
-                        <div class="oe_right">
-                            <group>
-                                <field name="registration_line"/>
-                                <field name="desc_regul"/>
-                                <field name="leagal_munfacter"/>
-                                <field name="acual_munfacter" widget="many2many_tags"/>
-<!--                                 <field name="country_of_orgin" widget="many2many_tags"/> -->
-                                <field name="releas_date"/>
-                                <field name="expiry_date"/>
-                            </group>
 
-                        </div>
+                        <div>
+
+
+                                <field name="registration_line_id" widget="one2many_list">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="registration_line"/>
+                                        <field name="registration_line_name"/>
+                                        <field name="registration_line_product_registration_number"/>
+                                        <field name="registration_line_leagal_munfacter"/>
+                                         <field name="registration_line_acual_munfacter" widget="many2many_tags"/>
+
+                                                                         <field name="registration_line"/>
+                                        <field name="registration_line_releas_date"/>
+                                                                                <field name="registration_line_expiry_date"/>
+
+
+                                    </tree>
+                                </field>
+
+                            </div>
                     </page>
                 </notebook>
             </field>

@@ -96,8 +96,12 @@
                                             <create name="add_relation_control" string="Add"/>
                                         </control>
 
-                                        <field name="name"/>
-                                        <field name="default_code"/>
+                                        <field name="product_form_id"/>
+                                        <field name="internal_ref"/>
+                                                                                <field name="label_ref"/>
+
+                                                                                <field name="regis_Product_class"/>
+
                                         <field name="desc_regul"/>
 
                                     </tree>
