@@ -12,7 +12,7 @@ class pick_up_and_delivery_form(models.Model):
     delivery=fields.Boolean('تسليم')
 
     pickup_date=fields.Date(string='التاريخ')
-    product_forms = fields.One2many('product.forms','product_contact' ,string='المنتج')
+    product_forms = fields.One2many('sale.order.line','pickup_delivery_id' ,string='المنتج')
     employee_id = fields.Many2one('hr.employee' ,string='موظف الشركة')
     comments = fields.Text(string='Comments')
     product_status = fields.One2many('product.forms','product_contact')
@@ -24,7 +24,6 @@ class pick_up_and_delivery_form(models.Model):
     country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
     order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
-    is_expenses_ids = fields.Boolean(string="",compute='filter_sales_id'  )
 
 
 
@@ -51,24 +50,17 @@ class pick_up_and_delivery_form(models.Model):
 
 
 
-    @api.depends('order_id')
-    def filter_order_id(self):
-        for expen in self:
-            line_list = [(5,0,0)]
-            expen.is_expenses_ids=False
-            for rec in self.search([]):
-                # if expen._origin.id !=rec.id and expen.sales_id.id==rec.sales_id.id:
-                line_list.append((0,0,{
-                    'order_id': rec.id,
-                    'product_id': rec.product_id,
-                    'price_unit': rec.price_unit,
-                }))
-                expen.is_expenses_ids=True
-            # if expen.sales_id and line_list:
-            #     expen.update({'expenses_lines_ids':line_list})
-            # else:
-            #     expen.expenses_lines_ids=False
 
+
+
+
+
+
+class SaleOrderLine(models.Model):
+    _inherit = 'sale.order.line'
+
+
+    pickup_delivery_id = fields.Many2one('pickup.delivery',store=True,)
 
 
 
