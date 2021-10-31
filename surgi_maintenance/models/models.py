@@ -25,6 +25,20 @@ class crm_pipeline_specialization(models.Model):
     _description = 'New Description'
 
     name = fields.Char(string="product specialization",store=True)
+class crm_pipeline_operation(models.Model):
+    _name = 'product.operating'
+    # _rec_name = 'name'
+    _description = 'New Description'
+
+    name = fields.Char(string="Operating",store=True)
+
+class crm_pipeline_occupation(models.Model):
+    _name = 'product.occupation'
+    # _rec_name = 'name'
+    _description = 'New Description'
+
+    name = fields.Char(string="Occupation",store=True)
+
 
 
 

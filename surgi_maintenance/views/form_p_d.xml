@@ -75,6 +75,9 @@
                             <div>
                                 <group string="ٍSales Order">
                                     <field name="order_id"/>
+                                    <field name="picking_id" />
+
+
                                     <field name="sale_date"/>
                                 </group>
                             </div>
@@ -89,12 +92,29 @@
                                         <control>
                                             <create name="add_relation_control" string="Add a product"/>
                                         </control>
-                                        <field name="product_id"/>
-                                        <field name="name"/>
-                                        <field name="price_unit"/>
-                                        <field name="price_subtotal"/>
+                    <field name="product_id"  attrs="{}"/>
+                    <field name="specilaization"   widget="many2many_tags"/>
+                    <field name="operting_maint"   widget="many2many_tags"/>
+                    <field name="occuption_maint"   widget="many2many_tags"/>
 
-
+                    <field name="company_id" invisible="1"/>
+                    <field name="move_id" invisible="1"/>
+                    <field name="picking_id" invisible="1"/>
+                    <field name="product_uom_category_id" invisible="1"/>
+                    <field name="location_id" options="{'no_create': True}"  groups="stock.group_stock_multi_locations" invisible="1"/>
+                    <field name="location_dest_id" options="{'no_create': True}"  groups="stock.group_stock_multi_locations" invisible="1"/>
+                    <field name="package_id" groups="stock.group_tracking_lot" invisible="1"/>
+                    <field name="result_package_id" groups="stock.group_tracking_lot" invisible="1"/>
+                    <field name="lots_visible" invisible="1"/>
+                    <field name="owner_id" groups="stock.group_tracking_owner" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="lot_id" />
+                    <field name="lot_name" invisible="1"/>
+                    <field name="is_initial_demand_editable" invisible="1"/>
+                    <field name="product_uom_qty" readonly="1"  optional="show" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="qty_done"  force_save="1"/>
+                    <field name="product_uom_id" force_save="1" invisible="1"/>
                                     </tree>
                                 </field>
 

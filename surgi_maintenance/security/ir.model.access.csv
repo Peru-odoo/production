@@ -11,3 +11,8 @@ access_pickup_visit_id,access_pickup_visit,model_pickup_visit,,1,1,1,1
 
 access_pickup_delivery_id,access_pickup_delivery,model_pickup_delivery,,1,1,1,1
 access_product_forms_id,access_product_forms,model_product_forms,,1,1,1,1
+access_product_operating_id,access_product_operating,model_product_operating,,1,1,1,1
+access_product_occupation_id,access_product_occupation,model_product_occupation,,1,1,1,1
+
+
+
