@@ -42,6 +42,9 @@
         'reports/final_install_report.xml',
         'reports/Visit_report.xml',
         'views/sale_order_views.xml',
+        'views/product_operationg.xml',
+        'views/product_occup.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [
