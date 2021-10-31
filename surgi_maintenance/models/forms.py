@@ -24,6 +24,7 @@ class pick_up_and_delivery_form(models.Model):
     country_id = fields.Char(related='client_res.country_id.name' ,string='البلد')
     order_id = fields.Many2one('sale.order',store=True,string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    is_expenses_ids = fields.Boolean(string="",compute='filter_sales_id'  )
 
 
 
@@ -47,6 +48,33 @@ class pick_up_and_delivery_form(models.Model):
        }
        # docids = self.env['sale.order'].search([]).ids
        return self.env.ref('surgi_maintenance.report_maintenance_card').report_action(None, data=data)
+
+
+
+    @api.depends('order_id')
+    def filter_order_id(self):
+        for expen in self:
+            line_list = [(5,0,0)]
+            expen.is_expenses_ids=False
+            for rec in self.search([]):
+                # if expen._origin.id !=rec.id and expen.sales_id.id==rec.sales_id.id:
+                line_list.append((0,0,{
+                    'order_id': rec.id,
+                    'product_id': rec.product_id,
+                    'price_unit': rec.price_unit,
+                }))
+                expen.is_expenses_ids=True
+            # if expen.sales_id and line_list:
+            #     expen.update({'expenses_lines_ids':line_list})
+            # else:
+            #     expen.expenses_lines_ids=False
+
+
+
+
+
+
+
 
 class maint_pic_up(models.AbstractModel):
     _name = 'report.maintenance.report_maintenance_card'
