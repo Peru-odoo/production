@@ -85,8 +85,8 @@
 
                 <xpath expr="//group[@name='employee_details']" position="after">
                     <group>
-                        <field name="account_reviewed"/>
-                        <field name="treasury_manager"/>
+                        <field name="account_reviewed" readonly="1"/>
+                        <field name="treasury_manager" readonly="1"/>
                         <field name="check_access_expense"/>
                     </group>
                 </xpath>
