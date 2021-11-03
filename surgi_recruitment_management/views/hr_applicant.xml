@@ -88,7 +88,6 @@
                                 <button name="action_start_survey" type="object"
                                         string="Start Survey" class="oe_highlight"
                                         context="{'survey_id': survey_id}"
-                                        attrs="{'invisible':[('is_current_user','!=',True)]}"
                                 />
                                 <button name="action_print_survey"
                                         class="oe_stat_button"
@@ -208,8 +207,6 @@
                 <button name="action_start_survey" type="object"
                         string="Start Survey" class="oe_highlight"
                         context="{'survey_id': survey_id}"
-                        attrs="{'invisible':[('is_current_user','!=',True)]}"
-
                 />
                 <button name="action_print_survey"
                         class="oe_stat_button"
