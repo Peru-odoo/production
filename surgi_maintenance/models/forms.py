@@ -6,7 +6,9 @@ from datetime import datetime, timedelta
 class pick_up_and_delivery_form(models.Model):
     _name = 'pickup.delivery'
 
-    client_res = fields.Many2one('res.partner', string='العميل', store=True, )
+    client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
+    employee_id = fields.Many2one(related="order_id.user_id", string='موظف الشركة')
+
     contact_representative = fields.Many2one('contact.representative', string='المندوب', store=True,
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
@@ -15,10 +17,7 @@ class pick_up_and_delivery_form(models.Model):
     delivery = fields.Boolean('تسليم')
 
     pickup_date = fields.Date(string='التاريخ')
-    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
-                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
-                                    readonly=False)
-    employee_id = fields.Many2one('hr.employee', string='موظف الشركة')
+
     comments = fields.Text(string='Comments')
     product_status = fields.One2many('product.forms', 'product_contact')
 
@@ -27,9 +26,13 @@ class pick_up_and_delivery_form(models.Model):
     street2 = fields.Char(related='client_res.street2', string='الشارع')
     city = fields.Char(related='client_res.city', string='المدينة')
     country_id = fields.Char(related='client_res.country_id.name', string='البلد')
+
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
+                                    readonly=False)
 
     @api.onchange('order_id')
     def compute_display_name_order_id(self):
@@ -85,7 +88,8 @@ class maint_pic_up(models.AbstractModel):
 class pick_up_and_repair_form(models.Model):
     _name = 'pickup.repair'
 
-    client_res = fields.Many2one('res.partner', string='العميل', store=True, )
+    client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
+    employee_id = fields.Many2one(related="order_id.user_id", string='موظف الشركة')
     contact_representative = fields.Many2one('contact.representative', string='المندوب', store=True,
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
@@ -94,19 +98,26 @@ class pick_up_and_repair_form(models.Model):
     repair = fields.Boolean('إصلاح')
 
     pickup_date = fields.Date(string='التاريخ')
-    product_forms = fields.One2many('product.forms', 'product_repair')
-    employee_id = fields.Many2one('hr.employee', string='موظف الشركة')
     comments = fields.Text(string='ملاحظات')
     product_repair = fields.One2many('product.forms', 'product_repair')
     product_status = fields.One2many('product.forms', 'product_repair')
-    order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
-    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
 
     #################### location
     street1 = fields.Char(related='client_res.street', string='الشارع')
     street2 = fields.Char(related='client_res.street2', string='الشارع')
     city = fields.Char(related='client_res.city', string='المدينة')
     country_id = fields.Char(related='client_res.country_id.name', string='البلد')
+
+    order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
+                                    readonly=False)
+
+    @api.onchange('order_id')
+    def compute_display_name_order_id(self):
+        self.picking_id = ""
 
     def print_report(self):
         data = {
@@ -149,14 +160,13 @@ class maint_repair(models.AbstractModel):
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.installation'
 
-    client_res = fields.Many2one('res.partner', string='العميل', store=True, )
+    client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
+    employee_id = fields.Many2one(related="order_id.user_id", string='موظف الشركة')
     contact_representative = fields.Many2one('contact.representative', string='المندوب', store=True,
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
                                         store=True)
     pickup_date = fields.Date(string='تاريخ التركيب والتشغيل')
-    product_forms = fields.One2many('product.forms', 'product_installation', store=True)
-    employee_id = fields.Many2one('hr.employee', string='موظف الشركة', store=True)
     comments = fields.Text(string='ملاحظات')
 
     #################### location
@@ -167,6 +177,10 @@ class pick_up_Installation_form(models.Model):
 
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
+                                    readonly=False)
 
     def _get_default_code(self):
         return self.env["ir.sequence"].next_by_code("pickup.installation.code")
@@ -209,14 +223,13 @@ class maint_installation(models.AbstractModel):
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.final'
 
-    client_res = fields.Many2one('res.partner', string='العميل', store=True, )
+    client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
+    employee_id = fields.Many2one(related="order_id.user_id", string='موظف الشركة')
     contact_representative = fields.Many2one('contact.representative', string='المندوب', store=True,
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
                                         store=True)
     pickup_date = fields.Date(string='تاريخ التسليم')
-    product_forms = fields.One2many('product.forms', 'product_final', store=True)
-    employee_id = fields.Many2one('hr.employee', string='موظف الشركة', store=True)
     comments = fields.Text(string='ملاحظات')
 
     #################### location
@@ -225,8 +238,14 @@ class pick_up_Installation_form(models.Model):
     city = fields.Char(related='client_res.city', string='المدينة')
     country_id = fields.Char(related='client_res.country_id.name', string='البلد')
 
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
+                                    readonly=False)
 
     def _get_default_code(self):
         return self.env["ir.sequence"].next_by_code("pickup.final.code")
@@ -273,20 +292,18 @@ class maint_final_install(models.AbstractModel):
 class pick_up_Installation_form(models.Model):
     _name = 'pickup.visit'
 
-    client_res = fields.Many2one('res.partner', string='العميل', store=True, )
+    client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
+    employee_id = fields.Many2one(related="order_id.user_id", string='موظف الشركة')
     contact_representative = fields.Many2one('contact.representative', string='المندوب', store=True,
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
                                         store=True)
     pickup_date = fields.Date(string='تاريخ التسليم')
-    product_forms = fields.One2many('product.forms', 'product_visit', store=True)
-    employee_id = fields.Many2one('hr.employee', string='موظف الشركة', store=True)
     comments = fields.Text(store=True, string='ملاحظات')
     comments1 = fields.Text(store=True, string='ملاحظات')
     comments2 = fields.Text(store=True, string='ملاحظات')
     comments3 = fields.Text(store=True, string='ملاحظات')
     comments4 = fields.Text(store=True, string='ملاحظات')
-    order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
 
     #################### location
@@ -294,6 +311,13 @@ class pick_up_Installation_form(models.Model):
     street2 = fields.Char(related='client_res.street2', string='الشارع')
     city = fields.Char(related='client_res.city', string='المدينة')
     country_id = fields.Char(related='client_res.country_id.name', string='البلد')
+
+    order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
+    sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+                                    related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
+                                    readonly=False)
 
     def _get_default_code(self):
         return self.env["ir.sequence"].next_by_code("pickup.visit.code")

@@ -86,7 +86,7 @@
                         <notebook>
                             <page name="product" string="بيانات الاجهزة">
                                 <group></group>
-                                <field name="product_forms">
+                                <field name="product_forms"  delete="0">
 
                                     <tree editable="bottom">
                                         <control>
