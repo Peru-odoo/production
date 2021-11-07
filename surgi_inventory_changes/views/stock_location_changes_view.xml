@@ -8,8 +8,18 @@
             <field name="model">stock.location</field>
             <field name="inherit_id" ref="stock.view_location_form"/>
             <field name="arch" type="xml">
+				<xpath expr="//header" position="inside">
 
+					<button name="location_selling_check_button" string="Selling Check"  type="object" attrs="{'invisible': [('location_selling', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+                    <button name="location_asset_check_button" string="Asset Check"  type="object" attrs="{'invisible': [('location_asset', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+
+
+                    <button name="location_selling_uncheck_button" string="Selling Uncheck"  type="object"  attrs="{'invisible': [('location_selling', '=', False),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+                    <button name="location_asset_uncheck_button" string="Asset Uncheck"  type="object"  attrs="{'invisible': [('location_asset', '=', False),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+
+				</xpath>
                <field name="return_location" position="after">
+
                    <field name="is_operation_location" readonly="1"/>
                    <field name="operation_location_freeze" readonly="0" groups="surgi_inventory_changes.controll_freeze_location_group" />
                    <field name="internal_transit_location" readonly="0" groups="surgi_inventory_changes.controll_freeze_location_group" />
@@ -17,8 +27,8 @@
 
                    <field name="sales_order_location" readonly="1"/>
                                       <field name="exclude_from_stock_control_data" />
-                                      <field name="location_selling" readonly="0"/>
-                   <field name="location_asset" readonly="0"/>
+                                      <field name="location_selling" readonly="1"/>
+                   <field name="location_asset" readonly="1"/>
 
 
 

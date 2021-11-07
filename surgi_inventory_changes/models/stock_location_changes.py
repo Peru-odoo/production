@@ -24,3 +24,20 @@ class stock_location_inherit(models.Model):
         }
         return {'warning': mess}
         pass
+
+
+
+    def location_selling_check_button(self):
+        self.location_selling =True
+
+
+    def location_selling_uncheck_button(self):
+        self.location_selling =False
+
+    def location_asset_check_button(self):
+        self.location_asset =True
+
+
+    def location_asset_uncheck_button(self):
+        self.location_asset =False
+
