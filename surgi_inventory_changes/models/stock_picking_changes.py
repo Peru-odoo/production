@@ -6,7 +6,8 @@ from odoo.exceptions import Warning
 class StockPickingInherit(models.Model):
     _inherit = 'stock.picking'
 
-
+    warehouse_id_user=fields.Many2one(
+        'stock.warehouse', 'Warehouse',compute="_compute_fieldvalue")
     receipt_exchange = fields.Boolean(string="Receipt Exchange? ",related='picking_type_id.receipt_exchange',
                                       help="Used ot show if type is receipt exchange or not")
     # delivery_exchange = fields.Boolean(string="Delivery Exchange",tracking=True,
@@ -62,6 +63,13 @@ class StockPickingInherit(models.Model):
     )
 
     state_delivery = fields.Boolean(string="",compute='change_state_delivery'  )
+
+
+    @api.depends('location_id')
+    def _compute_fieldvalue(self):
+        for each in self:
+            each.warehouse_id_user = each.location_id
+
     @api.depends('sale_id')
     def change_state_delivery(self):
         self.state_delivery=False
