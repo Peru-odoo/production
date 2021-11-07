@@ -17,6 +17,10 @@
 
                    <field name="sales_order_location" readonly="1"/>
                                       <field name="exclude_from_stock_control_data" />
+                                      <field name="location_selling" readonly="0"/>
+                   <field name="location_asset" readonly="0"/>
+
+
 
                </field>
 

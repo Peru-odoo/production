@@ -13,6 +13,8 @@ class stock_location_inherit(models.Model):
     partner_id = fields.Many2one('res.partner',string='Owner')
     exclude_from_stock_control_data = fields.Boolean(string="Exclude From Stock Control Data",
                                                      help="This field used to exclude some parent location from stock control report",)
+    location_selling = fields.Boolean(string="Selling Location" , store=True)
+    location_asset = fields.Boolean(string="Asset Location" , store=True)
 
     def freezconfirm(self):
         self.operation_location_freeze = True
