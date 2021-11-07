@@ -36,7 +36,7 @@
                     <attribute name="create">false</attribute>
                     <attribute name="edit">false</attribute>
                     <attribute name="options">{"no_open": True}</attribute>
-                    <attribute name="domain">[('picking_type_id.warehouse_id','=',uid)]</attribute>
+                    <attribute name="domain">[('warehouse_id.warehouse_users','=',uid)]</attribute>
                     <!--<attribute name="domain">[]</attribute>-->
                     <!--<attribute name="groups">stock.group_stock_multi_locations</attribute>-->
                 </xpath>
