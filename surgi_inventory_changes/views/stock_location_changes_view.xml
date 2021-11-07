@@ -8,16 +8,17 @@
             <field name="model">stock.location</field>
             <field name="inherit_id" ref="stock.view_location_form"/>
             <field name="arch" type="xml">
-				<xpath expr="//header" position="inside">
-
+				<xpath expr="//form/sheet" position="before">
+                    <header>
 					<button name="location_selling_check_button" string="Selling Check"  type="object" attrs="{'invisible': [('location_selling', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
                     <button name="location_asset_check_button" string="Asset Check"  type="object" attrs="{'invisible': [('location_asset', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
 
 
                     <button name="location_selling_uncheck_button" string="Selling Uncheck"  type="object"  attrs="{'invisible': [('location_selling', '=', False),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
                     <button name="location_asset_uncheck_button" string="Asset Uncheck"  type="object"  attrs="{'invisible': [('location_asset', '=', False),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
-
+ </header>
 				</xpath>
+
                <field name="return_location" position="after">
 
                    <field name="is_operation_location" readonly="1"/>
