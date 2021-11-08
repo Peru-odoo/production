@@ -41,5 +41,5 @@ class stock_location_inherit(models.Model):
 
 
     def location_asset_uncheck_button(self):
-        self.location_asset =""
+        self.location_asset_selling =""
 
