@@ -10,11 +10,11 @@
             <field name="arch" type="xml">
 				<xpath expr="//form/sheet" position="before">
                     <header>
-					<button name="location_selling_check_button" string="Selling"  type="object" attrs="{'invisible': [('location_selling', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
-                    <button name="location_asset_check_button" string="Asset"  type="object" attrs="{'invisible': [('location_asset', '=', True),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+					<button name="location_selling_check_button" string="Selling"  type="object" attrs="{'invisible': [('location_asset_selling', '=', 'selling'),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+                    <button name="location_asset_check_button" string="Asset"  type="object" attrs="{'invisible': [('location_asset_selling', '=', 'asset'),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
 
 
-                    <button name="location_asset_uncheck_button" string="Uncheck location"  type="object"  attrs="{'invisible': [('location_asset', '=', False),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
+                    <button name="location_asset_uncheck_button" string="Uncheck location"  type="object"  attrs="{'invisible': [('location_asset_selling', '=', ''),],}" groups="surgi_inventory_changes.asset_and_selling_location"/>
  </header>
 				</xpath>
 
