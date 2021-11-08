@@ -13,6 +13,12 @@ class stock_location_inherit(models.Model):
     partner_id = fields.Many2one('res.partner',string='Owner')
     exclude_from_stock_control_data = fields.Boolean(string="Exclude From Stock Control Data",
                                                      help="This field used to exclude some parent location from stock control report",)
+    location_asset_selling = fields.Selection(
+        [('asset', 'Asset'), ('selling', 'Selling')],store=True,
+         string='Location Type')
+
+
+
 
     def freezconfirm(self):
         self.operation_location_freeze = True
@@ -22,3 +28,18 @@ class stock_location_inherit(models.Model):
         }
         return {'warning': mess}
         pass
+
+
+
+    def location_selling_check_button(self):
+        self.location_asset_selling ="selling"
+
+
+
+    def location_asset_check_button(self):
+        self.location_asset_selling ="asset"
+
+
+    def location_asset_uncheck_button(self):
+        self.location_asset_selling =""
+

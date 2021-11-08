@@ -19,6 +19,8 @@
                         <field name="product_group" invisible="0" optional="hide"/>
                         <field name="product_categ_id" invisible="0" optional="hide"/>
                         <field name="location_id_parent" invisible="0" optional="hide"/>
+                        <field name="location_id_type_a_s" invisible="0" optional="hide"/>
+
                         <field name="location_id" attrs="{'readonly': [('id', '!=', False)]}"
                                invisible="context.get('hide_location', False)" options="{'no_create': True}"/>
                         <field name="lot_id" groups="stock.group_production_lot"
