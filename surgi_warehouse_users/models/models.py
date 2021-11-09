@@ -24,7 +24,7 @@ class stock_quant_inherit_wizard(models.Model):
     _inherit = 'stock.quant'
 
 
-    is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)
+
 
     @api.depends('location_id.warehouse_id.warehouse_users')
     def _get_wh_user(self):
@@ -34,3 +34,4 @@ class stock_quant_inherit_wizard(models.Model):
                     obj.is_wh_user=True
                     break
                 print ("WH result: ",obj.is_wh_user)
+    is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)
