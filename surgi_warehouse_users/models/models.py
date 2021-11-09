@@ -20,18 +20,18 @@ class StockPickingInherit(models.Model):
         related="picking_type_id.warehouse_id")
 
 
-class stock_quant_inherit_wizard(models.Model):
-    _inherit = 'stock.quant'
-
-
-
-
-    @api.depends('location_id.warehouse_id.warehouse_users')
-    def _get_wh_user(self):
-        for obj in self:
-            for user in obj.location_id.warehouse_id.warehouse_users:
-                if(self.env.user.id == user.id):
-                    obj.is_wh_user=True
-                    break
-                print ("WH result: ",obj.is_wh_user)
-    is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)
+# class stock_quant_inherit_wizard(models.Model):
+#     _inherit = 'stock.quant'
+#
+#
+#
+#
+#     @api.depends('location_id.warehouse_id.warehouse_users')
+#     def _get_wh_user(self):
+#         for obj in self:
+#             for user in obj.location_id.warehouse_id.warehouse_users:
+#                 if(self.env.user.id == user.id):
+#                     obj.is_wh_user=True
+#                     break
+#                 print ("WH result: ",obj.is_wh_user)
+#     is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)

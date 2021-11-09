@@ -10,14 +10,14 @@ class stock_quant_inherit_wizard(models.Model):
 
 
 
-    # @api.depends('location_id.warehouse_id.warehouse_users')
-    # def _get_wh_user(self):
-    #     for obj in self:
-    #         for user in obj.location_id.warehouse_id.warehouse_users:
-    #             if(self.env.user.id == user.id):
-    #                 obj.is_wh_user=True
-    #                 break
-    #             print ("WH result: ",obj.is_wh_user)
+    @api.depends('location_id.warehouse_id.warehouse_users')
+    def _get_wh_user(self):
+        for obj in self:
+            for user in obj.location_id.warehouse_id.warehouse_users:
+                if(self.env.user.id == user.id):
+                    obj.is_wh_user=True
+                    break
+                print ("WH result: ",obj.is_wh_user)
 
     def _get_is_hanged(self):
         for obj in self:
@@ -28,7 +28,7 @@ class stock_quant_inherit_wizard(models.Model):
             obj.is_hanged = (obj.location_id.id == location.id)
 
 
-    # is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)
+    is_wh_user = fields.Boolean(default=False, compute=_get_wh_user,store=True)
     is_hanged = fields.Boolean(default=False, compute=_get_is_hanged)
     operation_location_id = fields.Many2one('stock.location', string="Operation Location", readonly=True)
 
