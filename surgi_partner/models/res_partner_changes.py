@@ -31,8 +31,8 @@ class res_partner_inherit(models.Model):
     @api.depends('is_company')
     def _compute_company_type(self):
         for partner in self:
-            partner.company_type = 'company' or 'branch' if partner.is_company else 'person' or 'employee'
-
+            partner.company_type = 'company' if partner.is_company else ['person','branch','employee']
+    #
     # def _write_company_type(self):
     #     for partner in self:
     #         partner.is_company = partner.company_type == 'company'
