@@ -14,7 +14,7 @@
                     <field name="is_operation_freeze" invisible="1"/>
                 </field>
                 <field name="location_id" position="after">
-                    <field name="is_wh_user" invisible="1"/>
+<!--                    <field name="is_wh_user" invisible="1"/>-->
                 </field>
 
             </field>
@@ -41,7 +41,7 @@
                 <field name="location_id" position="after">
                     <field name="is_operation_related" invisible="0" optional="hide"/>
                     <field name="is_operation_freeze" invisible="0" optional="hide"/>
-                    <field name="is_wh_user" invisible="0" optional="hide"/>
+<!--                    <field name="is_wh_user" invisible="0" optional="hide"/>-->
                 </field>
 
             </field>
