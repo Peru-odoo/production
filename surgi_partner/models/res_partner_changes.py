@@ -25,3 +25,18 @@ class res_partner_inherit(models.Model):
     company_type = fields.Selection(string='Company Type',
         selection=[('person', 'Individual'), ('company', 'Company'),('branch','Branch'),('employee','Employee')],
         compute='_compute_company_type', inverse='_write_company_type')
+
+
+
+    @api.depends('is_company')
+    def _compute_company_type(self):
+        for partner in self:
+            partner.company_type = 'company' or 'branch' if partner.is_company else 'person' or 'employee'
+
+    # def _write_company_type(self):
+    #     for partner in self:
+    #         partner.is_company = partner.company_type == 'company'
+    #
+    # @api.onchange('company_type')
+    # def onchange_company_type(self):
+    #     self.is_company = (self.company_type == 'company')
