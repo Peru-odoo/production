@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['stock','stock_account','surgi_product_template','sale'],
 
     # always loaded
     'data': [
