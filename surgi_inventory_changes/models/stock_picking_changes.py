@@ -65,11 +65,6 @@ class StockPickingInherit(models.Model):
     state_delivery = fields.Boolean(string="",compute='change_state_delivery'  )
 
 
-    @api.depends('location_id')
-    def _compute_fieldvalue(self):
-        for each in self:
-            each.warehouse_id_user = each.location_id.name
-
     @api.depends('sale_id')
     def change_state_delivery(self):
         self.state_delivery=False
