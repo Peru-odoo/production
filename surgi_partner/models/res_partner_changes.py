@@ -22,3 +22,6 @@ class res_partner_inherit(models.Model):
         ('open_approval', 'Open with Approval')
     ], string='Authority Type')
     arabic_name = fields.Char(string="Arabic Name", required=False)
+    company_type = fields.Selection(string='Company Type',
+        selection=[('person', 'Individual'), ('company', 'Company'),('branch','Branch'),('employee','Employee')],
+        compute='_compute_company_type', inverse='_write_company_type')
