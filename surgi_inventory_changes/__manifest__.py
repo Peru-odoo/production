@@ -13,7 +13,7 @@ Warehouse modifications
         'views/stock_picking_type_changes_view.xml',
         'views/stock_warehouse_view_changes.xml',
         'views/stock_location_changes_view.xml',
-        'views/stock_warehouse_changes_view.xml',
+        # 'views/stock_warehouse_changes_view.xml',
         'views/sale.order.xml',
         'views/stock_quant_change_view.xml',
         'views/stock_move_line_changes.xml',
