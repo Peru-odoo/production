@@ -73,10 +73,10 @@
                                     <field name="expiry_date"/>
                                 </group>
                             </div>
+
                             <div>
                                 <group>
-                                    <field name="attachment_product"  class="oe_inline"/>
-
+                                    <field name="product_expiry"/>
                                 </group>
                             </div>
 
@@ -108,7 +108,47 @@
                                 </field>
 
                             </page>
+                                <page name="Varition" string="Varition Number">
+                                <group>
 
+                                </group>
+
+
+                                <field name="varition_num">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="varition_num"/>
+                                        <field name="varition_num_date"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                            <page name="attachment" string="Attachment">
+                                <group>
+
+                                </group>
+
+
+                                <field name="attachment_page">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="certifect"/>
+                                        <field name="certifect_expiry"/>
+
+                                        <field name="attachment_product" widget="many2many_binary" string="Attach"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
 
                         </notebook>
 

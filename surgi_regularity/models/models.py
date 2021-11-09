@@ -18,9 +18,10 @@ class regularity_registration_line(models.Model):
     acual_munfacter = fields.Many2many('acual.munfacter', string="Actual Manufacturer")
     releas_date = fields.Date(String="Release Date")
     expiry_date = fields.Date(string="Expiry date")
-    attachment_product = fields.Binary(string="Attachment")
     product_forms = fields.One2many('product.regul', "registration_line")
-
+    attachment_page = fields.One2many('product.regul', "registration_attachment")
+    varition_num = fields.One2many('product.regul', "varition_num_registration")
+    product_expiry = fields.Date("Product Expiry")
 
 class product_template_changes(models.Model):
     _inherit = 'product.template'
@@ -78,8 +79,15 @@ class product_template_reg(models.Model):
     registration_line_name = fields.Char(related="registration_line.registration_name")
     registration_line_product_registration_number = fields.Char(related="registration_line.product_registration_number")
 
+    registration_attachment = fields.Many2one("registration.line", "registration line")
 
     registration_line_leagal_munfacter = fields.Char(related="registration_line.leagal_munfacter")
     registration_line_acual_munfacter = fields.Many2many(related="registration_line.acual_munfacter")
     registration_line_releas_date = fields.Date(related="registration_line.releas_date")
     registration_line_expiry_date = fields.Date(related="registration_line.expiry_date")
+    attachment_product = fields.Many2many('ir.attachment', 'class_ir_attachments_rel', 'class_id', 'attachment_id', 'Attachments')
+    certifect = fields.Char("Certificate")
+    certifect_expiry = fields.Date("Expiry")
+    varition_num=fields.Char("Varition Number")
+    varition_num_date = fields.Date("Varition Date")
+    varition_num_registration = fields.Many2one("registration.line", "registration line")
