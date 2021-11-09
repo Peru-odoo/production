@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="stock_warehouse_view_inherit" model="ir.ui.view">
+            <field name="name">stock.warehouse.view.inherit</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//group" position="after">
+                    <group string="Users">
+                        <!--<separator string="Users"/>-->
+                        <field name="warehouse_users"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+   <record id="view_picking_form_picking_inherit" model="ir.ui.view">
+            <field name="name">view.picking.form.picking.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='picking_type_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                    <attribute name="options">{"no_open": True}</attribute>
+                    <attribute name="domain">[('warehouse_id.warehouse_users','=',uid)]</attribute>
+                    <!--<attribute name="domain">[]</attribute>-->
+                    <!--<attribute name="groups">stock.group_stock_multi_locations</attribute>-->
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="warehouse_id_user" string="warehousessss" invisible="1" readonly="0"/>
+                </xpath>
+            </field>
+        </record>
+
+  </data>
+</odoo>
