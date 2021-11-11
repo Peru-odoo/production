@@ -70,6 +70,8 @@
                         <group>
                             <field name="product_line"/>
                             <field name="product_line_parent"/>
+                                                        <field name="warehouse_users"/>
+
                         </group>
                     </sheet>
                 </form>

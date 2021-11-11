@@ -7,3 +7,7 @@ class ProductLines(models.Model):
     name = fields.Char()
     product_line = fields.Char(string="Parent Product Line old")
     product_line_parent = fields.Char(string="Parent Product Line")
+
+    warehouse_users = fields.Many2many('res.users', string="Users")
+
+
