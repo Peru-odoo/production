@@ -123,7 +123,7 @@
                                 <field name="operation_delivery_type" attrs="{'invisible': [('so_created', '=',True)]}"/>
                                 <field name="tender_so" widget="selection" attrs="{'invisible': [('op_type', '!=', 'tender')]}" />
                                 <field name="supply_so" widget="selection" attrs="{'invisible': [('op_type', '!=', 'supply_order')],'required': [('op_type', '=', 'supply_order')]}" />
-                                <field name="patient_national_id" attrs="{'invisible': [('op_type', '!=', 'tender')],'required': [('op_type', '=', 'tender')]}" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="patient_national_identification" attrs="{'invisible': [('op_type', '!=', 'tender')],'required': [('op_type', '=', 'tender')]}" />
                             </group>
                             <group>
                                 <field name="responsible" invisible="False" readonly="1" attrs="{'readonly':[('state', 'not in', ['draft'])]}" options="{'no_create': True, 'no_open': True}"/>
