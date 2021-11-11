@@ -51,6 +51,22 @@
             </field>
         </record>
 
+        <record id="action_view_sales_order_line_manger" model="ir.actions.server">
+            <field name="sequence" eval="1"/>
+            <field name="state">code</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="code">action=model.button_sales_manger_order_action()</field>
+            <field name="name">Product Line Sales Order</field>
+        </record>
 
+  <menuitem
+        action="action_view_sales_order_line_manger"
+
+        id="menu_sales_order_line_mange"
+        name="Product Line Sales Order"
+
+        parent="sale.sale_menu_root"
+            sequence="8"/>
     </data>
 </odoo>

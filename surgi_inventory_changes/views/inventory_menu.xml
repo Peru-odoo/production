@@ -22,11 +22,16 @@
             <field name="code">action=model.button_stock_onhand_action()</field>
             <field name="name">Product Line Report</field>
         </record>
-        <menuitem
+
+  <menuitem
+        action="action_view_stock_qunet_manger"
+
         id="stock_view_stock_qunet_mange"
         name="Product Line Report"
-        parent="stock.menu_stock_root" sequence="151"/>
+                groups="stock.group_stock_user"
 
+        parent="stock_inventory_user_report_menu"
+            sequence="8"/>
         <menuitem
         id="stock_inventory_user_report_menu"
         name="Inv. User Report"
