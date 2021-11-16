@@ -160,7 +160,7 @@ class stock_inventory_inherit(models.Model):
             ('inventory_id', '=', self.id),
             ('location_id.usage', 'in', ['internal', 'transit','customer'])
         ]
-                if self.location_ids:
+        if self.location_ids:
             context['default_location_id'] = self.location_ids[0].id
             if len(self.location_ids) == 1:
                 if not self.location_ids[0].child_ids:
