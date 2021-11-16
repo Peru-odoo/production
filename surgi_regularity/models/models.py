@@ -22,6 +22,26 @@ class regularity_registration_line(models.Model):
     attachment_page = fields.One2many('product.regul', "registration_attachment")
     varition_num = fields.One2many('product.regul', "varition_num_registration")
     product_expiry = fields.Date("Product Expiry")
+    start_date = fields.Date(string="Start date")
+    end_date = fields.Date(string="End date")
+    date_diff = fields.Char("Shelf Life")
+    storge_condit = fields.Char("Storage Conditions")
+
+
+    @api.constrains('start_date', 'end_date', 'date_diff')
+    def _date_difference(self):
+        for record in self:
+            if record.start_date > record.end_date:
+                raise ValidationError('Start date should not greater than end date.')
+            else:
+                record.date_diff = (record.end_date - record.start_date).months
+
+
+
+
+
+
+
 
 class product_template_changes(models.Model):
     _inherit = 'product.template'
