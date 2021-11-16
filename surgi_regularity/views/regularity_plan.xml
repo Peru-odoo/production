@@ -1,0 +1,188 @@
+<odoo>
+    <data>
+    <record id="tree_view_registration_finalpage" model="ir.ui.view">
+            <field name="name">Registration Line</field>
+            <field name="model">registration.line</field>
+            <field name="arch" type="xml">
+                <tree string="Registration Line">
+                    <field name="name"/>
+                    <field name="registration_name"/>
+
+                    <field name="product_registration_number"/>
+
+                    <field name="leagal_munfacter"/>
+                    <field name="acual_munfacter" widget="many2many_tags"/>
+
+
+                    <field name="strlize_method"/>
+
+                    <field name="country_of_orgin" widget="many2many_tags"/>
+                    <field name="releas_date"/>
+
+
+                    <field name="expiry_date"/>
+
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="form_view_registration_final" model="ir.ui.view">
+            <field name="name">Registration Line</field>
+            <field name="model">registration.line</field>
+            <field name="arch" type="xml">
+                <form string="Registration Line">
+
+                    <sheet>
+                        <div style="text-align:center">
+
+                            <group string="Registration Line" col="4" colspan="6">
+
+                            </group>
+
+                        </div>
+                        <group>
+                            <div>
+                                <group string="Basic Information">
+                                     <field name="name"/>
+                                     <field name="registration_name"/>
+
+                                    <field name="product_registration_number"/>
+                                    <field name="strlize_method"/>
+                                    <field name="storge_condit"/>
+
+
+                                </group>
+                            </div>
+
+                            <div>
+                                <group string="Manufacture">
+
+                                    <field name="country_of_orgin" widget="many2many_tags"/>
+
+                                    <field name="leagal_munfacter"/>
+                                  <field name="acual_munfacter" widget="many2many_tags"/>
+
+                                </group>
+                            </div>
+
+
+
+                            <div>
+                                <group string="Registration Date">
+                                    <field name="releas_date"/>
+                                    <field name="expiry_date"/>
+                                </group>
+                            </div>
+
+                            <div>
+                                <group string="Shelf Life">
+                                    <field name="start_date"/>
+                                    <field name="end_date"/>
+                                    <field name="date_diff" style="font-size:16px"/>
+
+                                </group>
+                            </div>
+
+                        </group>
+
+                        <notebook>
+                            <page name="product" string="product">
+                                <group>
+
+                                </group>
+
+
+                                <field name="product_forms">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="product_form_id"/>
+                                        <field name="internal_ref"/>
+                                                                                <field name="label_ref"/>
+
+                                                                                <field name="regis_Product_class"/>
+
+                                        <field name="desc_regul"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
+                                <page name="Varition" string="Varition Number">
+                                <group>
+
+                                </group>
+
+
+                                <field name="varition_num">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="varition_num"/>
+                                        <field name="varition_num_date"/>
+                                    </tree>
+                                </field>
+
+                            </page>
+                            <page name="attachment" string="Attachment">
+                                <group>
+
+                                </group>
+
+
+                                <field name="attachment_page">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="certifect"/>
+                                        <field name="certifect_expiry"/>
+
+                                        <field name="attachment_product" widget="many2many_binary" string="Attach"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
+
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="action_Registration_line_pages" model="ir.actions.act_window">
+            <field name="name">Registration Line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">registration.line</field>
+            <field name="view_mode">tree,form</field>
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_registration_final_views" name="Registration Line" parent="regularity_menuitem"
+                  action="action_Registration_line_pages" sequence="6"/>
+
+    </data>
+</odoo>
