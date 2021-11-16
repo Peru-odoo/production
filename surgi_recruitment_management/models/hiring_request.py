@@ -93,6 +93,7 @@ class HiringRequest(models.Model):
                 {'state': 'recruit',
                  'no_of_recruitment': no_of_recruitment,
                  'open_date': record.date,
+                 'address_id':record.address_id.ids,
                  'close_date': record.close_date})
             record.job_id.recruiter_ids.unlink()
             for line in record.recruiter_ids:

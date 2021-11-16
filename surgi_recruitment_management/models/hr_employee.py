@@ -48,7 +48,7 @@ class HREmployee(models.Model):
                     'department_id': rec.job_id.department_id.id,
                     'grade_id': rec.job_id.grade_id.id,
                     'resource_id': rec.job_id.resource_id.id,
-                    'request_count': rec.job_id.no_of_recruitment,
+                    'request_count': 1,
                     'request_reason': 'replacement',
                     'address_id': [(6, 0, rec.job_id.address_id.ids)]})
             return request

@@ -65,7 +65,7 @@
                             <field name="request_reason"/>
                             <field name="resource_id" attrs="{'readonly':[('state','=','manager')]}"/>
                             <field name="date" readonly="1"/>
-                            <field name="close_date"/>
+                            <field name="close_date" attrs="{'readonly':[('state','!=','manager')]}"/>
                             <field name="company_id" groups="base.group_multi_company"
                                    readonly="1"/>
                         </group>
