@@ -29,6 +29,7 @@
         'views/views.xml',
         'views/templates.xml',
         'views/acual_mnu.xml',
+        'views/regularity_plan.xml',
 
 
     ],

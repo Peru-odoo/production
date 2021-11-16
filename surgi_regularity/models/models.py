@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from datetime import datetime
+import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
 
@@ -24,20 +24,51 @@ class regularity_registration_line(models.Model):
     product_expiry = fields.Date("Product Expiry")
     start_date = fields.Date(string="Start date")
     end_date = fields.Date(string="End date")
-    date_diff = fields.Char("Shelf Life")
+    date_diff = fields.Char("Shelf Life" , compute="_get_age_from_relation")
     storge_condit = fields.Char("Storage Conditions")
 
 
-    @api.constrains('start_date', 'end_date', 'date_diff')
-    def _date_difference(self):
-        for record in self:
-            if record.start_date > record.end_date:
-                raise ValidationError('Start date should not greater than end date.')
+
+
+    @api.depends("start_date","end_date")
+    def _get_age_from_relation(self):
+        """Age Calculation"""
+        for stud in self:
+            if stud.start_date and stud.end_date:
+                """
+                Get only year.
+                """
+
+
+                currentDate = fields.Datetime.to_datetime(stud.end_date).date()
+
+                deadlineDate= fields.Datetime.to_datetime(stud.start_date).date()
+                # print (deadlineDate)
+                daysLeft = currentDate - deadlineDate
+                # print(daysLeft)
+
+                years = ((daysLeft.total_seconds())/(365.242*24*3600))
+                yearsInt=int(years)
+
+                months=(years-yearsInt)*12
+                monthsInt=int(months)
+
+                days=(months-monthsInt)*(365.242/12)
+                daysInt=int(days)
+
+                hours = (days-daysInt)*24
+                hoursInt=int(hours)
+
+                minutes = (hours-hoursInt)*60
+                minutesInt=int(minutes)
+
+                seconds = (minutes-minutesInt)*60
+                secondsInt =int(seconds)
+
+                stud.date_diff = '{0:d} years, {1:d}  months, {2:d}  days,   \
+                '.format(yearsInt,monthsInt,daysInt,hoursInt)
             else:
-                record.date_diff = (record.end_date - record.start_date).months
-
-
-
+                stud.date_diff = "Not Providated...."
 
 
 
@@ -94,6 +125,7 @@ class product_template_reg(models.Model):
     internal_ref = fields.Char(related='product_form_id.default_code', string='internal ref')
     label_ref = fields.Char(related='product_form_id.label_ref_num', string='Label Ref')
     regis_Product_class = fields.Selection(related='product_form_id.Product_class')
+    registration_plan = fields.Many2one("regularity.plan", "Plan")
 
     desc_regul = fields.Char("Description")
     registration_line_name = fields.Char(related="registration_line.registration_name")
@@ -106,6 +138,10 @@ class product_template_reg(models.Model):
     registration_line_releas_date = fields.Date(related="registration_line.releas_date")
     registration_line_expiry_date = fields.Date(related="registration_line.expiry_date")
     attachment_product = fields.Many2many('ir.attachment', 'class_ir_attachments_rel', 'class_id', 'attachment_id', 'Attachments')
+    attachment_product_plan = fields.Many2many('ir.attachment', 'class_ir_attachments_rel', 'class_id', 'attachment_id', 'Attachments')
+    certifect_plan = fields.Char("Certificate")
+    certifect_expiry_plan = fields.Date("Expiry")
+
     certifect = fields.Char("Certificate")
     certifect_expiry = fields.Date("Expiry")
     varition_num=fields.Char("Varition Number")
