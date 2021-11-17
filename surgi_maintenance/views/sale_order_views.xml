@@ -25,7 +25,7 @@
                                 <field  name='maint_visit_so' string="نموذج زيارة وخدمة ما بعد البيع"  modifiers="{'readonly': true}" widget="statinfo"   />
                     </button>
                     <button name="action_view_maintenance_inform_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('after_sales_check','=',False)]}">
-                                <field  name='maint_inform_so' string="نموذج زيارة وخدمة ما بعد البيع"  modifiers="{'readonly': true}" widget="statinfo"   />
+                                <field  name='maint_inform_so' string="البلاغ"  modifiers="{'readonly': true}" widget="statinfo"   />
                     </button>
 
                 </div>
