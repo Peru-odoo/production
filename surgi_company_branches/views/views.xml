@@ -1,5 +1,6 @@
 <odoo>
   <data>
+    <function model="stock.quant" name="update_branches"/>
     <!-- explicit list view definition -->
 <!--
     <record model="ir.ui.view" id="surgi_company_branches.list">

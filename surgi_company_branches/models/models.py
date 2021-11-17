@@ -39,16 +39,48 @@ class stock_location_branch_inhert(models.Model):
 class stock_quant_branch_inhert(models.Model):
      _inherit = "stock.quant"
      #branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
-     branch=fields.Selection(selection=lambda self: self.get_branches)#,compute="_get_branch"
+     #branch=fields.Selection(selection=lambda self: self.get_branches,compute="_get_branch")#,
      #branch =fields.Char(string="branches")#related='location_id.branch.name'
-     def get_branches(self):
-          b=[]
-          b.append((str(-1),""))
-          for i in self.location_id.company_id.branches:
-               b.append((str(i.id),str(i.name)))
-          return b
-          pass
+     #branch=fields.Char(related=get_current_branch())
+     branch=fields.Char(string='Branch',compute="_get_current_branch",store=True)
+     # def get_branches(self):
+     #      b=[]
+     #      b.append((str(-1),""))
+     #      for i in self.location_id.company_id.branches:
+     #           b.append((str(i.id),str(i.name)))
+     #      return b
+     #      pass
+     #@api.depends('location_id')
+     @api.model
+     def update_branches(self):
+          allrec=self.search([])
+          for rec in allrec:
+               if rec.location_id.usage=="view":
+                    if rec.location_id.branch:
+                         rec.write({"branch": rec.location_id.branch.name})
+                         
 
+               else:
+                    if rec.location_id.location_id.branch.name:
+                         x=rec.location_id.location_id.branch.name
+                         rec.write({"branch": rec.location_id.location_id.branch.name})
+
+
+          pass
+     def _get_current_branch(self):
+          for rec in self:
+               if rec.location_id.usage=="view":
+                    if rec.location_id.branch:
+                         return rec.location_id.branch.name
+                    else:
+                         return ""
+               else:
+                    if rec.location_id.location_id.branch.name:
+                         x=rec.location_id.location_id.branch.name
+                         return rec.location_id.location_id.branch.name
+                    else:
+                         return ""
+          pass
      #@api.depends('location_id.branch', 'location_id.location_id.branch')
      def _get_branch(self):
           for rec in self:
