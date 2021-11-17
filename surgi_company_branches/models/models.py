@@ -29,7 +29,7 @@ class stock_location_branch_inhert(models.Model):
      _inherit = "stock.location"
 
      def get_company_id_domain(self):
-          domain = "[('company_id','='," + self.company_id+ ")]"
+          domain = "[('company_id','='," + self.company_id.id+ ")]"
           return domain
 
 
