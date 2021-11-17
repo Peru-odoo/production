@@ -42,9 +42,9 @@ class stock_location_branch_inhert(models.Model):
      branch=fields.Selection(selection="get_branches")#,compute="_get_branch"
      def get_branches(self):
           b=[]
-          b.append((-1,""))
+          b.append((str(-1),""))
           for i in self.location_id.company_id.branches:
-               b.append((i.id,i.name))
+               b.append((str(i.id),i.name))
           return b
           pass
 
