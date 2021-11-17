@@ -27,12 +27,12 @@ class branch_company_inhert(models.Model):
 #             record.value2 = float(record.value) / 100
 class stock_location_branch_inhert(models.Model):
      _inherit = "stock.location"
-
+     @api.model
      def get_company_id_domain(self):
           domain = "[('company_id','='," + str(self.company_id.id)+ ")]"
           return domain
 
 
-     branch=fields.Many2one("surgi.company.branches",string="Branch",domain=get_company_id_domain)
+     branch=fields.Many2one("surgi.company.branches",string="Branch")
 
 
