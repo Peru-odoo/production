@@ -25,7 +25,7 @@ class branch_company_inhert(models.Model):
 #     def _value_pc(self):
 #         for record in self:
 #             record.value2 = float(record.value) / 100
-class stock_location_branch_inhert(models.model):
+class stock_location_branch_inhert(models.Model):
      _inherit = "stock.location"
 
      def get_company_id_domain(self):
