@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
 
  <record id="stock_quant_tree_editable_branch_inhert" model="ir.ui.view">
             <field name="name">stock.quant.tree.editable.branch.inhert</field>
@@ -10,7 +9,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='product_id']" position="after">
-                    <!-- Add your fields or attributes here   -->
+                    
                     <field name="branch"/>
                 </xpath>
 
