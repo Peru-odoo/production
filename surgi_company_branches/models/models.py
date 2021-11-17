@@ -41,24 +41,24 @@ class stock_location_branch_inhert(models.Model):
      #branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
      #branch=fields.Selection(selection=lambda self: self.get_branches)#,compute="_get_branch"
      branch =fields.Char(string="branches")#related='location_id.branch.name'
-     def get_branches(self):
-          b=[]
-          b.append((str(-1),""))
-          for i in self.location_id.company_id.branches:
-               b.append((str(i.id),str(i.name)))
-          return b
-          pass
-
-     #@api.depends('location_id.branch', 'location_id.location_id.branch')
-     def _get_branch(self):
-          for rec in self:
-               if rec.location_id.usage=="view":
-                    if rec.location_id.branch:
-                         return rec.location_id.branch.id
-                    else:
-                         return -1
-               else:
-                    if self.location_id.location_id.branch:
-                         return self.location_id.location_id.branch.id
-                    else:
-                         return -1
+     # def get_branches(self):
+     #      b=[]
+     #      b.append((str(-1),""))
+     #      for i in self.location_id.company_id.branches:
+     #           b.append((str(i.id),str(i.name)))
+     #      return b
+     #      pass
+     # 
+     # #@api.depends('location_id.branch', 'location_id.location_id.branch')
+     # def _get_branch(self):
+     #      for rec in self:
+     #           if rec.location_id.usage=="view":
+     #                if rec.location_id.branch:
+     #                     return rec.location_id.branch.id
+     #                else:
+     #                     return -1
+     #           else:
+     #                if self.location_id.location_id.branch:
+     #                     return self.location_id.location_id.branch.id
+     #                else:
+     #                     return -1
