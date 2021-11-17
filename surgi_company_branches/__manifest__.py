@@ -28,7 +28,8 @@
         'views/views.xml',
         'views/templates.xml',
         'views/Company_view.xml',
-        'views/stock_location.xml'
+        'views/stock_location.xml',
+        'views/stock_quant.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
