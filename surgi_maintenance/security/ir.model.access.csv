@@ -8,6 +8,7 @@ access_pickup_repair_id,access_pickup_repair,model_pickup_repair,,1,1,1,1
 access_pickup_installation_id,access_pickup_installation,model_pickup_installation,,1,1,1,1
 access_pickup_final_id,access_pickup_final,model_pickup_final,,1,1,1,1
 access_pickup_visit_id,access_pickup_visit,model_pickup_visit,,1,1,1,1
+access_maintenance_inform_id,access_maintenance_inform,model_maintenance_inform,,1,1,1,1
 
 access_pickup_delivery_id,access_pickup_delivery,model_pickup_delivery,,1,1,1,1
 access_product_forms_id,access_product_forms,model_product_forms,,1,1,1,1
