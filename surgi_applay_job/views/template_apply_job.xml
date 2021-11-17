@@ -9,6 +9,20 @@
                     <div class="row s_col_no_resize s_col_no_bgcolor">
                         <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px"
                                for="partner_national_id">
+                            <span class="s_website_form_label_content">Your Mobile</span>
+                            <span class="s_website_form_mark">*</span>
+                        </label>
+                        <div class="col-sm">
+                            <input id="partner_mobile" type='text' class="form-control s_website_form_input"
+                                   name="partner_mobile" required=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char"
+                     data-name="Field">
+                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px"
+                               for="partner_national_id">
                             <span class="s_website_form_label_content">Your National ID</span>
                             <span class="s_website_form_mark">*</span>
                         </label>
@@ -71,7 +85,7 @@
                         </label>
                         <div class="col-sm">
                             <input id="nominee" type='text' class="form-control s_website_form_input"
-                                   name="nominee" required=""/>
+                                   name="nominee"/>
                         </div>
                     </div>
                 </div>
@@ -124,7 +138,8 @@
                             <label class="s_website_form_label_content" for="date_from1">Date from</label>
                         </div>
                         <div>
-                            <input name="date_from1" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_from1" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -132,7 +147,8 @@
                             <label class="s_website_form_label_content" for="date_to1">Date to</label>
                         </div>
                         <div>
-                            <input name="date_to1" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_to1" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -160,7 +176,8 @@
                             <label class="s_website_form_label_content" for="date_from2">Date from</label>
                         </div>
                         <div>
-                            <input name="date_from2" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_from2" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -168,7 +185,8 @@
                             <label class="s_website_form_label_content" for="date_to2">Date to</label>
                         </div>
                         <div>
-                            <input name="date_to2" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_to2" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -196,7 +214,8 @@
                             <label class="s_website_form_label_content" for="date_from3">Date from</label>
                         </div>
                         <div>
-                            <input name="date_from3" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_from3" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -204,7 +223,8 @@
                             <label class="s_website_form_label_content" for="date_to3">Date to</label>
                         </div>
                         <div>
-                            <input name="date_to3" class="form-control o_website_form_input" type="date" data-date-format="YYYY-MM-DD"/>
+                            <input name="date_to3" class="form-control o_website_form_input" type="date"
+                                   data-date-format="YYYY-MM-DD"/>
                         </div>
                     </div>
                     <div class="row s_col_no_resize s_col_no_bgcolor">
@@ -236,6 +256,7 @@
                 'gender',
                 'partner_name',
                 'partner_phone',
+                'partner_mobile',
                 'job_id',
                 'department_id',
                 'company_name1',

@@ -22,9 +22,9 @@ odoo.define('website_hr_recruitment.tour', function(require) {
         run: "text cairo"
     },
      {
-        content: "Complete Your ID",
-        trigger: "input[name=partner_national_id]",
-        run: "16166548571365"
+        content: "Complete Your Mobile",
+        trigger: "input[name=partner_mobile]",
+        run: "01132646488"
     },
 
     {
@@ -43,12 +43,6 @@ odoo.define('website_hr_recruitment.tour', function(require) {
         trigger: "input[name=age]",
         run: "text 27"
     },
-    {
-            content: "Complete Nominee",
-            trigger: "input[name=nominee]",
-            run: "text Nominee"
-        },
-
     {
             content: "Complete Gender",
             trigger: "input[name=gender]",

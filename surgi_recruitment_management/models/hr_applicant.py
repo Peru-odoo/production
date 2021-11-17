@@ -91,7 +91,7 @@ class HRApplicant(models.Model):
         for rec in self:
             if rec.partner_national_id:
                 if len(rec.partner_national_id) != 14:
-                    raise ValidationError(_('Please enter ID content 14 digit'))
+                    raise ValidationError(_('Please enter National ID content 14 digit'))
 
     @api.onchange('partner_national_id')
     def onchange_partner_national_id(self):
@@ -159,19 +159,21 @@ class HRApplicant(models.Model):
     @api.model
     def create(self, values):
         values['number'] = self.env['ir.sequence'].next_by_code('hr.applicant') or '/'
-        new_partner_id = self.env['res.partner'].search([('mobile', '=', values['partner_mobile'])],
-                                                        limit=1)
-        if not new_partner_id:
-            new_partner_id = self.env['res.partner'].create({
-                'is_company': False,
-                'type': 'private',
-                'partner_national_id': values['partner_national_id'],
-                'name': values['partner_name'],
-                'email': values['email_from'],
-                'mobile': values['partner_mobile'],
-            })
-        values['partner_id'] = new_partner_id.id
-        return super().create(values)
+        res = super().create(values)
+        for rec in self:
+            new_partner_id = self.env['res.partner'].search([('mobile', '=', rec.partner_mobile)],
+                                                            limit=1)
+            if not new_partner_id:
+                new_partner_id = self.env['res.partner'].create({
+                    'is_company': False,
+                    'type': 'private',
+                    'partner_national_id': rec.partner_national_id,
+                    'name': rec.partner_name,
+                    'email':rec.email_from,
+                    'mobile': rec.partner_mobile,
+                })
+            values['partner_id'] = new_partner_id.id
+        return res
 
 
     def show_surveys(self):
