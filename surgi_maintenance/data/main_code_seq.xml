@@ -23,6 +23,14 @@
         <field name="padding">4</field>
         <field name="company_id" eval="False" />
     </record>
+        <record id="i_f_default_code_seq" model="ir.sequence">
+        <field name="name">maintenance inform Code Mandatory</field>
+        <field name="code">maintenance.inform.code</field>
+        <field name="prefix">IF-</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False" />
+    </record>
+
 
     <record id="p_f_default_code_seq" model="ir.sequence">
         <field name="name">pickup and final Code Mandatory</field>

@@ -59,6 +59,9 @@
                             </div>
                             <div>
                                 <group string="Company" name="emp_id">
+                                    <field name="product_contact"/>
+
+
                                     <field name="employee_id"/>
                                 </group>
                             </div>

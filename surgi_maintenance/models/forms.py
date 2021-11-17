@@ -119,7 +119,7 @@ class pick_up_and_repair_form(models.Model):
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
     product_forms = fields.One2many('stock.move.line', 'pickup_repair',
                                     related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
-                                    readonly=False)
+                                    readonly=False , ondelete="cascade")
 
     @api.onchange('order_id')
     def compute_display_name_order_id(self):
@@ -311,6 +311,7 @@ class pick_up_Installation_form(models.Model):
     comments3 = fields.Text(store=True, string='ملاحظات')
     comments4 = fields.Text(store=True, string='ملاحظات')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
+    product_contact = fields.Many2one('maintenance.inform',string="البلاغ" ,domain="[('client_res','=',client_res)]")
 
     #################### location
     street1 = fields.Char(related='client_res.street', string='الشارع')
@@ -399,6 +400,7 @@ class product_forms(models.Model):
     product_status = fields.Char('حالة الجهاز الظاهرية')
     product_sug = fields.Char('اﻷجراءت المقترحة')
     product_status_tec = fields.Char('حالة الجهاز الفنية')
+
 
 
 

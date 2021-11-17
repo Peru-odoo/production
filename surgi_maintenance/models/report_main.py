@@ -11,7 +11,7 @@ class maintenance_inform_form(models.Model):
                                              domain="[('contact_id', '=', client_res)]", )
     representative_mobile = fields.Char(string="التلفون", related='contact_representative.client_representative_mobile',
                                         store=True)
-    pickup_date = fields.Date(string='تاريخ التركيب والتشغيل')
+    pickup_date = fields.Date(string='تاريخ البلاغٍ')
     comments = fields.Text(string='ملاحظات')
 
     #################### location
@@ -35,7 +35,7 @@ class maintenance_inform_form(models.Model):
 
 
     def _get_default_code(self):
-        return self.env["ir.sequence"].next_by_code("pickup.installation.code")
+        return self.env["ir.sequence"].next_by_code("maintenance.inform.code")
 
     name = fields.Char(
         "الرقم المرجعي", readonly=True, index=True, store=True, default=_get_default_code

@@ -213,7 +213,7 @@
 
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_maintenance_inform_views" name="ألبلاغ" parent="surgi_menu_reports_root"
-                  action="action_maintenance_inform_pages" sequence="7"/>
+                  action="action_maintenance_inform_pages" sequence="6"/>
 
 
     </data>
