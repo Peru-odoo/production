@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        
 
  <record id="stock_quant_tree_editable_branch_inhert" model="ir.ui.view">
             <field name="name">stock.quant.tree.editable.branch.inhert</field>
