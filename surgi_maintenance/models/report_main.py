@@ -2,7 +2,7 @@ from odoo import models, fields, api, exceptions, _
 
 from datetime import datetime, timedelta
 
-class pick_up_Installation_form(models.Model):
+class maintenance_inform_form(models.Model):
     _name = 'maintenance.inform'
 
     client_res = fields.Many2one('res.partner', related="order_id.partner_id", string='العميل', store=True, )
