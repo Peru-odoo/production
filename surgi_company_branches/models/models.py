@@ -44,5 +44,5 @@ class stock_location_branch_inhert(models.Model):
      def _get_branch(self):
           if self.location_id.usage=="view":
                return self.location_id.branch
-          else:
-               return self.location_id.location_id.branch
+          #else:
+               #return self.location_id.location_id.branch
