@@ -10,7 +10,11 @@
 
                 <xpath expr="//field[@name='website']" position="after">
                     <!-- Add your fields or attributes here -->
-                    <field name="branches" />
+                    <field name="branches" editable="bottom" edit="1" create="1">
+                        <tree string="Your Tree" editable="bottom">
+                            <field name="name" required="1"/>
+                        </tree>
+                    </field>
                 </xpath>
 
             </field>
