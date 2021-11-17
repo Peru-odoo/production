@@ -49,7 +49,7 @@ class stock_location_branch_inhert(models.Model):
           return b
           pass
 
-     @api.depends('location_id.branch', 'location_id.location_id.branch')
+     #@api.depends('location_id.branch', 'location_id.location_id.branch')
      def _get_branch(self):
           for rec in self:
                if rec.location_id.usage=="view":
