@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-        <record id="view_product_warranty_process_tree_view" model="ir.ui.view">
+        <record id="view_product_warranty_process_tree_view_mainta" model="ir.ui.view">
             <field name="name">Product Warranty Management</field>
             <field name="model">product.warranty.management</field>
             <field name="type">tree</field>
@@ -18,14 +18,14 @@
                 </tree>
             </field>
         </record>
-        <record id="renew_product_warranty" model="ir.actions.act_window">
+        <record id="renew_product_warranty_mainta" model="ir.actions.act_window">
             <field name="name">Renew Warranty</field>
             <field name="res_model">product.warranty.management</field>
             <field name="view_mode">form,tree</field>
             <field name="context">{'default_warranty_id': active_id}</field>
             <field name="target">new</field>
         </record>
-        <record id="view_form_product_warranty_management" model="ir.ui.view">
+        <record id="view_form_product_warranty_management_mainta" model="ir.ui.view">
             <field name="name">product warranty management</field>
             <field name="model">product.warranty.management</field>
             <field name="type">form</field>
@@ -82,7 +82,7 @@
         </record>
 
 
-        <record id="actionid_product_warranty_type" model="ir.actions.act_window">
+        <record id="actionid_product_warranty_type_mainta" model="ir.actions.act_window">
             <field name="name">Product Warranty Type</field>
             <field name="res_model">product.warranty.type</field>
             <field name='view_mode'>tree,form</field>
@@ -93,7 +93,7 @@
             </field>
         </record>
 
-        <record id="actionid_product_warranty_management" model="ir.actions.act_window">
+        <record id="actionid_product_warranty_management_mainta" model="ir.actions.act_window">
             <field name="name">Product Warranty</field>
             <field name="res_model">product.warranty.management</field>
             <field name='view_mode'>tree,form</field>
@@ -104,15 +104,15 @@
             </field>
         </record>
 
-        <menuitem name="Product Warranty Management " id="product_warranty_management"
-                  parent="sale.menu_sale_config" sequence="5"/>
+        <menuitem name="Product Warranty Management " id="product_warranty_management_mainta"
+                  parent="surgi_menu_reports_root" sequence="7"/>
 
         <menuitem name="Product Warranty" id="menuitem_product_warranty_management"
-                  parent="product_warranty_management" action="actionid_product_warranty_management"
+                  parent="product_warranty_management_mainta" action="actionid_product_warranty_management_mainta"
                   sequence="2"/>
 
-        <menuitem name="Product Warranty Type" id="menuitem_product_warranty_type"
-                  parent="product_warranty_management" action="actionid_product_warranty_type"
+        <menuitem name="Product Warranty Type" id="menuitem_product_warranty_type_mainta"
+                  parent="product_warranty_management_mainta" action="actionid_product_warranty_type_mainta"
                   sequence="3"/>
 
 

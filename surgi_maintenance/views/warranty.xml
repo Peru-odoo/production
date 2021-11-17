@@ -39,7 +39,7 @@
         </record>
 
         <menuitem action="action_product_warranty_process_mainta_wizard" id="menu_product_warranty_process_mainta"
-                  sequence="7" parent="surgi_menu_reports_root" name="Product Warranty Process"/>
+                  sequence="1" parent="product_warranty_management_mainta" name="Product Warranty Process"/>
 
     </data>
 </odoo>
