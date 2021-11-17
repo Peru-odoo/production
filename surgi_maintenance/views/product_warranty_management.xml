@@ -108,11 +108,11 @@
                   parent="surgi_menu_reports_root" sequence="7"/>
 
         <menuitem name="Product Warranty" id="menuitem_product_warranty_management"
-                  parent="product_warranty_management_mainta" action="product_warranty_management.actionid_product_warranty_management"
+                  parent="product_warranty_management_mainta" action="actionid_product_warranty_management_mainta"
                   sequence="2"/>
 
         <menuitem name="Product Warranty Type" id="menuitem_product_warranty_type_mainta"
-                  parent="product_warranty_management_mainta" action="product_warranty_management.actionid_product_warranty_type"
+                  parent="product_warranty_management_mainta" action="actionid_product_warranty_type_mainta"
                   sequence="3"/>
 
 
