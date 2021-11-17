@@ -38,7 +38,11 @@ class stock_location_branch_inhert(models.Model):
 
 class stock_location_branch_inhert(models.Model):
      _inherit = "stock.quant"
-     branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
+     #branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
+     branch=fields.Selection(selection="get_branches",default="_get_branch")
+     def get_branches(self):
+          return self.company_ids
+          pass
 
      @api.depends('location_id.branch', 'location_id.location_id.branch')
      def _get_branch(self):
