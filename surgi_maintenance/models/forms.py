@@ -311,7 +311,7 @@ class pick_up_Installation_form(models.Model):
     comments3 = fields.Text(store=True, string='ملاحظات')
     comments4 = fields.Text(store=True, string='ملاحظات')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
-    product_contact = fields.Many2one('maintenance.inform',string="البلاغ" ,domain="[('client_res','=',client_res)]")
+    product_inform = fields.Many2one('maintenance.inform',string="البلاغ" ,domain="[('client_res','=',client_res)]")
 
     #################### location
     street1 = fields.Char(related='client_res.street', string='الشارع')

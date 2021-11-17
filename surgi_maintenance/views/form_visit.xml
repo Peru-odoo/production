@@ -59,7 +59,10 @@
                             </div>
                             <div>
                                 <group string="Company" name="emp_id">
-                                    <field name="product_contact"/>
+                                    <field name="product_inform"
+
+                                    attrs="{'required':[('inform','=',True)],'invisible':[('inform','!=',True)]}"
+                                    />
 
 
                                     <field name="employee_id"/>
