@@ -45,6 +45,7 @@
         'views/product_operationg.xml',
         'views/product_occup.xml',
         'views/warranty.xml',
+        'views/product_warranty_management.xml',
 
     ],
     # only loaded in demonstration mode
