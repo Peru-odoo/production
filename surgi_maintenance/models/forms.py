@@ -62,6 +62,12 @@ class SaleOrderLine(models.Model):
     _inherit = 'stock.move.line'
 
     pickup_delivery_id = fields.Many2one('pickup.delivery', store=True, )
+    pickup_repair = fields.Many2one('pickup.repair', store=True, )
+    pickup_installation = fields.Many2one('pickup.installation', store=True, )
+    pickup_delivery_final = fields.Many2one('pickup.final', store=True, )
+    pickup_delivery_visit = fields.Many2one('pickup.visit', store=True, )
+    pickup_delivery_inform = fields.Many2one('maintenance.inform', store=True, )
+
     specilaization = fields.Many2many('product.specializationinfos', string='التخصص')
     operting_maint = fields.Many2many('product.operating', string='طريقة التشغيل')
     occuption_maint = fields.Many2many('product.occupation', string='الوظيفة')
@@ -111,7 +117,7 @@ class pick_up_and_repair_form(models.Model):
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
-    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+    product_forms = fields.One2many('stock.move.line', 'pickup_repair',
                                     related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
                                     readonly=False)
 
@@ -178,7 +184,7 @@ class pick_up_Installation_form(models.Model):
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
-    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+    product_forms = fields.One2many('stock.move.line', 'pickup_installation',
                                     related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
                                     readonly=False)
 
@@ -243,7 +249,7 @@ class pick_up_Installation_form(models.Model):
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
-    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_final',
                                     related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
                                     readonly=False)
 

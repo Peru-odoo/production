@@ -23,7 +23,7 @@ class maintenance_inform_form(models.Model):
     order_id = fields.Many2one('sale.order', store=True, string='رقم امر التوريد')
     sale_date = fields.Datetime(related='order_id.date_order', string='تاريخ امر التوريد')
     picking_id = fields.Many2one('stock.picking', store=True, domain="[('sale_id', '=', order_id)]")
-    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_id',
+    product_forms = fields.One2many('stock.move.line', 'pickup_delivery_inform',
                                     related="picking_id.move_line_ids_without_package", domain=[()], string='المنتج',
                                     readonly=False)
 
