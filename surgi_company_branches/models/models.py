@@ -40,7 +40,7 @@ class stock_location_branch_inhert(models.Model):
      _inherit = "stock.quant"
      #branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
      #branch=fields.Selection(selection=lambda self: self.get_branches)#,compute="_get_branch"
-     branch =fields.Char(related='location_id.branch.name')
+     branch =fields.Char(string="branches")#related='location_id.branch.name'
      def get_branches(self):
           b=[]
           b.append((str(-1),""))
