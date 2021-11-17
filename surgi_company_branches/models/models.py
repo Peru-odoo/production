@@ -33,6 +33,6 @@ class stock_location_branch_inhert(models.Model):
           return domain
 
 
-     branch=fields.Many2one("surgi.company.branches",string="Branch",domain=get_company_id_domain())
+     branch=fields.Many2one("surgi.company.branches",string="Branch",domain=get_company_id_domain)
 
 
