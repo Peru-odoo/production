@@ -32,7 +32,7 @@
             <field name="arch" type="xml">
                 <form string="Product Warranty Management">
                     <header>
-                        <button string="Renew Warranty" name="%(action_renew_product_warranty)d"
+                        <button string="Renew Warranty" name="%(product_warranty_management.action_renew_product_warranty)d"
                                 attrs="{'invisible':[('state','in',('Renewed','Running'))]}" class="oe_highlight"
                                 type="action"/>
                         <field name="state" widget="statusbar"
