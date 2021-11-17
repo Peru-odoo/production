@@ -50,7 +50,7 @@ class sale_order(models.Model):
     maint_repair_so = fields.Char("نموذج إستلام/إصلاح", compute='get_mainta_repair_so')#, compute=get_operation_so
     maint_final_so = fields.Char("محضر تسليم نهائي", compute='get_mainta_final_so')#, compute=get_operation_so
     maint_visit_so = fields.Char("نموذج زيارة وخدمة ما بعد البيع", compute='get_mainta_visit_so')#, compute=get_operation_so
-    maint_inform_so = fields.Char("نموذج زيارة وخدمة ما بعد البيع", compute='get_mainta_visit_so')#, compute=get_operation_so
+    maint_inform_so = fields.Char("البلاغ", compute='get_maintenance_inform_so')#, compute=get_operation_so
 
     after_sales_check = fields.Boolean('After Sales')
     def get_mainta_so(self):
