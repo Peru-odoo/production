@@ -50,6 +50,8 @@ class sale_order(models.Model):
     maint_repair_so = fields.Char("نموذج إستلام/إصلاح", compute='get_mainta_repair_so')#, compute=get_operation_so
     maint_final_so = fields.Char("محضر تسليم نهائي", compute='get_mainta_final_so')#, compute=get_operation_so
     maint_visit_so = fields.Char("نموذج زيارة وخدمة ما بعد البيع", compute='get_mainta_visit_so')#, compute=get_operation_so
+    maint_inform_so = fields.Char("نموذج زيارة وخدمة ما بعد البيع", compute='get_mainta_visit_so')#, compute=get_operation_so
+
     after_sales_check = fields.Boolean('After Sales')
     def get_mainta_so(self):
         for rec in self:
@@ -180,6 +182,33 @@ class sale_order(models.Model):
                 'view_type': 'form',
                 'view_mode': 'tree,form',
                 'res_model': 'pickup.visit',
+                'target': 'current',
+                'domain': [('id', 'in', list)],
+                'context': "{'search_default_order_id': active_id, 'default_order_id': active_id}"
+
+            }
+##################################################################################################
+
+    def get_maintenance_inform_so(self):
+        for rec in self:
+            maintenanceSO = self.env['maintenance.inform'].search([('order_id', '=', rec.id)])
+            if maintenanceSO:
+                rec.maint_inform_so = len(maintenanceSO)
+            else:
+                rec.maint_inform_so = 0
+
+    def action_view_maintenance_inform_SO(self):
+        for rec in self:
+            operations = self.env['maintenance.inform'].search([('order_id', '=', rec.id)])
+            list = []
+            for op in operations:
+                list.append(op.id)
+            return {
+                'name': "البلاغ",
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'maintenance.inform',
                 'target': 'current',
                 'domain': [('id', 'in', list)],
                 'context': "{'search_default_order_id': active_id, 'default_order_id': active_id}"

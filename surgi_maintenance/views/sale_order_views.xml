@@ -24,6 +24,9 @@
                     <button name="action_view_sales_visit_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('after_sales_check','=',False)]}">
                                 <field  name='maint_visit_so' string="نموذج زيارة وخدمة ما بعد البيع"  modifiers="{'readonly': true}" widget="statinfo"   />
                     </button>
+                    <button name="action_view_maintenance_inform_SO" icon="fa-cart-plus" type="object" class="oe_stat_button" attrs="{'invisible': [('after_sales_check','=',False)]}">
+                                <field  name='maint_inform_so' string="نموذج زيارة وخدمة ما بعد البيع"  modifiers="{'readonly': true}" widget="statinfo"   />
+                    </button>
 
                 </div>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
