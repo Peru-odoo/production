@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product','hr','crm','sale'],
+    'depends': ['base','product','hr','crm','sale','product_warranty_management'],
 
     # always loaded
     'data': [
@@ -44,6 +44,7 @@
         'views/sale_order_views.xml',
         'views/product_operationg.xml',
         'views/product_occup.xml',
+        'views/warranty.xml',
 
     ],
     # only loaded in demonstration mode
