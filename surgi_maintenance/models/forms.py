@@ -376,9 +376,6 @@ class maint_final_visit(models.AbstractModel):
         return 5
 
 
-class sales_order_name(models.Model):
-    _inherit = 'sale.order'
-
 
 class product_forms(models.Model):
     _name = 'product.forms'
@@ -398,20 +395,6 @@ class product_forms(models.Model):
     product_status_tec = fields.Char('حالة الجهاز الفنية')
 
 
-class product_template_infos(models.Model):
-    _inherit = 'product.template'
-
-
-class forms_res_partner(models.Model):
-    _inherit = 'res.partner'
-
-
-class forms_specialization(models.Model):
-    _inherit = 'product.specializationinfos'
-
-
-class forms_res_partner_emp(models.Model):
-    _inherit = 'contact.representative'
 
 
 class sale_order(models.Model):

@@ -1,10 +1,10 @@
 <odoo>
     <data>
-        <record id="tree_view_pickup_installationpage" model="ir.ui.view">
-            <field name="name">محضر تركيب و تشغيل أجهزة</field>
-            <field name="model">pickup.installation</field>
+        <record id="tree_view_maintenance_informpage" model="ir.ui.view">
+            <field name="name">ألبلاغ</field>
+            <field name="model">maintenance.inform</field>
             <field name="arch" type="xml">
-                <tree string="محضر تركيب و تشغيل أجهزة">
+                <tree string="ألبلاغ">
                     <field name="name"/>
 
                     <field name="order_id"/>
@@ -23,11 +23,11 @@
         </record>
 
 
-        <record id="form_view_pickup_installation" model="ir.ui.view">
-            <field name="name">محضر تركيب و تشغيل أجهزة</field>
-            <field name="model">pickup.installation</field>
+        <record id="form_view_maintenance_inform" model="ir.ui.view">
+            <field name="name">ألبلاغ</field>
+            <field name="model">maintenance.inform</field>
             <field name="arch" type="xml">
-                <form string="محضر تركيب و تشغيل أجهزة">
+                <form string="ألبلاغ">
                     <sheet>
                         <div class="oe_button_box" name="button_box" >
 
@@ -38,11 +38,27 @@
                         </div>
                         <div style="text-align:center">
 
-                            <group string="محضر تركيب و تشغيل أجهزة" col="4" colspan="6">
+                            <group string="ألبلاغ" col="4" colspan="6">
 
                             </group>
                         </div>
+
                         <group>
+                              <div style="text-align:center">
+                                <group>
+                                    <field name="inform"/>
+                                    <field name="pickup_dvice"/>
+                                    <field name="installed"/>
+
+                                </group>
+                            </div>
+                            <div style="text-align:center">
+                                <group>
+                                    <field name="traine"/>
+                                    <field name="insure"/>
+                                </group>
+                            </div>
+
                             <div>
                                 <group string="Contact" name="con_id">
                                     <field name="client_res"/>
@@ -144,8 +160,8 @@
         </record>
 
         <record id="employee_pickup_installtion_search" model="ir.ui.view">
-            <field name="name">pickup.installation.search</field>
-            <field name="model">pickup.installation</field>
+            <field name="name">maintenance.inform.search</field>
+            <field name="model">maintenance.inform</field>
             <field name="arch" type="xml">
                 <search string="Search">
                                                             <field name="name" string="الرقم المرجعي"/>
@@ -177,10 +193,10 @@
         </record>
 
 
-        <record id="action_pickup_installation_pages" model="ir.actions.act_window">
-            <field name="name">محضر تركيب و تشغيل أجهزة</field>
+        <record id="action_maintenance_inform_pages" model="ir.actions.act_window">
+            <field name="name">ألبلاغ</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">pickup.installation</field>
+            <field name="res_model">maintenance.inform</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="employee_pickup_installtion_search"/>
 
@@ -196,8 +212,8 @@
 
 
         <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="menu_pickup_installation_views" name="محضر تركيب و تشغيل أجهزة" parent="surgi_menu_reports_root"
-                  action="action_pickup_installation_pages" sequence="3"/>
+        <menuitem id="menu_maintenance_inform_views" name="ألبلاغ" parent="surgi_menu_reports_root"
+                  action="action_maintenance_inform_pages" sequence="3"/>
 
 
     </data>

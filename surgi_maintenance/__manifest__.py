@@ -44,6 +44,8 @@
         'views/sale_order_views.xml',
         'views/product_operationg.xml',
         'views/product_occup.xml',
+        'views/mainta_inform.xml',
+
         'views/product_warranty_management.xml',
         'views/warranty.xml',
 
