@@ -2,15 +2,15 @@
 <odoo>
     <data>
 
-<record id="view_stock_quant_tree_editable_branch_inhert" model="ir.ui.view">
-            <field name="name">view.stock.quant.tree.editable.branch.inhert</field>
+<record id="tree_view_stock_quant_inherit_branch" model="ir.ui.view">
+            <field name="name">stock.quant.inherit.tree.branch</field>
             <field name="model">stock.quant</field>
             <field name="inherit_id" ref="stock.view_stock_quant_tree_editable"/>
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='location_id']" position="after">
-                    <!-- Add your fields or attributes here   -->
-                    <field name="branch" />
+                    <field name="branch"/>
+
                 </xpath>
 
             </field>
