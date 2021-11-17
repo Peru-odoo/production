@@ -36,3 +36,12 @@ class stock_location_branch_inhert(models.Model):
      branch=fields.Many2one("surgi.company.branches",string="Branch")
 
 
+class stock_location_branch_inhert(models.Model):
+     _inherit = "stock.quant"
+     branch=fields.Many2one("surgi.company.branches",string="branch",compute="_get_branch",store=True)
+     @api.model
+     def _get_branch(self):
+          if self.location_id.usage=="view":
+               return self.location_id.branch
+          else:
+               return self.location_id.location_id.branch
