@@ -44,7 +44,7 @@ class stock_location_branch_inhert(models.Model):
           b=[]
           b.append((str(-1),""))
           for i in self.location_id.company_id.branches:
-               b.append((str(i.id),i.name))
+               b.append((str(i.id),str(i.name)))
           return b
           pass
 
