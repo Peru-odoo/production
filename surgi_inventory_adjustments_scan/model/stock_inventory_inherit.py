@@ -1,5 +1,6 @@
 import datetime
 import json
+from odoo import _
 # from xxlimited import Null
 
 # from addons.stock.models import stock_inventory
@@ -137,7 +138,46 @@ class stock_inventory_inherit(models.Model):
         #               "res_id": active_id, 'scan_lines': linesData}
         print("xx")
         return json.dumps(returnData, ensure_ascii=False)
+        
+        
+        
+    def action_open_inventory_lines(self):
+        res=super(stock_inventory_inherit,self).action_open_inventory_lines()
+        self.ensure_one()
+        action = {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'tree',
+            'name': _('Inventory Lines'),
+            'res_model': 'stock.inventory.line',
+        }
+        context = {
+            'default_is_editable': True,
+            'default_inventory_id': self.id,
+            'default_company_id': self.company_id.id,
+        }
+        # Define domains and context
+        domain = [
+            ('inventory_id', '=', self.id),
+            ('location_id.usage', 'in', ['internal', 'transit','customer'])
+        ]
+        if self.location_ids:
+            context['default_location_id'] = self.location_ids[0].id
+            if len(self.location_ids) == 1:
+                if not self.location_ids[0].child_ids:
+                    context['readonly_location_id'] = True
 
+        if self.product_ids:
+            # no_create on product_id field
+            action['view_id'] = self.env.ref('stock.stock_inventory_line_tree_no_product_create').id
+            if len(self.product_ids) == 1:
+                context['default_product_id'] = self.product_ids[0].id
+        else:
+            # no product_ids => we're allowed to create new products in tree
+            action['view_id'] = self.env.ref('stock.stock_inventory_line_tree').id
+
+        action['context'] = context
+        action['domain'] = domain
+        return action
     # end of class
     pass
 
