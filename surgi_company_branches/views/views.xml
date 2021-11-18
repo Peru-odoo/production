@@ -1,0 +1,61 @@
+<odoo>
+  <data>
+    <function model="stock.quant" name="update_branches"/>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="surgi_company_branches.list">
+      <field name="name">surgi_company_branches list</field>
+      <field name="model">surgi_company_branches.surgi_company_branches</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="surgi_company_branches.action_window">
+      <field name="name">surgi_company_branches window</field>
+      <field name="res_model">surgi_company_branches.surgi_company_branches</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="surgi_company_branches.action_server">
+      <field name="name">surgi_company_branches server</field>
+      <field name="model_id" ref="model_surgi_company_branches_surgi_company_branches"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="surgi_company_branches" id="surgi_company_branches.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="surgi_company_branches.menu_1" parent="surgi_company_branches.menu_root"/>
+    <menuitem name="Menu 2" id="surgi_company_branches.menu_2" parent="surgi_company_branches.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="surgi_company_branches.menu_1_list" parent="surgi_company_branches.menu_1"
+              action="surgi_company_branches.action_window"/>
+    <menuitem name="Server to list" id="surgi_company_branches" parent="surgi_company_branches.menu_2"
+              action="surgi_company_branches.action_server"/>
+-->
+  </data>
+</odoo>
