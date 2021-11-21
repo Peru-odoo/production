@@ -10,7 +10,8 @@
 
                 <xpath expr="//field[@name='company_id']" position="after">
                     <!-- Add your fields or attributes here   -->
-                    <field name="branch" domain="[('company_id','=',company_id)]" attrs="{'invisible': [('usage','!=','view')]}"/>
+                    <field name="branch"  attrs="{'invisible': [('usage','!=','view')]}"/>
+                    <!-- domain="[('company_id','=',company_id)]" -->
                 </xpath>
 
             </field>
