@@ -79,13 +79,9 @@ class regularity_registration_line(models.Model):
     #             stud.date_diff = "Not Providated...."
     @api.depends("year","mounth")
     def _get_age_from_relation(self):
-        if self.start_date and self.end_date:
 
             self.date_diff = self.year +","+self.mounth
 
-        else:
-
-            self.date_diff = "Not Providated...."
 
 
 
