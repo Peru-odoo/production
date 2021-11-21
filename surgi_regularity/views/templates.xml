@@ -77,8 +77,8 @@
 
                             <div>
                                 <group string="Shelf Life">
-                                    <field name="start_date"/>
-                                    <field name="end_date"/>
+                                    <field name="year"/>
+                                    <field name="Month"/>
                                     <field name="date_diff" style="font-size:16px"/>
 
                                 </group>

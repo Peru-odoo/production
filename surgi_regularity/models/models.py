@@ -26,49 +26,68 @@ class regularity_registration_line(models.Model):
     end_date = fields.Date(string="End date")
     date_diff = fields.Char("Shelf Life" , compute="_get_age_from_relation")
     storge_condit = fields.Char("Storage Conditions")
+    year = fields.Selection([('1', '1 Year'),
+                              ('2', '2 Year'),
+                              ('3', '3 Year'),
+                              ('4', '4 Year'),
+                              ('5', '5 Year'),
+                             ], string='Year')
+
+    mounth = fields.Selection([('1', '1 Month'),('2', '2 Month'),('3', '3 Month'),('4', '4 Month'),('5', '5 Month'),('6', '6 Month'),('7', '7 Month'),('8', '8 Month'),('9', '9 Month'),
+                               ('10', '10 Month'), ('11', '11 Month'), ('12', '12 Month')
+                             ], string='Month')
 
 
-
-
-    @api.depends("start_date","end_date")
+    # @api.depends("start_date","end_date")
+    # def _get_age_from_relation(self):
+    #     """Age Calculation"""
+    #     for stud in self:
+    #         if stud.start_date and stud.end_date:
+    #             """
+    #             Get only year.
+    #             """
+    #
+    #
+    #             currentDate = fields.Datetime.to_datetime(stud.end_date).date()
+    #
+    #             deadlineDate= fields.Datetime.to_datetime(stud.start_date).date()
+    #             # print (deadlineDate)
+    #             daysLeft = currentDate - deadlineDate
+    #             # print(daysLeft)
+    #
+    #             years = ((daysLeft.total_seconds())/(365.242*24*3600))
+    #             yearsInt=int(years)
+    #
+    #             months=(years-yearsInt)*12
+    #             monthsInt=int(months)
+    #
+    #             days=(months-monthsInt)*(365.242/12)
+    #             daysInt=int(days)
+    #
+    #             hours = (days-daysInt)*24
+    #             hoursInt=int(hours)
+    #
+    #             minutes = (hours-hoursInt)*60
+    #             minutesInt=int(minutes)
+    #
+    #             seconds = (minutes-minutesInt)*60
+    #             secondsInt =int(seconds)
+    #
+    #             stud.date_diff = '{0:d} years, {1:d}  months, {2:d}  days,   \
+    #             '.format(yearsInt,monthsInt,daysInt,hoursInt)
+    #         else:
+    #             stud.date_diff = "Not Providated...."
+    @api.depends("year","mounth")
     def _get_age_from_relation(self):
         """Age Calculation"""
         for stud in self:
             if stud.start_date and stud.end_date:
-                """
-                Get only year.
-                """
 
+                stud.date_diff = stud.year +","+stud.mounth
 
-                currentDate = fields.Datetime.to_datetime(stud.end_date).date()
-
-                deadlineDate= fields.Datetime.to_datetime(stud.start_date).date()
-                # print (deadlineDate)
-                daysLeft = currentDate - deadlineDate
-                # print(daysLeft)
-
-                years = ((daysLeft.total_seconds())/(365.242*24*3600))
-                yearsInt=int(years)
-
-                months=(years-yearsInt)*12
-                monthsInt=int(months)
-
-                days=(months-monthsInt)*(365.242/12)
-                daysInt=int(days)
-
-                hours = (days-daysInt)*24
-                hoursInt=int(hours)
-
-                minutes = (hours-hoursInt)*60
-                minutesInt=int(minutes)
-
-                seconds = (minutes-minutesInt)*60
-                secondsInt =int(seconds)
-
-                stud.date_diff = '{0:d} years, {1:d}  months, {2:d}  days,   \
-                '.format(yearsInt,monthsInt,daysInt,hoursInt)
             else:
                 stud.date_diff = "Not Providated...."
+
 
 
 
