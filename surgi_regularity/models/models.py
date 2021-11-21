@@ -80,7 +80,7 @@ class regularity_registration_line(models.Model):
     @api.depends("year","mounth")
     def _get_age_from_relation(self):
 
-            self.date_diff = self.year +","+self.mounth
+            self.date_diff = self.year +", "+self.mounth
 
 
 
