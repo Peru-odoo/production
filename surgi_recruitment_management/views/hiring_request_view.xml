@@ -13,6 +13,8 @@
                 <field name="close_date"/>
                 <field name="user_id"/>
                 <field name="job_id"/>
+                <field name="ceiling_count"/>
+                <field name="no_of_employee"/>
                 <field name="state" widget="badge"
                        decoration-success="state == 'manager'"/>
             </tree>
@@ -47,7 +49,10 @@
                     <group>
                         <group>
                             <field name="is_publish" invisible="1"/>
-                            <field name="job_id" attrs="{'readonly':[('state','=','manager')]}" options="{'no_edit': True,'no_create': True}"/>
+                            <field name="job_id" attrs="{'readonly':[('state','=','manager')]}"
+                                   options="{'no_edit': True,'no_create': True}"/>
+                            <field name="ceiling_count"/>
+                            <field name="no_of_employee"/>
                             <field name="request_count" attrs="{'readonly':[('state','=','manager')]}"/>
                             <field name="department_id" widget="selection"/>
                             <field name="grade_id" widget="selection"/>
@@ -56,14 +61,22 @@
                                    attrs="{'readonly':[('state','=','manager')]}"/>
                         </group>
                         <group>
+                            <field name="user_id"/>
                             <field name="request_reason"/>
                             <field name="resource_id" attrs="{'readonly':[('state','=','manager')]}"/>
                             <field name="date" readonly="1"/>
-                            <field name="close_date"/>
+                            <field name="close_date" attrs="{'readonly':[('state','!=','manager')]}"/>
                             <field name="company_id" groups="base.group_multi_company"
                                    readonly="1"/>
-                            <field name="user_id" readonly="1"/>
                         </group>
+                    </group>
+                    <group string="Recruiters">
+                        <field name="recruiter_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="user_id"/>
+                                <field name="required_application"/>
+                            </tree>
+                        </field>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -137,7 +150,8 @@
         </field>
     </record>
 
-
-    <menuitem id="menu_hiring_request" action="action_hiring_request" parent="hr_recruitment.menu_hr_recruitment_root"
+    <menuitem id="menu_hiring_plan_parent" parent="hr_recruitment.menu_hr_recruitment_root"
+              name="Hiring Plans" sequence="2"/>
+    <menuitem id="menu_hiring_request" action="action_hiring_request" parent="menu_hiring_plan_parent"
               name="Hiring Request" sequence="2"/>
 </odoo>
