@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "surgi_applay_job",
+    'name': "Surgi Apply Job",
 
     'summary': """
         Short (1 phrase/line) summary of the module's purpose, used as
@@ -20,13 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','website_hr_recruitment'],
+    'depends': ['base','website_hr_recruitment','surgi_recruitment_management'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+        'security/ir.model.access.csv',
+        'views/template_apply_job.xml',
+        'views/hr_applicant_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

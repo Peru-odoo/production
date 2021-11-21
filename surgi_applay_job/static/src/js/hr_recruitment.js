@@ -19,47 +19,35 @@ odoo.define('website_hr_recruitment.tour', function(require) {
     {
         content: "Complete Address",
         trigger: "input[name=address]",
-        run: "text john@smith.com"
+        run: "text cairo"
+    },
+     {
+        content: "Complete Your Mobile",
+        trigger: "input[name=partner_mobile]",
+        run: "01132646488"
     },
 
     {
         content: "Complete Qualification",
         trigger: "input[name=qualification]",
-        run: "text john@smith.com"
+        run: "text Degree"
     },
 
     {
         content: "Complete Training Courses",
         trigger: "input[name=training_courses]",
-        run: "text john@smith.com"
+        run: "text English"
     },
-
-    {
-        content: "Complete Previous Experience",
-        trigger: "input[name=previous_experience]",
-        run: "text john@smith.com"
-    },
-
     {
         content: "Complete Age",
         trigger: "input[name=age]",
-        run: "text john@smith.com"
+        run: "text 27"
     },
-    {
-            content: "Complete Nominee",
-            trigger: "input[name=nominee]",
-            run: "text john@smith.com"
-        },
-
     {
             content: "Complete Gender",
             trigger: "input[name=gender]",
-            run: "text john@smith.com"
+            run: "selection male/female"
             },
-
-
-
-
     {
         content: "Complete phone number",
         trigger: "input[name=partner_phone]",
