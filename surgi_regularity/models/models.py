@@ -134,7 +134,7 @@ class StockInherit(models.Model):
 
 class product_template_reg(models.Model):
     _name = 'product.regul'
-    registration_line = fields.Many2one("registration.line", "registration line")
+    registration_line = fields.Many2one("registration.line", "registration Licence")
     product_form_id = fields.Many2one('product.template', string='product')
     internal_ref = fields.Char(related='product_form_id.default_code', string='internal ref')
     label_ref = fields.Char(related='product_form_id.label_ref_num', string='Label Ref')
@@ -145,7 +145,7 @@ class product_template_reg(models.Model):
     registration_line_name = fields.Char(related="registration_line.registration_name")
     registration_line_product_registration_number = fields.Char(related="registration_line.product_registration_number")
 
-    registration_attachment = fields.Many2one("registration.line", "registration line")
+    registration_attachment = fields.Many2one("registration.line", "registration Licence")
 
     registration_line_leagal_munfacter = fields.Char(related="registration_line.leagal_munfacter")
     registration_line_acual_munfacter = fields.Many2many(related="registration_line.acual_munfacter")
@@ -160,4 +160,4 @@ class product_template_reg(models.Model):
     certifect_expiry = fields.Date("Expiry")
     varition_num=fields.Char("Varition Number")
     varition_num_date = fields.Date("Varition Date")
-    varition_num_registration = fields.Many2one("registration.line", "registration line")
+    varition_num_registration = fields.Many2one("registration.line", "registration Licence")

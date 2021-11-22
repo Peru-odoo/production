@@ -30,7 +30,7 @@
         'views/templates.xml',
         'views/acual_mnu.xml',
         'views/regularity_plan.xml',
-
+        'views/scientific_committe.xml',
 
     ],
     # only loaded in demonstration mode

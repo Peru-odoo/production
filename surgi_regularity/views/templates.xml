@@ -1,10 +1,10 @@
 <odoo>
     <data>
     <record id="tree_view_registration_finalpage" model="ir.ui.view">
-            <field name="name">Registration Line</field>
+            <field name="name">Registration Licence</field>
             <field name="model">registration.line</field>
             <field name="arch" type="xml">
-                <tree string="Registration Line">
+                <tree string="Registration Licence">
                     <field name="name"/>
                     <field name="registration_name"/>
 
@@ -28,15 +28,15 @@
 
 
         <record id="form_view_registration_final" model="ir.ui.view">
-            <field name="name">Registration Line</field>
+            <field name="name">Registration Licence</field>
             <field name="model">registration.line</field>
             <field name="arch" type="xml">
-                <form string="Registration Line">
+                <form string="Registration Licence">
 
                     <sheet>
                         <div style="text-align:center">
 
-                            <group string="Registration Line" col="4" colspan="6">
+                            <group string="Registration Licence" col="4" colspan="6">
 
                             </group>
 
@@ -164,7 +164,7 @@
 
 
         <record id="action_Registration_line_pages" model="ir.actions.act_window">
-            <field name="name">Registration Line</field>
+            <field name="name">Registration Licence</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">registration.line</field>
             <field name="view_mode">tree,form</field>
@@ -181,7 +181,7 @@
 
 
         <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="menu_registration_final_views" name="Registration Line" parent="regularity_menuitem"
+        <menuitem id="menu_registration_final_views" name="Registration Licence" parent="regularity_menuitem"
                   action="action_Registration_line_pages" sequence="6"/>
 
     </data>

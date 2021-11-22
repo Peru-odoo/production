@@ -4,4 +4,5 @@ access_registration_line_id,access_registration_line,model_registration_line,,1,
 access_product_regul_id,access_product_regul,model_product_regul,,1,1,1,1
 access_regularity_plan_id,access_regularity_plan,model_regularity_plan,,1,1,1,1
 
+access_scientific_committee_id,access_scientific_committee,model_scientific_committee,,1,1,1,1
 

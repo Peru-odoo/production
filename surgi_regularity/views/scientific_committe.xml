@@ -1,36 +1,31 @@
 <odoo>
     <data>
-    <record id="tree_view_regularity_plan_finalpage" model="ir.ui.view">
-            <field name="name">Regularity Plan</field>
-            <field name="model">regularity.plan</field>
+
+    <record id="tree_view_scientific_committee_finalpage" model="ir.ui.view">
+            <field name="name">Scientific Committee</field>
+            <field name="model">scientific.committee</field>
             <field name="arch" type="xml">
-                <tree string="Regularity Plan">
+                <tree string="Scientific Committee">
                     <field name="name"/>
-                    <field name="plan_year"/>
-
-                    <field name="registration_line"/>
-                    <field name="country_of_orgin" widget="many2many_tags"/>
-
-                    <field name="leagal_munfacter"/>
-                    <field name="acual_munfacter" widget="many2many_tags"/>
-
-
+                    <field name="product_class"/>
+                    <field name="supplier"/>
+                    <field name="sterile"/>
+                    <field name="scientific_committe_num"/>
                     <field name="issue_date"/>
-                    <field name="expiry_date"/>
-
-
-
+                    <field name="expiry_date" />
+                    <field name="registration_line"/>
+                    <field name="registration_plan" />
 
                 </tree>
             </field>
         </record>
 
 
-        <record id="form_view_regularity_plan_final" model="ir.ui.view">
-            <field name="name">Regularity Plan</field>
-            <field name="model">regularity.plan</field>
+        <record id="form_view_scientific_committee_final" model="ir.ui.view">
+            <field name="name">Scientific Committee</field>
+            <field name="model">scientific.committee</field>
             <field name="arch" type="xml">
-                <form string="Regularity Plan">
+                <form string="Scientific Committee">
 
                     <sheet>
                         <div style="text-align:center">
@@ -42,31 +37,32 @@
                         </div>
                         <group>
                             <div>
-                                <group string="Basic Information">
+                                <group string="Product Information">
                                      <field name="name"/>
-                                     <field name="plan_year"/>
-                                     <field name="registration_line"/>
+                                     <field name="product_class"/>
+                                     <field name="supplier" widget="radio"/>
+                                     <field name="sterile"/>
 
                                 </group>
                             </div>
 
                             <div>
-                                <group string="Manufacture">
+                                <group string="">
 
-                                    <field name="country_of_orgin" widget="many2many_tags"/>
+                                    <field name="scientific_committe_num"/>
 
-                                    <field name="leagal_munfacter"/>
-                                  <field name="acual_munfacter" widget="many2many_tags"/>
-
-                                </group>
-                            </div>
-
-
-
-                            <div>
-                                <group string="Plan Date">
                                     <field name="issue_date"/>
-                                    <field name="expiry_date"/>
+                                  <field name="expiry_date" />
+
+                                </group>
+                            </div>
+
+
+
+                            <div>
+                                <group string="">
+                                    <field name="registration_line"/>
+                                    <field name="registration_plan"/>
                                 </group>
                             </div>
 
@@ -74,32 +70,7 @@
 
                         </group>
 
-                        <notebook>
 
-                            <page name="attachment" string="Attachment">
-                                <group>
-
-                                </group>
-
-
-                                <field name="attachment_page">
-
-                                    <tree editable="bottom">
-                                        <control>
-                                            <create name="add_relation_control" string="Add"/>
-                                        </control>
-
-                                        <field name="certifect_plan"/>
-                                        <field name="certifect_expiry_plan"/>
-
-                                        <field name="attachment_product_plan" widget="many2many_binary" string="Attach"/>
-
-                                    </tree>
-                                </field>
-
-                            </page>
-
-                        </notebook>
 
                     </sheet>
                 </form>
@@ -108,10 +79,10 @@
 
 
 
-        <record id="action_regularity_plan_line_pages" model="ir.actions.act_window">
-            <field name="name">Regularity Plan</field>
+        <record id="action_scientific_committee_line_pages" model="ir.actions.act_window">
+            <field name="name">Scientific Committee</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">regularity.plan</field>
+            <field name="res_model">scientific.committee</field>
             <field name="view_mode">tree,form</field>
 
             <field name="help" type="html">
@@ -126,8 +97,8 @@
 
 
         <!-- This Menu Item must have a parent and an action -->
-        <menuitem id="menu_regularity_plan_final_views" name="Regularity Plan" parent="regularity_menuitem"
-                  action="action_regularity_plan_line_pages" sequence="7"/>
+        <menuitem id="menu_scientific_committee_final_views" name="Scientific Committee" parent="regularity_menuitem"
+                  action="action_scientific_committee_line_pages" sequence="5"/>
 
     </data>
 </odoo>

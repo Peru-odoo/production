@@ -15,5 +15,5 @@ class regularity_registration_line(models.Model):
     issue_date = fields.Date(String="Issue Date")
     expiry_date = fields.Date(string="Expiry date")
     attachment_page = fields.One2many('product.regul', "registration_attachment")
-    registration_line = fields.Many2one('registration.line' ,string="Registration Line")
+    registration_line = fields.Many2one('registration.line' ,string="Registration Licence")
     attachment_page = fields.One2many('product.regul', "registration_plan")
