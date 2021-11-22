@@ -98,7 +98,7 @@
 
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_scientific_committee_final_views" name="Scientific Committee" parent="regularity_menuitem"
-                  action="action_scientific_committee_line_pages" sequence="5"/>
+                  action="action_scientific_committee_line_pages" sequence="8"/>
 
     </data>
 </odoo>

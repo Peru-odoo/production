@@ -20,4 +20,4 @@ class ScientificCommitte(models.Model):
 
     sterile=fields.Boolean(string="Sterile",related="name.strlize_field")
     product_class = fields.Selection(string="Class", related="name.Product_class")
-    supplier = fields.One2many(related="name.saller_ids.name",string="Supplier")
+    supplier = fields.One2many(related="name.seller_ids",string="Supplier")

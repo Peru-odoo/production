@@ -48,7 +48,7 @@
         <!-- This Menu Item must have a parent and an action -->
         <menuitem id="menu_acual_munfacter_views" name="Actual Manufacturer"
                   parent="regularity_menuitem"
-                  action="action_acual_munfacter_pages" sequence="8"/>
+                  action="action_acual_munfacter_pages" sequence="10"/>
 
 
     </data>
