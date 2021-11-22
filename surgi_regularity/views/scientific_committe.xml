@@ -40,7 +40,7 @@
                                 <group string="">
                                      <field name="name"/>
                                      <field name="product_class"/>
-                                     <field name="supplier" widget="radio"/>
+                                     <field name="supplier" />
                                      <field name="sterile"/>
 
                                 </group>
