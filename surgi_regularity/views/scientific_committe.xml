@@ -30,14 +30,14 @@
                     <sheet>
                         <div style="text-align:center">
 
-                            <group string="Plan" col="4" colspan="6">
+                            <group string="Scientific Committee" col="4" colspan="6">
 
                             </group>
 
                         </div>
                         <group>
                             <div>
-                                <group string="Product Information">
+                                <group string="">
                                      <field name="name"/>
                                      <field name="product_class"/>
                                      <field name="supplier" widget="radio"/>
