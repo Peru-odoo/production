@@ -1,6 +1,8 @@
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 from datetime import date,datetime,time,timedelta
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
+
 
 class HrExpensesExpenses(models.Model):
     _name = 'hr.expenses.expenses'
@@ -18,8 +20,10 @@ class HRExpensesInherit(models.Model):
     _inherit = 'hr.expense'
 
     sales_id = fields.Many2one(comodel_name="operation.operation", string="Operation",)
-    is_sales = fields.Boolean(string="IS Sales",related='product_id.is_sales_order'  )
     sales_state = fields.Char(string="Sales State",compute='compute_sales_state')
+    operations_type = fields.Many2one(comodel_name="product.operation.type", string="Operation Type",)
+    is_sales = fields.Boolean(string="IS Sales",related='product_id.is_sales_order')
+
     # expenses_ids = fields.Many2many(comodel_name="hr.expense", relation="expenses_relation", column1="expenses_col1", column2="expenses_col2", string="Expenses",)
     expenses_lines_ids = fields.One2many(comodel_name="hr.expenses.expenses", inverse_name="expen_id", string="", required=False, )
     is_expenses_ids = fields.Boolean(string="",compute='filter_sales_id'  )
@@ -31,6 +35,24 @@ class HRExpensesInherit(models.Model):
     total_expense_amount = fields.Float(string="Total Amount",compute='compute_total_expense_amount')
 
     num_day_expire = fields.Integer(compute='compute_num_day_expire' )
+
+
+    def get_all_operation_type(self):
+        for rec in self.search([]):
+            if not rec.operations_type:
+                rec.operations_type = rec.sales_id.operation_type
+
+    @api.onchange('sales_id')
+    def compute_operations_type(self):
+        self.operations_type = self.sales_id.operation_type
+
+    # def write(self, vals):
+    #     res=super(HRExpensesInherit, self).write(vals)
+    #     if self.env.user.has_group('surgi_sales_expenses.expenses_only_view_group') and vals:
+    #         print(res,"HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    #         raise UserError(_('Permission Denied.'))
+    #
+    #     return res
 
     def compute_num_day_expire(self):
         expiration_rec = self.env['hr.expense.expiration'].search([],limit=1)
@@ -109,6 +131,8 @@ class HrExpenseSheetInherit(models.Model):
     account_reviewed= fields.Boolean(string="Account Reviewed",  )
     treasury_manager= fields.Boolean(string="Treasury Manager",  )
     check_access_expense = fields.Boolean(compute="compute_check_access_expense")
+
+
 
 
     @api.depends('state')
