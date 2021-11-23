@@ -172,6 +172,7 @@ class HRJobOffer(models.Model):
     def do_accept(self):
         self.ensure_one()
         self.state = 'accepted'
+        self.applicant_id.applicant_state ='accepted'
 
     def do_refuse(self):
         self.ensure_one()

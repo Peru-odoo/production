@@ -30,7 +30,6 @@
                                             <fieldset disabled="disabled">
                                                 <t t-foreach='line.survey_id.question_and_page_ids' t-as='question'>
                                                     <t>
-                                                        <hr t-if="question != line.survey_id.page_ids[0]"/>
                                                         <div class="o_page_header">
                                                             <h3 t-field='question.title'/>
                                                             <div t-if="question.description"
