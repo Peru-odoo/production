@@ -121,6 +121,9 @@
                 <xpath expr="//field[@name='expense_line_ids']" position="attributes">
                     <attribute name="attrs">{'readonly':[('check_access_expense','=',False)]}</attribute>
                 </xpath>
+                <xpath expr="//field[@name='expense_line_ids']/tree/field[@name='name']" position="after">
+                    <field name="sales_id" optional="hide"/>
+                </xpath>
 
 
                 <xpath expr="//button[@name='action_sheet_move_create']" position="before">

@@ -71,7 +71,7 @@ Create new Operation with name include hospital and add all it's data
         'views/view_extremities_operations.xml',
         'views/view_vanguard_operations.xml',
         'views/add_items.xml',
-        #'views/stock_picking_changes2.xml',
+        'views/view_roperations_coordinator_sportes_asyut.xml',
         ## 'report/report_deliveryslip.xml',
     ],
 
