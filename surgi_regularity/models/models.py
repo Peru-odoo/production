@@ -26,11 +26,20 @@ class regularity_registration_line(models.Model):
     end_date = fields.Date(string="End date")
     date_diff = fields.Char("Shelf Life" , compute="_get_age_from_relation")
     storge_condit = fields.Char("Storage Conditions")
-    year = fields.Selection([('1 Year', '1 Year'),
+    year = fields.Selection([
+                              ('0 Years', '0 Years'),
+
+                              ('1 Year', '1 Year'),
                               ('2 Year', '2 Year'),
                               ('3 Years', '3 Years'),
                               ('4 Years', '4 Years'),
                               ('5 Years', '5 Years'),
+                              ('6 Year', '6 Year'),
+                              ('7 Years', '7 Years'),
+                              ('8 Years', '8 Years'),
+                              ('9 Years', '9 Years'),
+                              ('10 Years', '10 Years'),
+
                              ], string='Years')
 
     mounth = fields.Selection([('1 Month', '1 Month'),('2 Month', '2 Month'),('3 Months', '3 Months'),('4 Months', '4 Months'),('5 Months', '5 Months'),('6 Months', '6 Months'),('7 Months', '7 Months'),('8 Months', '8 Months'),('9 Months', '9 Months'),
