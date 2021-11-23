@@ -121,7 +121,7 @@
                 <xpath expr="//field[@name='expense_line_ids']" position="attributes">
                     <attribute name="attrs">{'readonly':[('check_access_expense','=',False)]}</attribute>
                 </xpath>
-                <xpath expr="//field[@name='expense_line_ids']" position="inside">
+                <xpath expr="//field[@name='sale_order_id']" position="after">
                     <field name="sales_id" optional="hide"/>
                 </xpath>
 
