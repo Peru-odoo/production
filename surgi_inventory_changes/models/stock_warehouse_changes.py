@@ -6,7 +6,7 @@ class StockWarehouseInherit(models.Model):
     _inherit = 'stock.warehouse'
 
     warehouse_managers_id = fields.Many2one('res.users', string="Manager")
-    
+    warehouseType= fields.Char("Warehouse Type",store=True)
     manager_lines=fields.One2many('manager.line','warehouse_id')
 
     stock_branches = fields.Many2one('branch.location',string='Branch',store=True)

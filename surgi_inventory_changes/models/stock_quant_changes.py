@@ -10,4 +10,5 @@ class stock_quant_inherit_wizard(models.Model):
     product_group = fields.Char(srting="Group", related="product_id.product_group", store=True)
     product_categ_id = fields.Many2one('product.category', related='product_id.categ_id', store=True)
     location_id_parent = fields.Many2one(related='location_id.location_id' ,string='Parent Location',store=True)
-    location_id_type_a_s = fields.Selection(related='location_id.location_asset_selling' ,string='Location Type',store=True)
+    location_id_type_a_s = fields.Selection(related='location_id.location_asset_selling' ,string='Location Type 2',store=True)
+    # warehouseType = fields.Char(related='location_id.warehouseType' ,string='Warehouse Type',store=True)
