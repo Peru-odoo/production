@@ -7,9 +7,6 @@
             <field name="arch" type="xml">
                 <tree string="Appointment">
                     <field name="name"/>
-                    <field name="supplier"/>
-                    <field name="product_line"/>
-                    <field name="sterile"/>
                     <field name="request_id"/>
                     <field name="temp_num"/>
                     <field name="skus"/>
@@ -40,9 +37,7 @@
                             <div>
                                 <group string="">
                                     <field name="name"/>
-                                    <field name="product_line"/>
-                                    <field name="supplier"/>
-                                    <field name="sterile"/>
+
                                     <field name="type_of_appoint"/>
 
 
@@ -71,6 +66,31 @@
 
 
                         <notebook>
+                             <page name="product" string="product">
+                                <group>
+
+                                </group>
+
+
+                                <field name="product_appintment">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="product_form_appointement"/>
+                                        <field name="internal_ref"/>
+                                        <field name="label_ref"/>
+                                        <field name="product_line_appo"/>
+
+                                        <field name="sterile_appo"/>
+                                        <field name="supplier_appo"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
                             <page name="attachment" string="Attachment">
                                 <group>
 
