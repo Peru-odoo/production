@@ -20,7 +20,7 @@ class ScientificCommitte(models.Model):
     temp_num = fields.Char("Temporary Number", store=True)
     skus = fields.Char(string="SKUS")
     attachment_page = fields.One2many('product.regul', "registration_appointement")
-    product_appintment= fields.One2many('product.regul', "product_form_appointement")
+    product_appintment= fields.One2many('product.regul', "product_form_id")
 
 
 class product_appint_reg(models.Model):
@@ -33,6 +33,6 @@ class product_appint_reg(models.Model):
     certifect_appointement = fields.Char("Certificate")
 
     product_form_appointement = fields.Many2one('product.template', string='product')
-    supplier_appo = fields.Many2one(related="name.seller_ids.name", string="Supplier", readonly=False)
-    product_line_appo = fields.Many2one(related="name.categ_id", string="Line", store=True)
-    sterile_appo = fields.Boolean(string="Sterile", related="name.strlize_field")
+    supplier_appo = fields.Many2one(related="product_form_id.seller_ids.name", string="Supplier", readonly=False)
+    product_line_appo = fields.Many2one(related="product_form_id.categ_id", string="Line", store=True)
+    sterile_appo = fields.Boolean(string="Sterile", related="product_form_id.strlize_field")
