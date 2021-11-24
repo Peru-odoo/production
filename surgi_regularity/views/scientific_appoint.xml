@@ -79,7 +79,7 @@
                                             <create name="add_relation_control" string="Add"/>
                                         </control>
 
-                                        <field name="product_form_id"/>
+                                        <field name="product_form_appointement"/>
                                         <field name="internal_ref"/>
                                         <field name="label_ref"/>
                                         <field name="product_line_appo"/>
