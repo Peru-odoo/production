@@ -15,7 +15,7 @@ class ScientificCommitte(models.Model):
     description = fields.Text("Description",help="Scientific Committee Description")
     issue_date = fields.Date(String="Issue Date",help="Scientific Committee Issue Date")
     expiry_date = fields.Date(string="Expiry date",help="Scientific Committee Expiry Date")
-    registration_line = fields.Many2one('registration.line' ,string="Registration Licence")
+    registration_line = fields.Many2one(related="registration_plan.registration_line" ,string="Registration Licence")
     registration_plan = fields.Many2one('regularity.plan' ,string="Regularity Plan")
 
     sterile=fields.Boolean(string="Sterile",related="name.strlize_field")

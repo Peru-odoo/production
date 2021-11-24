@@ -31,6 +31,7 @@
         'views/acual_mnu.xml',
         'views/regularity_plan.xml',
         'views/scientific_committe.xml',
+        'views/scientific_appoint.xml',
 
     ],
     # only loaded in demonstration mode

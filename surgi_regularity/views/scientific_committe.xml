@@ -1,7 +1,7 @@
 <odoo>
     <data>
 
-    <record id="tree_view_scientific_committee_finalpage" model="ir.ui.view">
+        <record id="tree_view_scientific_committee_finalpage" model="ir.ui.view">
             <field name="name">Scientific Committee</field>
             <field name="model">scientific.committee</field>
             <field name="arch" type="xml">
@@ -12,9 +12,9 @@
                     <field name="sterile"/>
                     <field name="scientific_committe_num"/>
                     <field name="issue_date"/>
-                    <field name="expiry_date" />
+                    <field name="expiry_date"/>
                     <field name="registration_line"/>
-                    <field name="registration_plan" />
+                    <field name="registration_plan"/>
 
                 </tree>
             </field>
@@ -38,10 +38,10 @@
                         <group>
                             <div>
                                 <group string="">
-                                     <field name="name"/>
-                                     <field name="product_class"/>
-                                     <field name="supplier" />
-                                     <field name="sterile"/>
+                                    <field name="name"/>
+                                    <field name="product_class"/>
+                                    <field name="supplier"/>
+                                    <field name="sterile"/>
 
                                 </group>
                             </div>
@@ -52,11 +52,10 @@
                                     <field name="scientific_committe_num"/>
 
                                     <field name="issue_date"/>
-                                  <field name="expiry_date" />
+                                    <field name="expiry_date"/>
 
                                 </group>
                             </div>
-
 
 
                             <div>
@@ -67,16 +66,24 @@
                             </div>
 
 
-
                         </group>
 
 
+                        <notebook>
+                            <page name="product" string="Description">
 
+                                <field name="description">
+
+
+                                </field>
+
+                            </page>
+
+                        </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-
 
 
         <record id="action_scientific_committee_line_pages" model="ir.actions.act_window">

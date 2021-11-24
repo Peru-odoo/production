@@ -6,3 +6,4 @@ access_regularity_plan_id,access_regularity_plan,model_regularity_plan,,1,1,1,1
 
 access_scientific_committee_id,access_scientific_committee,model_scientific_committee,,1,1,1,1
 
+access_scientific_appointement_id,access_scientific_appointement,model_scientific_appointement,,1,1,1,1

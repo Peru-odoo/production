@@ -1,6 +1,6 @@
 <odoo>
     <data>
-    <record id="tree_view_registration_finalpage" model="ir.ui.view">
+        <record id="tree_view_registration_finalpage" model="ir.ui.view">
             <field name="name">Registration Licence</field>
             <field name="model">registration.line</field>
             <field name="arch" type="xml">
@@ -44,8 +44,8 @@
                         <group>
                             <div>
                                 <group string="Basic Information">
-                                     <field name="name"/>
-                                     <field name="registration_name"/>
+                                    <field name="name"/>
+                                    <field name="registration_name"/>
 
                                     <field name="product_registration_number"/>
                                     <field name="strlize_method"/>
@@ -61,11 +61,10 @@
                                     <field name="country_of_orgin" widget="many2many_tags"/>
 
                                     <field name="leagal_munfacter"/>
-                                  <field name="acual_munfacter" widget="many2many_tags"/>
+                                    <field name="acual_munfacter" widget="many2many_tags"/>
 
                                 </group>
                             </div>
-
 
 
                             <div>
@@ -102,9 +101,9 @@
 
                                         <field name="product_form_id"/>
                                         <field name="internal_ref"/>
-                                                                                <field name="label_ref"/>
+                                        <field name="label_ref"/>
 
-                                                                                <field name="regis_Product_class"/>
+                                        <field name="regis_Product_class"/>
 
                                         <field name="desc_regul"/>
 
@@ -112,7 +111,7 @@
                                 </field>
 
                             </page>
-                                <page name="Varition" string="Varition Number">
+                            <page name="Varition" string="Varition Number">
                                 <group>
 
                                 </group>
@@ -160,7 +159,6 @@
                 </form>
             </field>
         </record>
-
 
 
         <record id="action_Registration_line_pages" model="ir.actions.act_window">

@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+
+        <record id="tree_view_scientific_appointment_finalpage" model="ir.ui.view">
+            <field name="name">Appointment</field>
+            <field name="model">scientific.appointement</field>
+            <field name="arch" type="xml">
+                <tree string="Appointment">
+                    <field name="name"/>
+                    <field name="supplier"/>
+                    <field name="product_line"/>
+                    <field name="sterile"/>
+                    <field name="request_id"/>
+                    <field name="temp_num"/>
+                    <field name="skus"/>
+                    <field name="accept_date"/>
+                    <field name="expiry_date"/>
+
+
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="form_view_scientific_appointment_final" model="ir.ui.view">
+            <field name="name">Appointment</field>
+            <field name="model">scientific.appointement</field>
+            <field name="arch" type="xml">
+                <form string="Appointment">
+
+                    <sheet>
+                        <div style="text-align:center">
+
+                            <group string="Appointment" col="4" colspan="6">
+
+                            </group>
+
+                        </div>
+                        <group>
+                            <div>
+                                <group string="">
+                                    <field name="name"/>
+                                    <field name="product_line"/>
+                                    <field name="supplier"/>
+                                    <field name="sterile"/>
+                                    <field name="type_of_appoint"/>
+
+
+                                </group>
+                            </div>
+
+                            <div>
+                                <group string="">
+
+                                    <field name="accept_date"/>
+                                    <field name="expiry_date"/>
+
+                                </group>
+                            </div>
+
+                            <div>
+                                <group string="">
+                                    <field name="request_id"/>
+                                    <field name="temp_num"/>
+                                    <field name="skus"/>
+
+                                </group>
+                            </div>
+
+                        </group>
+
+
+                        <notebook>
+                            <page name="attachment" string="Attachment">
+                                <group>
+
+                                </group>
+
+
+                                <field name="attachment_page">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="certifect_appointement"/>
+
+                                        <field name="attachment_product_appointement" widget="many2many_binary"
+                                               string="Attach"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
+
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_scientific_appointment_line_pages" model="ir.actions.act_window">
+            <field name="name">Appointment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scientific.appointement</field>
+            <field name="view_mode">tree,form</field>
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_scientific_appointment_final_views" name="Appointment" parent="regularity_menuitem"
+                  action="action_scientific_appointment_line_pages" sequence="9"/>
+
+    </data>
+</odoo>

@@ -27,8 +27,7 @@ class regularity_registration_line(models.Model):
     date_diff = fields.Char("Shelf Life" , compute="_get_age_from_relation")
     storge_condit = fields.Char("Storage Conditions")
     year = fields.Selection([
-                              ('0 Years', '0 Years'),
-
+                              ('0 Years','0 Year'),
                               ('1 Year', '1 Year'),
                               ('2 Year', '2 Year'),
                               ('3 Years', '3 Years'),
@@ -164,7 +163,7 @@ class product_template_reg(models.Model):
     attachment_product_plan = fields.Many2many('ir.attachment', 'class_ir_attachments_rel', 'class_id', 'attachment_id', 'Attachments')
     certifect_plan = fields.Char("Certificate")
     certifect_expiry_plan = fields.Date("Expiry")
-
+####################################################################33333333
     certifect = fields.Char("Certificate")
     certifect_expiry = fields.Date("Expiry")
     varition_num=fields.Char("Varition Number")
