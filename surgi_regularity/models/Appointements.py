@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError, UserError
 class ScientificCommitte(models.Model):
     _name = 'scientific.appointement'
 
-    name = fields.Many2one(string="System Name")
+    name = fields.Char(string="System Name")
 
 
     type_of_appoint = fields.Selection([('sterile', 'Sterile'),
@@ -20,7 +20,7 @@ class ScientificCommitte(models.Model):
     temp_num = fields.Char("Temporary Number", store=True)
     skus = fields.Char(string="SKUS")
     attachment_page = fields.One2many('product.regul', "registration_appointement")
-    product_appintment= fields.One2many('product.regul', "product_form_id")
+    product_appintment= fields.One2many('product.regul', "product_form_appointement")
 
 
 class product_appint_reg(models.Model):
@@ -32,7 +32,9 @@ class product_appint_reg(models.Model):
                                                        'attachment_id', 'Attachments')
     certifect_appointement = fields.Char("Certificate")
 
+
+
     product_form_appointement = fields.Many2one('product.template', string='product')
-    supplier_appo = fields.Many2one(related="product_form_id.seller_ids.name", string="Supplier", readonly=False)
-    product_line_appo = fields.Many2one(related="product_form_id.categ_id", string="Line", store=True)
-    sterile_appo = fields.Boolean(string="Sterile", related="product_form_id.strlize_field")
+    supplier_appo = fields.Many2one(related="product_form_appointement.seller_ids.name", string="Supplier", readonly=False)
+    product_line_appo = fields.Many2one(related="product_form_appointement.categ_id", string="Line", store=True)
+    sterile_appo = fields.Boolean(string="Sterile", related="product_form_appointement.strlize_field")
