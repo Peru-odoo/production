@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError, UserError
 class ScientificCommitte(models.Model):
     _name = 'scientific.appointement'
 
-    System_name = fields.Many2one(string="System Name")
+    system_name = fields.Many2one(string="System Name")
 
 
     type_of_appoint = fields.Selection([('sterile', 'Sterile'),
