@@ -80,8 +80,7 @@
                                         </control>
 
                                         <field name="product_form_appointement"/>
-                                        <field name="internal_ref"/>
-                                        <field name="label_ref"/>
+
                                         <field name="product_line_appo"/>
 
                                         <field name="sterile_appo"/>
