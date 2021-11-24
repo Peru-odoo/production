@@ -6,7 +6,7 @@
             <field name="model">scientific.appointement</field>
             <field name="arch" type="xml">
                 <tree string="Appointment">
-                    <field name="system_name"/>
+                    <field name="name"/>
                     <field name="request_id"/>
                     <field name="temp_num"/>
                     <field name="skus"/>
@@ -36,7 +36,7 @@
                         <group>
                             <div>
                                 <group string="">
-                                    <field name="system_name"/>
+                                    <field name="name"/>
 
                                     <field name="type_of_appoint"/>
 
@@ -79,7 +79,7 @@
                                             <create name="add_relation_control" string="Add"/>
                                         </control>
 
-                                        <field name="product_form_appointement"/>
+                                        <field name="product_form_id"/>
                                         <field name="internal_ref"/>
                                         <field name="label_ref"/>
                                         <field name="product_line_appo"/>
