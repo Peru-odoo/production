@@ -9,7 +9,6 @@ class ScientificCommitte(models.Model):
 
     name = fields.Char(string="System Name")
 
-
     type_of_appoint = fields.Selection([('sterile', 'Sterile'),
                                         ('non_sterile', 'Non Sterile'), ], string="Type of Appointment", )
     accept_date = fields.Date(String="Acceptance Date")
@@ -20,7 +19,7 @@ class ScientificCommitte(models.Model):
     temp_num = fields.Char("Temporary Number", store=True)
     skus = fields.Char(string="SKUS")
     attachment_page = fields.One2many('product.regul', "registration_appointement")
-    product_appintment= fields.One2many('product.regul', "registration_appointement")
+    product_appintment = fields.One2many('product.regul', "registration_appointement")
 
 
 class product_appint_reg(models.Model):
@@ -32,19 +31,15 @@ class product_appint_reg(models.Model):
                                                        'attachment_id', 'Attachments')
     certifect_appointement = fields.Char("Certificate")
 
-
-
-    product_form_appointement = fields.Many2one('product.template', string='product')
-    supplier_appo = fields.Many2one(related="product_form_appointement.seller_ids.name", string="Supplier", readonly=False)
-    product_line_appo = fields.Many2one(related="product_form_appointement.product_line_id", string="Line", store=True)
+    product_form_appointement = fields.Many2one('product.product', string='product')
+    supplier_appo = fields.Many2one(related="product_form_appointement.seller_ids.name", string="Supplier",
+                                    readonly=False)
+    product_line_appo = fields.Many2one(related="product_form_appointement.categ_id", string="Line")
     sterile_appo = fields.Boolean(string="Sterile", related="product_form_appointement.strlize_field")
-    product_serial_appointement = fields.Many2one('stock.production.lot', string='Serial Number',compute="_get_serial_num")
+    product_serial_appointement = fields.Many2one('stock.production.lot', string='Serial Number',
+                                                  domain="[('product_id','=',product_form_appointement)]")
 
-
-
-    @api.onchange("product_form_appointement")
-    def _get_serial_num(self):
-        serial = self.env['stock.production.lot'].search('product_id','=',self.product_form_appointement)
-
-        self.product_serial_appointement = serial
+    @api.onchange('product_form_appointement')
+    def compute_display_name(self):
+        self.product_serial_appointement = ""
 

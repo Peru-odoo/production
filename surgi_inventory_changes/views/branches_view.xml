@@ -1,6 +1,33 @@
 <odoo>
     <data>
 
+        <record id="view_form_produc_branches_info" model="ir.ui.view">
+            <field name="name">view.form.product.branches.info</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/notebook/page[last()]" position="after">
+                            <page name="branches" string="Branches">
+
+                                <field name="branches">
+
+                                    <tree editable="bottom">
+                                        <control>
+                                            <create name="add_relation_control" string="Add"/>
+                                        </control>
+
+                                        <field name="branche_name"/>
+                                        <field name="max_num"/>
+                                        <field name="min_num"/>
+
+                                    </tree>
+                                </field>
+
+                            </page>
+                </xpath>
+            </field>
+        </record>
 
         <record id="tree_view_branches_location_page" model="ir.ui.view">
             <field name="name">Branches</field>
