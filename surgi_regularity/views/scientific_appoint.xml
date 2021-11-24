@@ -80,6 +80,8 @@
                                         </control>
 
                                         <field name="product_form_appointement"/>
+                                                                                <field name="product_serial_appointement"/>
+
 
                                         <field name="product_line_appo"/>
 
