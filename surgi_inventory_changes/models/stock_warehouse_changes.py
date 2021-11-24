@@ -17,15 +17,3 @@ class branches_location_wharehouse(models.Model):
     _name= 'branch.location'
     name = fields.Char(string="Branch",store=True)
 
-class branches_products(models.Model):
-    _name = 'branches.productes'
-
-    product_id=fields.Many2one('product.product',store=True)
-    branche_name = fields.Many2one('branch.location',string="Branch", store=True)
-    min_num = fields.Char(string="Minimum",store=True)
-    max_num = fields.Char(string="Maximum",store=True)
-
-
-class product_product_branches(models.Model):
-    _inherit = 'product.product'
-    branches = fields.One2many('branches.productes','product_id',store=True)

@@ -19,6 +19,8 @@
     'depends': ['base','product'],
 
     'data': [
+        'security/ir.model.access.csv',
+
         'views/product_template_view.xml',
     ],
     # "pre_init_hook": "pre_init_product_code",
